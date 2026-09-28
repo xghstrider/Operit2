@@ -45,3 +45,36 @@ Flutter SDK, and opens the isolated origin automatically.
 - The current Dart entrypoint still lives in `apps/flutter/app`; consumers depend on the generated bundle here, not on Flutter's internal `build/web` directory.
 - `apps/flutter/app/web` is a symlink to `apps/web_access/web`.
 - `apps/flutter/app/build/web` is a symlink to `apps/web_access/build/bundle` during Flutter Web builds.
+
+## Local static preview
+
+`tools/dev_web_access_setup.sh` installs the pinned Linux toolchain used by the
+Web experience workflow: Flutter 3.41.9 through FVM, Rust with the
+`wasm32-unknown-unknown` target, the WASI SDK, wasm-bindgen, and the Node build
+tools (TypeScript, Terser). Every phase is skipped when its target already
+exists, so the script is safe to re-run. Use `system`, `rust`, `fvm`, `flutter`,
+or `all` (default) as the phase argument.
+
+```bash
+tools/dev_web_access_setup.sh all
+```
+
+`tools/dev_web_access_build.sh` builds the shared bundle through
+`tools/build_scripts/build_flutter_web_access.py`. The `cargo` phase is
+incremental, so it can be re-run until it completes before `flutter` finishes
+the bundle:
+
+```bash
+tools/dev_web_access_build.sh deps
+tools/dev_web_access_build.sh cargo
+tools/dev_web_access_build.sh flutter
+```
+
+`tools/dev_web_access_preview.sh` serves the built bundle through
+`tools/dev_web_access_static_server.mjs`, which sends the cross-origin
+isolation headers required above on every response. It binds `0.0.0.0` and
+honours `PORT`:
+
+```bash
+PORT=8080 tools/dev_web_access_preview.sh
+```
