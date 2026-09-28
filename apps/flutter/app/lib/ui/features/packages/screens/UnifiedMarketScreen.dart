@@ -181,17 +181,17 @@ class _UnifiedMarketScreenState extends State<UnifiedMarketScreen>
                 NavigationDestination(
                   icon: Icon(Icons.storefront_outlined),
                   selectedIcon: Icon(Icons.storefront),
-                  label: '全部',
+                  label: 'All',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.category_outlined),
                   selectedIcon: Icon(Icons.category),
-                  label: '分类',
+                  label: 'Category',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.person_outline),
                   selectedIcon: Icon(Icons.person),
-                  label: '我的',
+                  label: 'Mine',
                 ),
               ],
             ),
@@ -250,7 +250,7 @@ class _UnifiedMarketScreenState extends State<UnifiedMarketScreen>
             _syncTopBar();
           },
           icon: const Icon(Icons.search),
-          tooltip: '搜索',
+          tooltip: 'Search',
         ),
       ];
     }, owner: this);
@@ -625,13 +625,13 @@ class _MarketListPaneState extends State<_MarketListPane> {
       content = _buildRefreshableStatus(
         EmptyState(
           icon: Icons.error_outline,
-          title: '加载失败',
+          title: 'Load failed',
           message: error,
           scrollable: false,
           action: TextButton.icon(
             onPressed: _refreshMarket,
             icon: const Icon(Icons.refresh),
-            label: const Text('刷新'),
+            label: const Text('Refresh'),
           ),
         ),
       );
@@ -660,7 +660,7 @@ class _MarketListPaneState extends State<_MarketListPane> {
         isLoadingMore: _loadingMore || _featuredPrefetching,
         hasMore: _hasMore && rawQuery.isEmpty && !widget.featuredOnly,
         isEmpty: displayed.isEmpty,
-        emptyTitle: rawQuery.isEmpty ? '暂无项目' : '没有匹配结果',
+        emptyTitle: rawQuery.isEmpty ? 'No items yet' : 'No matching results',
         onRefresh: _refreshMarket,
         onLoadMore: _loadMore,
         items: displayed,
@@ -773,7 +773,7 @@ class _MarketListPaneState extends State<_MarketListPane> {
   Future<void> _installSkill(core_proxy.MarketEntrySummary item) async {
     final repoUrl = item.source?.url.trim() ?? '';
     if (repoUrl.isEmpty) {
-      throw StateError('技能缺少仓库地址');
+      throw StateError('The skill is missing a repository URL');
     }
     final result = await widget.clients.application
         .skillRepository()
@@ -789,7 +789,7 @@ class _MarketListPaneState extends State<_MarketListPane> {
   Future<void> _installMcp(core_proxy.MarketEntrySummary item) async {
     final repoUrl = item.source?.url.trim() ?? '';
     if (repoUrl.isEmpty) {
-      throw StateError('MCP 缺少仓库地址');
+      throw StateError('The MCP server is missing a repository URL');
     }
     final result = await widget.clients.application
         .mcpRepository()
@@ -813,7 +813,7 @@ class _MarketListPaneState extends State<_MarketListPane> {
 }
 
 String _actionLabel(core_proxy.MarketEntrySummary item) {
-  return (item.type == 'script' || item.type == 'package') ? '下载' : '安装';
+  return (item.type == 'script' || item.type == 'package') ? 'Download' : 'Install';
 }
 
 int _reactionTotal(core_proxy.MarketEntrySummary item, String reaction) {
@@ -1032,7 +1032,7 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            '被打回后的修改版提交仍在冷却中，还需等待 ${_formatRevisionCooldown(revisionRemaining)}。',
+            'A revised submission after a rejection is still in cooldown; wait ${_formatRevisionCooldown(revisionRemaining)} longer.',
           ),
           behavior: SnackBarBehavior.floating,
         ),
@@ -1128,7 +1128,7 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
       context: context,
       builder: (context) {
         final stateLabel = entry.listingState == 'pending_listing'
-            ? '待上架'
+            ? 'Pending listing'
             : _marketStateLabel(entry.stateCode);
         final reasons = entry.reasonCodes
             .map(_marketReasonLabel)
@@ -1142,17 +1142,17 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('状态：$stateLabel'),
+                Text('Status: $stateLabel'),
                 const SizedBox(height: 8),
-                Text('关系：${_marketRelationLabel(entry.relation)}'),
+                Text('Relation: ${_marketRelationLabel(entry.relation)}'),
                 if ((entry.categoryId ?? '').trim().isNotEmpty) ...<Widget>[
                   const SizedBox(height: 8),
-                  Text('分类：${entry.categoryId}'),
+                  Text('Category: ${entry.categoryId}'),
                 ],
                 if (reasons.isNotEmpty) ...<Widget>[
                   const SizedBox(height: 12),
                   Text(
-                    '审核原因',
+                    'Review reason',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -1163,7 +1163,7 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
                 if (reviewDetail.isNotEmpty) ...<Widget>[
                   const SizedBox(height: 12),
                   Text(
-                    '审核说明',
+                    'Review notes',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -1177,7 +1177,7 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('知道了'),
+              child: const Text('Got it'),
             ),
           ],
         );
@@ -1192,12 +1192,12 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('我的市场'),
+        title: const Text('My Marketplace'),
         actions: <Widget>[
           IconButton(
             onPressed: _loading ? null : _loadMine,
             icon: const Icon(Icons.refresh),
-            tooltip: '刷新',
+            tooltip: 'Refresh',
           ),
         ],
       ),
@@ -1209,12 +1209,12 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
           if (error != null && _entries.isEmpty && _notifications.isEmpty) {
             return EmptyState(
               icon: Icons.error_outline,
-              title: '加载失败',
+              title: 'Load failed',
               message: error,
               action: TextButton.icon(
                 onPressed: _loadMine,
                 icon: const Icon(Icons.refresh),
-                label: const Text('刷新'),
+                label: const Text('Refresh'),
               ),
             );
           }
@@ -1224,14 +1224,14 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
               padding: const EdgeInsets.fromLTRB(18, 14, 18, 32),
               children: <Widget>[
                 Text(
-                  '我的发布',
+                  'My publications',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 const SizedBox(height: 10),
                 if (_entries.isEmpty)
-                  const Text('暂无发布记录')
+                  const Text('No publications yet')
                 else
                   for (final entry in _entries) ...<Widget>[
                     _MarketManageEntryTile(
@@ -1245,14 +1245,14 @@ class _ArtifactManageScreenState extends State<_ArtifactManageScreen> {
                   ],
                 const SizedBox(height: 24),
                 Text(
-                  '通知',
+                  'Notifications',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 const SizedBox(height: 10),
                 if (_notifications.isEmpty)
-                  const Text('暂无通知')
+                  const Text('No notifications yet')
                 else
                   for (final notice in _notifications) ...<Widget>[
                     _MarketNotificationTile(notice: notice),
@@ -1292,7 +1292,7 @@ class _MarketManageEntryTile extends StatelessWidget {
     final reviewDetail = entry.reviewDetail?.trim() ?? '';
     final isPendingListing = entry.listingState == 'pending_listing';
     final stateLabel = isPendingListing
-        ? '待上架'
+        ? 'Pending listing'
         : _marketStateLabel(entry.stateCode);
     final canPublishVersion =
         entry.stateCode == 'approved' && !isPendingListing;
@@ -1335,7 +1335,7 @@ class _MarketManageEntryTile extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: 4),
-              Text('更新于 ${formatMarketDate(entry.updatedAt)}'),
+              Text('Updated ${formatMarketDate(entry.updatedAt)}'),
             ],
           ),
         ),
@@ -1352,10 +1352,10 @@ class _MarketManageEntryTile extends StatelessWidget {
                     : onOpen,
                 child: Text(
                   canSubmitRevision
-                      ? '修改后提交新版本'
+                      ? 'Submit a new version after changes'
                       : canPublishVersion
-                      ? '发布新版本'
-                      : '查看状态',
+                      ? 'Publish a new version'
+                      : 'View status',
                 ),
               ),
       ),
@@ -1383,12 +1383,12 @@ String _formatRevisionCooldown(Duration remaining) {
   final hours = totalMinutes ~/ 60;
   final minutes = totalMinutes % 60;
   if (hours > 0 && minutes > 0) {
-    return '$hours小时$minutes分钟';
+    return '${hours}h ${minutes}m';
   }
   if (hours > 0) {
-    return '$hours小时';
+    return '${hours}h';
   }
-  return '$minutes分钟';
+  return '${minutes}m';
 }
 
 class _MarketNotificationTile extends StatelessWidget {
@@ -1417,8 +1417,8 @@ class _MarketNotificationTile extends StatelessWidget {
 }
 
 String _marketTypeLabel(String type) => switch (type) {
-  'script' => '脚本',
-  'package' => '包',
+  'script' => 'Script',
+  'package' => 'Package',
   'skill' => 'Skill',
   'mcp' => 'MCP',
   _ => type,
@@ -1433,28 +1433,28 @@ IconData _marketTypeIcon(String type) => switch (type) {
 };
 
 String _marketStateLabel(String stateCode) => switch (stateCode) {
-  'pending' => '待审核',
-  'approved' => '已发布',
-  'changes_requested' => '需修改',
-  'rejected' => '已拒绝',
-  'withdrawn' => '已撤回',
+  'pending' => 'Pending review',
+  'approved' => 'Published',
+  'changes_requested' => 'Changes requested',
+  'rejected' => 'Rejected',
+  'withdrawn' => 'Withdrawn',
   _ => stateCode,
 };
 
 String _marketRelationLabel(String relation) => switch (relation) {
-  'owner' => '归属者',
-  'contributor' => '贡献者',
+  'owner' => 'Owner',
+  'contributor' => 'Contributor',
   _ => relation,
 };
 
 String _marketReasonLabel(String reasonCode) => switch (reasonCode) {
-  'metadata-incomplete' => '元信息不完整',
-  'repository-unreachable' => '仓库无法访问',
-  'invalid-artifact' => '资源文件无效',
-  'invalid-version' => '版本信息无效',
-  'malware-risk' => '存在安全风险',
-  'policy-violation' => '不符合市场规范',
-  'duplicate-entry' => '重复条目',
+  'metadata-incomplete' => 'Incomplete metadata',
+  'repository-unreachable' => 'Repository unreachable',
+  'invalid-artifact' => 'Invalid asset file',
+  'invalid-version' => 'Invalid version information',
+  'malware-risk' => 'Security risk',
+  'policy-violation' => 'Violates marketplace policy',
+  'duplicate-entry' => 'Duplicate entry',
   _ => reasonCode,
 };
 
@@ -1471,12 +1471,12 @@ IconData _marketNotificationIcon(String kind) => switch (kind) {
 String _marketNotificationTitle(core_proxy.MarketNotification notice) {
   final entrySuffix = notice.entryId == null ? '' : ' · ${notice.entryId}';
   return switch (notice.kind) {
-    'comment_new' => '收到新评论$entrySuffix',
-    'comment_reply' => '评论有新回复$entrySuffix',
-    'review_approved' => '审核已通过$entrySuffix',
-    'review_rejected' => '审核已拒绝$entrySuffix',
-    'review_changes' => '审核要求修改$entrySuffix',
-    'entry_curated' => '精选状态已更新$entrySuffix',
+    'comment_new' => 'New comment $entrySuffix',
+    'comment_reply' => 'New reply to your comment $entrySuffix',
+    'review_approved' => 'Review approved $entrySuffix',
+    'review_rejected' => 'Review rejected $entrySuffix',
+    'review_changes' => 'Changes requested in review $entrySuffix',
+    'entry_curated' => 'Featured status updated $entrySuffix',
     _ => notice.title.isEmpty ? notice.kind : notice.title,
   };
 }
@@ -1484,13 +1484,13 @@ String _marketNotificationTitle(core_proxy.MarketNotification notice) {
 String _marketNotificationBody(core_proxy.MarketNotification notice) {
   final body = notice.body.trim();
   return switch (notice.kind) {
-    'comment_new' => body.isEmpty ? '有人在你的条目下发表了评论。' : body,
-    'comment_reply' => body.isEmpty ? '有人回复了你的评论。' : body,
-    'review_approved' => '你的提交已通过审核。',
-    'review_rejected' => '你的提交未通过审核。',
-    'review_changes' => '审核员要求你修改后重新提交。',
-    'entry_curated' => '条目的精选状态发生变化。',
-    _ => body.isEmpty ? '你有一条新的市场通知。' : body,
+    'comment_new' => body.isEmpty ? 'Someone commented on your entry.' : body,
+    'comment_reply' => body.isEmpty ? 'Someone replied to your comment.' : body,
+    'review_approved' => 'Your submission was approved.',
+    'review_rejected' => 'Your submission was rejected.',
+    'review_changes' => 'A reviewer asked you to revise and resubmit.',
+    'entry_curated' => 'The featured status of your entry changed.',
+    _ => body.isEmpty ? 'You have a new marketplace notification.' : body,
   };
 }
 
@@ -1537,8 +1537,8 @@ class _MarketCategoryScopeHeader extends StatelessWidget {
       child: ListTile(
         dense: true,
         leading: const Icon(Icons.category_outlined),
-        title: Text('分类：$title'),
-        subtitle: const Text('可按类型、排序和精选继续筛选'),
+        title: Text('Category: $title'),
+        subtitle: const Text('Filter further by type, sort order, and featured status'),
       ),
     );
   }
@@ -1602,10 +1602,10 @@ class _MarketTypeFilterBar extends StatelessWidget {
 }
 
 const List<_MarketTypeTabSpec> _marketTypeTabs = <_MarketTypeTabSpec>[
-  _MarketTypeTabSpec(type: null, label: '全部'),
-  _MarketTypeTabSpec(type: 'script', label: '脚本'),
-  _MarketTypeTabSpec(type: 'package', label: '包'),
-  _MarketTypeTabSpec(type: 'skill', label: '技能'),
+  _MarketTypeTabSpec(type: null, label: 'All'),
+  _MarketTypeTabSpec(type: 'script', label: 'Script'),
+  _MarketTypeTabSpec(type: 'package', label: 'Package'),
+  _MarketTypeTabSpec(type: 'skill', label: 'Skill'),
   _MarketTypeTabSpec(type: 'mcp', label: 'MCP'),
 ];
 
@@ -1684,12 +1684,12 @@ class _MarketCategoriesPaneState extends State<_MarketCategoriesPane> {
     if (error != null && _categories.isEmpty) {
       return EmptyState(
         icon: Icons.error_outline,
-        title: '加载失败',
+        title: 'Load failed',
         message: error,
         action: TextButton.icon(
           onPressed: _loadCategories,
           icon: const Icon(Icons.refresh),
-          label: const Text('刷新'),
+          label: const Text('Refresh'),
         ),
       );
     }

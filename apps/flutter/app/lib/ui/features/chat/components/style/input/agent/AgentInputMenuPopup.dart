@@ -205,7 +205,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                     ...widget.leadingChildren,
                     _MenuSection(
                       icon: Icons.data_object_outlined,
-                      title: '记忆',
+                      title: 'Memory',
                       value: data.memorySummary,
                       expanded: _memoryExpanded,
                       onTap: () {
@@ -216,10 +216,10 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                       children: <Widget>[
                         _SwitchRow(
                           icon: Icons.assignment_ind_outlined,
-                          title: '提供用户资料',
+                          title: 'Provide user profile',
                           value: data.disableUserPreferenceDescription
-                              ? '关'
-                              : '开',
+                              ? 'Off'
+                              : 'On',
                           checked: !data.disableUserPreferenceDescription,
                           onTap: () => _setUserMarkdownEnabled(
                             data,
@@ -230,8 +230,8 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                           icon: data.enableMemoryAutoUpdate
                               ? Icons.save
                               : Icons.save_outlined,
-                          title: '自动更新记忆库',
-                          value: data.enableMemoryAutoUpdate ? '开' : '关',
+                          title: 'Automatically update memory',
+                          value: data.enableMemoryAutoUpdate ? 'On' : 'Off',
                           checked: data.enableMemoryAutoUpdate,
                           onTap: () => _toggleMemoryAutoUpdate(data),
                         ),
@@ -239,7 +239,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                     ),
                     _MenuSection(
                       icon: Icons.security_outlined,
-                      title: '工具',
+                      title: 'Tools',
                       value: data.toolPermissionMode.label,
                       expanded: _toolsExpanded,
                       onTap: () {
@@ -262,8 +262,8 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                     ),
                     _MenuSection(
                       icon: Icons.bolt_outlined,
-                      title: '行为',
-                      value: data.disableStreamOutput ? '非流式' : '流式',
+                      title: 'Behavior',
+                      value: data.disableStreamOutput ? 'Non-streaming' : 'Streaming',
                       expanded: _behaviorExpanded,
                       onTap: () {
                         setState(() {
@@ -273,8 +273,8 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                       children: <Widget>[
                         _SwitchRow(
                           icon: Icons.speed_outlined,
-                          title: '流式输出',
-                          value: data.disableStreamOutput ? '关' : '开',
+                          title: 'Streaming output',
+                          value: data.disableStreamOutput ? 'Off' : 'On',
                           checked: !data.disableStreamOutput,
                           onTap: () => _toggleDisableStreamOutput(data),
                         ),
@@ -283,7 +283,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                     if (data.pluginToggles.isNotEmpty)
                       _MenuSection(
                         icon: Icons.extension_outlined,
-                        title: '插件',
+                        title: 'Plugins',
                         value: data.pluginSummary,
                         expanded: _pluginsExpanded,
                         onTap: () {
@@ -297,7 +297,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                               icon: Icons.hub,
                               materialIconName: toggle.icon,
                               title: toggle.title ?? toggle.id,
-                              value: toggle.isChecked ? '开' : '关',
+                              value: toggle.isChecked ? 'On' : 'Off',
                               checked: toggle.isChecked,
                               enabled: toggle.isEnabled,
                               onTap: () => _togglePlugin(toggle),
@@ -468,13 +468,13 @@ class _ChatSessionSummarySectionState
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Text(
-                              '当前角色卡',
+                              'Current character card',
                               style: textTheme.labelSmall?.copyWith(
                                 color: colorScheme.onSurfaceVariant,
                               ),
                             ),
                             Text(
-                              widget.currentCharacterCardName ?? '未绑定',
+                              widget.currentCharacterCardName ?? 'Not bound',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: textTheme.bodySmall?.copyWith(
@@ -513,11 +513,11 @@ class _ChatSessionSummarySectionState
                         color: colorScheme.onSurfaceVariant,
                       ),
                       const SizedBox(width: 12),
-                      Text('统计', style: textTheme.bodySmall),
+                      Text('Statistics', style: textTheme.bodySmall),
                       const Spacer(),
                       Text(
                         contextUsagePercentage == null
-                            ? '加载中...'
+                            ? 'Loading...'
                             : '${contextUsagePercentage.toStringAsFixed(0)}%',
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.primary,
@@ -546,22 +546,22 @@ class _ChatSessionSummarySectionState
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       _ChatStatValueRow(
-                        label: '上下文窗口',
+                        label: 'Context window',
                         value: _contextWindowLabel(
                           currentWindowSize: _currentWindowSize,
                           maxContextTokens: maxContextTokens,
                         ),
                       ),
                       _ChatStatValueRow(
-                        label: '输入 Token',
+                        label: 'Input tokens',
                         value: _formatTokenCount(_inputTokenCount),
                       ),
                       _ChatStatValueRow(
-                        label: '输出 Token',
+                        label: 'Output tokens',
                         value: _formatTokenCount(_outputTokenCount),
                       ),
                       _ChatStatValueRow(
-                        label: '总 Token',
+                        label: 'Total tokens',
                         value: _formatTokenCount(totalTokenCount),
                         highlighted: true,
                       ),
@@ -590,7 +590,7 @@ class _ChatSessionSummarySectionState
   }) {
     final maxTokens = maxContextTokens;
     if (maxTokens == null) {
-      return '加载中...';
+      return 'Loading...';
     }
     return '${_formatTokenCount(currentWindowSize)} / ${_formatTokenCount(maxTokens)}';
   }
@@ -733,21 +733,21 @@ class _CharacterCardSelectorDialogState
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          '切换角色卡',
+                          'Switch character card',
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
                       Text(
-                        '${cards.length} 个',
+                        '${cards.length}',
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(width: 2),
                       IconButton(
-                        tooltip: '关闭',
+                        tooltip: 'Close',
                         onPressed: () => Navigator.of(context).pop(),
                         icon: const Icon(Icons.close, size: 18),
                         visualDensity: VisualDensity.compact,
@@ -763,7 +763,7 @@ class _CharacterCardSelectorDialogState
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(16, 18, 16, 20),
                         child: Text(
-                          '暂无角色卡',
+                          'No character cards',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                           ),
@@ -953,10 +953,10 @@ class _AgentInputMenuData {
 
   String get memorySummary {
     return switch ((disableUserPreferenceDescription, enableMemoryAutoUpdate)) {
-      (true, false) => '关',
-      (false, false) => '用户资料',
-      (true, true) => '记忆库更新',
-      (false, true) => '用户资料 · 记忆库更新',
+      (true, false) => 'Off',
+      (false, false) => 'User profile',
+      (true, true) => 'Memory update',
+      (false, true) => 'User profile · Memory update',
     };
   }
 
@@ -980,7 +980,7 @@ class _AgentInputMenuData {
 enum _ToolPermissionMode {
   readOnly('只读', core_proxy.AiPermissionMode.readOnly),
   workspaceWrite('读写', core_proxy.AiPermissionMode.workspaceWrite),
-  full('完整', core_proxy.AiPermissionMode.full);
+  full('Full', core_proxy.AiPermissionMode.full);
 
   const _ToolPermissionMode(this.label, this.permissionMode);
 

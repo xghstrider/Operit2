@@ -147,7 +147,7 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
       final loadIssue = core_proxy.ToolPkgLoadIssue(
         sourcePath: 'runtime://package-manager',
         packageName: null,
-        displayName: '插件管理器',
+        displayName: 'Plugin Manager',
         code: 'package_manager',
         message: error.toString(),
         packageKind: 'package_manager',
@@ -234,12 +234,12 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('删除包'),
-          content: Text('确定删除 ${toolPackageDisplayName(package)}？此操作不可撤销。'),
+          title: const Text('Delete package'),
+          content: Text('Delete ${toolPackageDisplayName(package)}? This cannot be undone.'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -247,7 +247,7 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
                 backgroundColor: Theme.of(context).colorScheme.error,
                 foregroundColor: Theme.of(context).colorScheme.onError,
               ),
-              child: const Text('删除'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -269,7 +269,7 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
         return;
       }
       if (!deleted) {
-        _showSnackBar('删除失败：${package.name}');
+        _showSnackBar('Delete failed: ${package.name}');
       }
     } catch (error, stackTrace) {
       debugPrint('Failed to delete package: $error\n$stackTrace');
@@ -293,12 +293,12 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('删除插件'),
-          content: Text('确定删除 ${toolPkgContainerDisplayName(plugin)}？此操作不可撤销。'),
+          title: const Text('Delete plugin'),
+          content: Text('Delete ${toolPkgContainerDisplayName(plugin)}? This cannot be undone.'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -306,7 +306,7 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
                 backgroundColor: Theme.of(context).colorScheme.error,
                 foregroundColor: Theme.of(context).colorScheme.onError,
               ),
-              child: const Text('删除'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -328,7 +328,7 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
         return;
       }
       if (!deleted) {
-        _showSnackBar('删除失败：${plugin.packageName}');
+        _showSnackBar('Delete failed: ${plugin.packageName}');
       }
     } catch (error, stackTrace) {
       debugPrint('Failed to delete plugin: $error\n$stackTrace');
@@ -518,10 +518,10 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
       PackageTab.mcp => MarketHomeTab.all,
     };
     final marketTooltip = switch (_selectedTab) {
-      PackageTab.plugins => '打开 Artifact 市场',
-      PackageTab.packages => '打开 Artifact 市场',
-      PackageTab.skills => '打开技能市场',
-      PackageTab.mcp => '打开 MCP 市场',
+      PackageTab.plugins => 'Open the Artifact marketplace',
+      PackageTab.packages => 'Open the Artifact marketplace',
+      PackageTab.skills => 'Open the skill marketplace',
+      PackageTab.mcp => 'Open the MCP marketplace',
     };
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -545,19 +545,19 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
 
   String get _searchHintText {
     return switch (_selectedTab) {
-      PackageTab.plugins => '搜索插件',
-      PackageTab.packages => '搜索包',
-      PackageTab.skills => '搜索技能',
-      PackageTab.mcp => '搜索 MCP',
+      PackageTab.plugins => 'Search plugins',
+      PackageTab.packages => 'Search packages',
+      PackageTab.skills => 'Search skills',
+      PackageTab.mcp => 'Search MCP',
     };
   }
 
   String get _addActionTooltip {
     return switch (_selectedTab) {
-      PackageTab.plugins => '导入插件',
-      PackageTab.packages => '导入包',
-      PackageTab.skills => '添加技能',
-      PackageTab.mcp => '添加 MCP',
+      PackageTab.plugins => 'Import plugin',
+      PackageTab.packages => 'Import package',
+      PackageTab.skills => 'Add skill',
+      PackageTab.mcp => 'Add MCP',
     };
   }
 
@@ -664,13 +664,13 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _IssueDetailLine(label: '错误类型', value: issue.code),
-                  _IssueDetailLine(label: '插件类型', value: issue.packageKind),
+                  _IssueDetailLine(label: 'Error type', value: issue.code),
+                  _IssueDetailLine(label: 'Plugin type', value: issue.packageKind),
                   _IssueDetailLine(
-                    label: '包/插件 ID',
+                    label: 'Package/plugin ID',
                     value: issue.packageName ?? '',
                   ),
-                  _IssueDetailLine(label: '来源路径', value: issue.sourcePath),
+                  _IssueDetailLine(label: 'Source path', value: issue.sourcePath),
                   const SizedBox(height: 12),
                   Text(
                     issue.message,
@@ -683,7 +683,7 @@ class _PackageManagerScreenState extends State<PackageManagerScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('关闭'),
+              child: const Text('Close'),
             ),
           ],
         );
@@ -1156,17 +1156,17 @@ class _PackageTabBarState extends State<_PackageTabBar>
           _PackageTabItem(
             selected: widget.selectedTab == PackageTab.plugins,
             icon: Icons.apps,
-            label: '插件',
+            label: 'Plugins',
           ),
           _PackageTabItem(
             selected: widget.selectedTab == PackageTab.packages,
             icon: Icons.extension,
-            label: '包',
+            label: 'Packages',
           ),
           _PackageTabItem(
             selected: widget.selectedTab == PackageTab.skills,
             icon: Icons.build,
-            label: '技能',
+            label: 'Skills',
           ),
           _PackageTabItem(
             selected: widget.selectedTab == PackageTab.mcp,
@@ -1278,7 +1278,7 @@ class _PackageSearchBar extends StatelessWidget {
               trailing: <Widget>[
                 if (query.isNotEmpty)
                   IconButton(
-                    tooltip: '清空',
+                    tooltip: 'Clear',
                     onPressed: () => onChanged(''),
                     icon: const Icon(Icons.close, size: 18),
                     visualDensity: VisualDensity.compact,

@@ -170,21 +170,21 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
     final maxAppVer = _emptyToNull(_maxAppVerController.text);
     final changelog = _emptyToNull(_changelogController.text);
     final missing = <String>[
-      if (_canEditEntry && title.isEmpty) '名称',
-      if (_canEditEntry && description.isEmpty) '简介',
-      if (_canEditEntry && detail.isEmpty) '详情',
-      if (_canEditEntry && categoryId.isEmpty) '分类',
-      if (!_isContinuationMode && sourceUrl.isEmpty) 'GitHub 地址',
-      if (refName.isEmpty) '引用名称',
-      if (installConfig.isEmpty) '安装配置',
-      if (version.isEmpty) '版本号',
-      if (formatVer.isEmpty) '格式版本',
-      if (minAppVer.isEmpty) '最低支持版本',
+      if (_canEditEntry && title.isEmpty) 'Name',
+      if (_canEditEntry && description.isEmpty) 'Description',
+      if (_canEditEntry && detail.isEmpty) 'Details',
+      if (_canEditEntry && categoryId.isEmpty) 'Category',
+      if (!_isContinuationMode && sourceUrl.isEmpty) 'GitHub URL',
+      if (refName.isEmpty) 'Reference name',
+      if (installConfig.isEmpty) 'Install configuration',
+      if (version.isEmpty) 'Version number',
+      if (formatVer.isEmpty) 'Format version',
+      if (minAppVer.isEmpty) 'Minimum supported version',
     ];
     if (missing.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('请填写：${missing.join('、')}'),
+          content: Text('Fill in: ${missing.join(', ')}'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -235,16 +235,16 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
       await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text(_isContinuationMode ? '新版本已提交' : '发布已提交'),
+          title: Text(_isContinuationMode ? 'New version submitted' : 'Publish request submitted'),
           content: SelectableText(
             'Entry ID: ${response.entryId}\n'
             'Version ID: ${response.versionId}\n\n'
-            '审核通过后会进入公开市场。',
+            'It will appear in the public marketplace after approval.',
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('知道了'),
+              child: const Text('Got it'),
             ),
           ],
         ),
@@ -283,8 +283,8 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
         backgroundColor: Colors.transparent,
         title: Text(
           _isContinuationMode
-              ? '发布 ${_typeLabel(widget.type)} 新版本'
-              : '发布 ${_typeLabel(widget.type)}',
+              ? 'Publish a new version of ${_typeLabel(widget.type)}'
+              : 'Publish ${_typeLabel(widget.type)}',
         ),
       ),
       body: Builder(
@@ -295,12 +295,12 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
           if (error != null) {
             return EmptyState(
               icon: Icons.error_outline,
-              title: '加载失败',
+              title: 'Load failed',
               message: error,
               action: TextButton.icon(
                 onPressed: _loadManifest,
                 icon: const Icon(Icons.refresh),
-                label: const Text('刷新'),
+                label: const Text('Refresh'),
               ),
             );
           }
@@ -314,7 +314,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 controller: _titleController,
                 enabled: entryFieldsEnabled,
                 decoration: const InputDecoration(
-                  labelText: '名称',
+                  labelText: 'Name',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -325,7 +325,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 minLines: 2,
                 maxLines: 4,
                 decoration: const InputDecoration(
-                  labelText: '简介',
+                  labelText: 'Description',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -336,7 +336,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 minLines: 5,
                 maxLines: 12,
                 decoration: const InputDecoration(
-                  labelText: '详情',
+                  labelText: 'Details',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -346,7 +346,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 initialValue: _categoryId,
                 style: OperitFormStyles.dropdownTextStyle(context),
                 decoration: const InputDecoration(
-                  labelText: '分类',
+                  labelText: 'Category',
                   border: OutlineInputBorder(),
                 ),
                 items: _categories
@@ -368,15 +368,15 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 onChanged: entryFieldsEnabled
                     ? (value) => setState(() => _allowPublicUpdates = value)
                     : null,
-                title: const Text('允许所有人发布新版本'),
-                subtitle: const Text('开启后，登录用户可为该插件提交新版本。'),
+                title: const Text('Allow anyone to publish new versions'),
+                subtitle: const Text('When enabled, signed-in users can submit new versions of this plugin.'),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: _sourceUrlController,
                 enabled: !_publishing && !_isContinuationMode,
                 decoration: const InputDecoration(
-                  labelText: 'GitHub 地址',
+                  labelText: 'GitHub URL',
                   hintText: 'https://github.com/owner/repo/tree/main/path',
                   border: OutlineInputBorder(),
                 ),
@@ -387,7 +387,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 initialValue: _refType,
                 style: OperitFormStyles.dropdownTextStyle(context),
                 decoration: const InputDecoration(
-                  labelText: '引用类型',
+                  labelText: 'Reference type',
                   border: OutlineInputBorder(),
                 ),
                 items: const <DropdownMenuItem<String>>[
@@ -407,7 +407,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 controller: _refNameController,
                 enabled: versionFieldsEnabled,
                 decoration: const InputDecoration(
-                  labelText: '引用名称',
+                  labelText: 'Reference name',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -418,7 +418,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 minLines: 5,
                 maxLines: 12,
                 decoration: const InputDecoration(
-                  labelText: '安装配置 JSON',
+                  labelText: 'Install configuration JSON',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -427,7 +427,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 controller: _versionController,
                 enabled: versionFieldsEnabled,
                 decoration: InputDecoration(
-                  labelText: _isContinuationMode ? '新版本号' : '版本号',
+                  labelText: _isContinuationMode ? 'New version number' : 'Version number',
                   border: const OutlineInputBorder(),
                 ),
               ),
@@ -436,7 +436,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 controller: _formatVerController,
                 enabled: versionFieldsEnabled,
                 decoration: const InputDecoration(
-                  labelText: '格式版本',
+                  labelText: 'Format version',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -445,7 +445,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 controller: _minAppVerController,
                 enabled: versionFieldsEnabled,
                 decoration: const InputDecoration(
-                  labelText: '最低支持版本',
+                  labelText: 'Minimum supported version',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -454,7 +454,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 controller: _maxAppVerController,
                 enabled: versionFieldsEnabled,
                 decoration: const InputDecoration(
-                  labelText: '最高支持版本（可选）',
+                  labelText: 'Maximum supported version (optional)',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -465,7 +465,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 minLines: 2,
                 maxLines: 5,
                 decoration: const InputDecoration(
-                  labelText: '更新说明（可选）',
+                  labelText: 'Release notes (optional)',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -480,10 +480,10 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                     : const Icon(Icons.cloud_upload_outlined),
                 label: Text(
                   _publishing
-                      ? '提交中'
+                      ? 'Submitting'
                       : _isContinuationMode
-                      ? '提交新版本'
-                      : '提交发布',
+                      ? 'Submit new version'
+                      : 'Submit for publishing',
                 ),
               ),
             ],
@@ -519,8 +519,8 @@ class _PublishModeNotice extends StatelessWidget {
             Expanded(
               child: Text(
                 canEditEntry
-                    ? '你是最初发布者，本次提交可同时更新名称、简介、详情、分类和公开协作开关。'
-                    : '你将作为贡献者提交版本内容，不能修改该条目的简介、详情、分类或协作开关。',
+                    ? 'You are the original publisher; this submission can also update the name, description, details, category, and public collaboration toggle.'
+                    : 'You are submitting as a contributor and cannot change the description, details, category, or collaboration toggle.',
               ),
             ),
           ],

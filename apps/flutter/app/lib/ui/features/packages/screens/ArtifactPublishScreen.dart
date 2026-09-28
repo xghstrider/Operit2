@@ -247,7 +247,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
     final publishAssetSource = _selectedPublishAssetSource();
     if (publishAssetSource == null) {
       setState(() {
-        _errorMessage = '请选择 GitHub Release 及其资源文件。';
+        _errorMessage = 'Select a GitHub Release and its asset files.';
       });
       return;
     }
@@ -255,7 +255,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
       _publishing = true;
       _errorMessage = null;
       _pendingMarketRegistration = null;
-      _progressMessage = '正在检查发布信息';
+      _progressMessage = 'Checking release information';
     });
     try {
       final result = await _publishArtifact(
@@ -291,19 +291,19 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
         context: context,
         builder: (context) => AlertDialog(
           icon: const Icon(Icons.check_circle_outline),
-          title: const Text('发布完成'),
+          title: const Text('Publish complete'),
           content: SelectableText(
-            '已发布「${result.displayName}」\n'
-            '项目 ID: ${result.projectId}\n'
+            'Published "${result.displayName}"\n'
+            'Project ID: ${result.projectId}\n'
             'Entry ID: ${result.entryId}\n'
             'Version ID: ${result.versionId}\n'
             'Release: ${result.releaseTag}\n\n'
-            '公共市场需要排期发布，请等待排期完成后查看。',
+            'The public marketplace schedules releases; check back once scheduling completes.',
           ),
           actions: <Widget>[
             FilledButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('确定'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -320,18 +320,18 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
         context: context,
         builder: (context) => AlertDialog(
           icon: const Icon(Icons.store_outlined),
-          title: const Text('初始化 OperitForge'),
+          title: const Text('Initialize OperitForge'),
           content: Text(
-            '需要在 @${request.publisherLogin} 下创建公开仓库 $_forgeRepoName，用于保存发布资产。',
+            'A public repository $_forgeRepoName must be created under @${request.publisherLogin} to store release assets.',
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('创建并继续'),
+              child: const Text('Create and continue'),
             ),
           ],
         ),
@@ -375,7 +375,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
     setState(() {
       _retryingMarketRegistration = true;
       _errorMessage = null;
-      _progressMessage = '正在重新登记市场';
+      _progressMessage = 'Re-registering with the marketplace';
     });
     try {
       final response = await _registerMarketEntry(
@@ -397,19 +397,19 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
         context: context,
         builder: (context) => AlertDialog(
           icon: const Icon(Icons.check_circle_outline),
-          title: const Text('发布完成'),
+          title: const Text('Publish complete'),
           content: SelectableText(
-            '已登记「${pending.result.displayName}」\n'
-            '项目 ID: ${pending.result.projectId}\n'
+            'Registered "${pending.result.displayName}"\n'
+            'Project ID: ${pending.result.projectId}\n'
             'Entry ID: ${response.entryId}\n'
             'Version ID: ${response.versionId}\n'
             'Release: ${pending.result.releaseTag}\n\n'
-            '公共市场需要排期发布，请等待排期完成后查看。',
+            'The public marketplace schedules releases; check back once scheduling completes.',
           ),
           actions: <Widget>[
             FilledButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('确定'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -445,12 +445,12 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(isContinuationMode ? '发布更新版本' : '发布 Artifact'),
+        title: Text(isContinuationMode ? 'Publish updated version' : 'Publish Artifact'),
         actions: <Widget>[
           IconButton(
             onPressed: _loading || _publishing ? null : _loadSources,
             icon: const Icon(Icons.refresh),
-            tooltip: '刷新',
+            tooltip: 'Refresh',
           ),
         ],
       ),
@@ -462,12 +462,12 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
           if (error != null && _sources.isEmpty) {
             return EmptyState(
               icon: Icons.error_outline,
-              title: '加载失败',
+              title: 'Load failed',
               message: error,
               action: TextButton.icon(
                 onPressed: _loadSources,
                 icon: const Icon(Icons.refresh),
-                label: const Text('刷新'),
+                label: const Text('Refresh'),
               ),
             );
           }
@@ -475,11 +475,11 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
             return EmptyState(
               icon: Icons.inventory_2_outlined,
               title: isContinuationMode
-                  ? '没有对应的本地 Artifact'
-                  : '没有可发布的本地 Artifact',
+                  ? 'No matching local Artifact'
+                  : 'No local Artifact available to publish',
               message: isContinuationMode
-                  ? '当前是基于版本发布，但本地还没有找到同一运行时包。'
-                  : '安装外部 JS/HJSON 包或 ToolPkg 后再发布。',
+                  ? 'This is a version-based release, but no matching runtime package was found locally.'
+                  : 'Install an external JS/HJSON package or ToolPkg before publishing.',
               scrollable: false,
             );
           }
@@ -496,7 +496,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 initialValue: source?.packageName,
                 style: OperitFormStyles.dropdownTextStyle(context),
                 decoration: const InputDecoration(
-                  labelText: '本地 Artifact',
+                  labelText: 'Local Artifact',
                   border: OutlineInputBorder(),
                 ),
                 items: _sources
@@ -520,19 +520,19 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                       },
               ),
               const SizedBox(height: 12),
-              Text('发布资源来源', style: Theme.of(context).textTheme.titleSmall),
+              Text('Asset source', style: Theme.of(context).textTheme.titleSmall),
               const SizedBox(height: 8),
               SegmentedButton<_ArtifactPublishAssetSource>(
                 segments: const <ButtonSegment<_ArtifactPublishAssetSource>>[
                   ButtonSegment<_ArtifactPublishAssetSource>(
                     value: _ArtifactPublishAssetSource.directUpload,
                     icon: Icon(Icons.cloud_upload_outlined),
-                    label: Text('直接发布本地插件'),
+                    label: Text('Publish the local plugin directly'),
                   ),
                   ButtonSegment<_ArtifactPublishAssetSource>(
                     value: _ArtifactPublishAssetSource.githubReleaseAsset,
                     icon: Icon(Icons.link_outlined),
-                    label: Text('引用 GitHub Release 资产'),
+                    label: Text('Reference a GitHub Release asset'),
                   ),
                 ],
                 selected: <_ArtifactPublishAssetSource>{_assetSource},
@@ -553,7 +553,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                   enabled: !_publishing,
                   keyboardType: TextInputType.url,
                   decoration: const InputDecoration(
-                    labelText: 'GitHub 仓库链接',
+                    labelText: 'GitHub repository URL',
                     hintText: 'https://github.com/owner/repository',
                     border: OutlineInputBorder(),
                   ),
@@ -579,8 +579,8 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                       : const Icon(Icons.refresh),
                   label: Text(
                     _loadingGitHubReleaseCatalog
-                        ? '正在读取 Release'
-                        : '读取 Release',
+                        ? 'Reading Release'
+                        : 'Read Release',
                   ),
                 ),
                 if (_githubReleaseCatalogError != null) ...<Widget>[
@@ -636,7 +636,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                     isExpanded: true,
                     style: OperitFormStyles.dropdownTextStyle(context),
                     decoration: const InputDecoration(
-                      labelText: 'Release 资产',
+                      labelText: 'Release asset',
                       border: OutlineInputBorder(),
                     ),
                     items: selectedGitHubRelease.assets
@@ -665,9 +665,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 controller: _displayNameController,
                 enabled: !_publishing && !isDisplayNameLocked,
                 decoration: InputDecoration(
-                  labelText: '显示名称',
+                  labelText: 'Display name',
                   border: const OutlineInputBorder(),
-                  helperText: !isDisplayNameLocked ? null : '基于版本发布时，名字沿用来源版本。',
+                  helperText: !isDisplayNameLocked ? null : 'When publishing from a version, the name follows the source version.',
                 ),
               ),
               const SizedBox(height: 12),
@@ -677,7 +677,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 minLines: 2,
                 maxLines: 4,
                 decoration: const InputDecoration(
-                  labelText: '简介',
+                  labelText: 'Summary',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -688,7 +688,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 minLines: 5,
                 maxLines: 12,
                 decoration: const InputDecoration(
-                  labelText: '详情',
+                  labelText: 'Details',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -698,7 +698,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 initialValue: _selectedCategoryId,
                 style: OperitFormStyles.dropdownTextStyle(context),
                 decoration: const InputDecoration(
-                  labelText: '分类',
+                  labelText: 'Category',
                   border: OutlineInputBorder(),
                 ),
                 items: _categories
@@ -728,8 +728,8 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                           _allowPublicUpdates = value;
                         });
                       },
-                title: const Text('允许所有人发布新版本'),
-                subtitle: const Text('开启后，登录用户可为该插件提交新版本。'),
+                title: const Text('Allow anyone to publish new versions'),
+                subtitle: const Text('When enabled, signed-in users can submit new versions of this plugin.'),
               ),
               const SizedBox(height: 12),
               if (_assetSource ==
@@ -745,8 +745,8 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                             _minifyArtifact = value;
                           });
                         },
-                  title: const Text('压缩并混淆插件脚本'),
-                  subtitle: const Text('开启后会压缩可执行 JavaScript，产物仍可直接导入。'),
+                  title: const Text('Minify and obfuscate plugin scripts'),
+                  subtitle: const Text('When enabled, executable JavaScript is minified; the result can still be imported directly.'),
                 ),
               ],
               const SizedBox(height: 12),
@@ -754,7 +754,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 controller: _versionController,
                 enabled: !_publishing,
                 decoration: const InputDecoration(
-                  labelText: '版本',
+                  labelText: 'Version',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -763,7 +763,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 controller: _minVersionController,
                 enabled: !_publishing,
                 decoration: const InputDecoration(
-                  labelText: '最低支持版本',
+                  labelText: 'Minimum supported version',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -772,7 +772,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 controller: _maxVersionController,
                 enabled: !_publishing,
                 decoration: const InputDecoration(
-                  labelText: '最高支持版本',
+                  labelText: 'Maximum supported version',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -791,7 +791,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.refresh),
-                    label: Text(_retryingMarketRegistration ? '重试中' : '重试市场登记'),
+                    label: Text(_retryingMarketRegistration ? 'Retrying' : 'Retry marketplace registration'),
                   ),
                 ],
               ],
@@ -814,10 +814,10 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                     : const Icon(Icons.cloud_upload_outlined),
                 label: Text(
                   _publishing
-                      ? '发布中'
+                      ? 'Publishing'
                       : isContinuationMode
-                      ? '发布更新版本'
-                      : '发布到市场',
+                      ? 'Publish updated version'
+                      : 'Publish to marketplace',
                 ),
               ),
             ],
@@ -848,7 +848,7 @@ class _PublishContinuationPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              '为现有 Artifact 发布新版本',
+              'Publish a new version for an existing Artifact',
               style: textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -863,7 +863,7 @@ class _PublishContinuationPanel extends StatelessWidget {
             if (contextInfo.lockedDisplayName.trim().isNotEmpty) ...<Widget>[
               const SizedBox(height: 4),
               Text(
-                '插件名字将沿用 ${contextInfo.lockedDisplayName.trim()}',
+                'The plugin name stays ${contextInfo.lockedDisplayName.trim()}',
                 style: textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -1139,17 +1139,17 @@ _GitHubReleaseRepository _parseGitHubReleaseRepositoryUrl(
 ) {
   final uri = Uri.tryParse(repositoryUrl.trim());
   if (uri == null || uri.scheme.toLowerCase() != 'https') {
-    throw StateError('GitHub 仓库链接必须使用 HTTPS。');
+    throw StateError('The GitHub repository URL must use HTTPS.');
   }
   if (uri.host.toLowerCase() != 'github.com' &&
       uri.host.toLowerCase() != 'www.github.com') {
-    throw StateError('GitHub 仓库链接必须指向 github.com。');
+    throw StateError('The GitHub repository URL must point to github.com.');
   }
   final segments = uri.pathSegments
       .where((segment) => segment.isNotEmpty)
       .toList(growable: false);
   if (segments.length < 2) {
-    throw StateError('GitHub 仓库链接必须包含 owner 和 repository。');
+    throw StateError('The GitHub repository URL must include an owner and a repository.');
   }
   final owner = segments[0];
   final repository = segments[1].endsWith('.git')
@@ -1157,7 +1157,7 @@ _GitHubReleaseRepository _parseGitHubReleaseRepositoryUrl(
       : segments[1];
   final segmentPattern = RegExp(r'^[A-Za-z0-9_.-]+$');
   if (!segmentPattern.hasMatch(owner) || !segmentPattern.hasMatch(repository)) {
-    throw StateError('GitHub 仓库链接包含无效的 owner 或 repository。');
+    throw StateError('The GitHub repository URL contains an invalid owner or repository.');
   }
   return _GitHubReleaseRepository(owner: owner, repository: repository);
 }
@@ -1201,7 +1201,7 @@ _GitHubReleaseAssetInfo _requireGitHubReleaseAsset({
 }) {
   final asset = _findGitHubReleaseAsset(release.assets, assetName);
   if (asset == null) {
-    throw StateError('所选 GitHub Release 资产不存在。');
+    throw StateError('The selected GitHub Release asset does not exist.');
   }
   return asset;
 }
@@ -1228,16 +1228,16 @@ Future<_PublishResult> _publishArtifact({
   final trimmedDetail = detail.trim();
   final trimmedCategoryId = categoryId.trim();
   if (trimmedDisplayName.isEmpty) {
-    throw StateError('插件名称不能为空');
+    throw StateError('The plugin name cannot be empty');
   }
   if (trimmedDescription.isEmpty) {
-    throw StateError('简介不能为空');
+    throw StateError('The summary cannot be empty');
   }
   if (trimmedDetail.isEmpty) {
-    throw StateError('详情不能为空');
+    throw StateError('The details cannot be empty');
   }
   if (trimmedCategoryId.isEmpty) {
-    throw StateError('分类不能为空');
+    throw StateError('The category cannot be empty');
   }
   final cleanVersion = _normalizeArtifactVersion(version);
   final normalizedMinVersion = _normalizeAppVersionOrNull(
@@ -1248,7 +1248,7 @@ Future<_PublishResult> _publishArtifact({
   );
   _validateAppVersionRange(normalizedMinVersion, normalizedMaxVersion);
 
-  onProgress('正在读取 GitHub 账号');
+  onProgress('Reading the GitHub account');
   final currentUser = await clients.providersMarketStatsApiService
       .getCurrentGithubUser();
   final normalizedRuntimePackageId = _normalizeMarketArtifactId(
@@ -1256,7 +1256,7 @@ Future<_PublishResult> _publishArtifact({
   );
   if (publishContext == null) {
     _validateStandaloneArtifactRuntimePackageId(source.packageName);
-    onProgress('正在检查名称和 ID');
+    onProgress('Checking the name and ID');
     await _ensureFreshPublishIdentityAvailable(
       clients: clients,
       displayName: trimmedDisplayName,
@@ -1289,7 +1289,7 @@ Future<_PublishResult> _publishArtifact({
       : source.fileExtension.trim();
   late final _ResolvedReleaseAsset resolvedAsset;
   if (publishAssetSource is _DirectUploadArtifactSource) {
-    onProgress('正在准备 OperitForge');
+    onProgress('Preparing OperitForge');
     final forgeRepo = await _ensureForgeRepository(
       clients: clients,
       publisherLogin: currentUser.login,
@@ -1298,7 +1298,7 @@ Future<_PublishResult> _publishArtifact({
     final assetName = '$normalizedRuntimePackageId-v$cleanVersion.$extension';
     final releaseTag =
         '${_artifactReleaseTagPrefix(source.type)}-$normalizedRuntimePackageId-v$cleanVersion';
-    onProgress('正在创建 Release');
+    onProgress('Creating the Release');
     final release = await _createOrUpdateRelease(
       clients: clients,
       owner: currentUser.login,
@@ -1315,7 +1315,7 @@ Future<_PublishResult> _publishArtifact({
         maxSupportedAppVersion: normalizedMaxVersion,
       ),
     );
-    onProgress(publishAssetSource.minifyArtifact ? '正在压缩并处理插件脚本' : '正在处理插件资源');
+    onProgress(publishAssetSource.minifyArtifact ? 'Minifying and processing plugin scripts' : 'Processing plugin assets');
     final Uint8List fileBytes = await clients.application
         .packageManager()
         .protectArtifactFile(
@@ -1326,7 +1326,7 @@ Future<_PublishResult> _publishArtifact({
           author: <String>[currentUser.login],
           minifyArtifact: publishAssetSource.minifyArtifact,
         );
-    onProgress('正在上传资源文件');
+    onProgress('Uploading asset files');
     final asset = await _uploadReleaseAsset(
       clients: clients,
       owner: currentUser.login,
@@ -1345,7 +1345,7 @@ Future<_PublishResult> _publishArtifact({
       sha256: crypto.sha256.convert(fileBytes).toString(),
     );
   } else if (publishAssetSource is _GitHubReleaseArtifactSource) {
-    onProgress('正在核对 GitHub Release 资产');
+    onProgress('Verifying GitHub Release assets');
     final release = await _loadGitHubReleaseByTag(
       clients: clients,
       owner: publishAssetSource.owner,
@@ -1363,7 +1363,7 @@ Future<_PublishResult> _publishArtifact({
     final localBytes = await XFile(source.sourcePath).readAsBytes();
     final remoteSha256 = crypto.sha256.convert(remoteBytes).toString();
     if (remoteSha256 != crypto.sha256.convert(localBytes).toString()) {
-      throw StateError('所选 GitHub Release 资产与本地插件文件不一致。');
+      throw StateError('The selected GitHub Release asset does not match the local plugin files.');
     }
     resolvedAsset = _ResolvedReleaseAsset(
       owner: publishAssetSource.owner,
@@ -1374,7 +1374,7 @@ Future<_PublishResult> _publishArtifact({
       sha256: remoteSha256,
     );
   } else {
-    throw StateError('未知的发布资源来源。');
+    throw StateError('Unknown asset source.');
   }
 
   final payload = <String, Object?>{
@@ -1399,7 +1399,7 @@ Future<_PublishResult> _publishArtifact({
     'maxSupportedAppVersion': normalizedMaxVersion,
   };
 
-  onProgress('正在登记市场');
+  onProgress('Registering with the marketplace');
   final result = _PublishResult(
     displayName: resolvedDisplayName,
     projectId: projectId,
