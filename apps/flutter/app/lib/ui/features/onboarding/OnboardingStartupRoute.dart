@@ -718,7 +718,7 @@ class _AiSetupGuidePageState extends State<_AiSetupGuidePage>
     final workspaceRoot = _workspaceRootController.text.trim();
     if (runtimeRoot.isEmpty || workspaceRoot.isEmpty) {
       setState(() {
-        _setupError = '运行时目录和工作区目录都不能为空';
+        _setupError = 'The runtime directory and workspace directory cannot be empty';
       });
       return;
     }
@@ -917,13 +917,13 @@ class _AiSetupGuidePageState extends State<_AiSetupGuidePage>
     final modelId = _selectedModelId;
     if (providerId == null || providerId.isEmpty) {
       setState(() {
-        _setupError = '请先拉取可用模型';
+        _setupError = 'Fetch available models first';
       });
       return;
     }
     if (modelId == null || modelId.isEmpty) {
       setState(() {
-        _setupError = '请选择默认模型';
+        _setupError = 'Select a default model';
       });
       return;
     }
@@ -1049,7 +1049,7 @@ class _AiSetupGuidePageState extends State<_AiSetupGuidePage>
     final session = _operit1SnapshotSession;
     if (session == null) {
       setState(() {
-        _setupError = '请选择 Operit1 快照文件';
+        _setupError = 'Select an Operit1 snapshot file';
       });
       return;
     }
@@ -1349,66 +1349,66 @@ class _AiSetupGuidePageState extends State<_AiSetupGuidePage>
   String get _primaryActionLabel {
     if (_isAgreementPage) {
       if (_agreementWaitSeconds > 0) {
-        return '请稍候';
+        return 'Please wait';
       }
-      return '同意';
+      return 'Agree';
     }
     if (_isStoragePage) {
       if (_savingStorage) {
-        return '保存中';
+        return 'Saving';
       }
-      return '确认';
+      return 'Confirm';
     }
     if (_isModePage) {
       if (_preparingLocalSetup) {
-        return '准备中';
+        return 'Preparing';
       }
-      return '继续';
+      return 'Continue';
     }
     if (_isModelPage) {
       if (_loadingModels) {
-        return '拉取中';
+        return 'Fetching';
       }
-      return _savingModel ? '保存中' : '继续';
+      return _savingModel ? 'Saving' : 'Continue';
     }
     if (_isImportPage) {
       if (_readingOperit1Snapshot) {
-        return '读取中';
+        return 'Reading';
       }
-      return _importingOperit1Snapshot ? '导入中' : '继续';
+      return _importingOperit1Snapshot ? 'Importing' : 'Continue';
     }
     if (_isDeviceSpacePage) {
-      return _deviceSpaceDiscoveryBusy ? '处理中' : '完成';
+      return _deviceSpaceDiscoveryBusy ? 'Processing' : 'Finish';
     }
     if (_isPermissionPage) {
-      return '继续';
+      return 'Continue';
     }
-    return '继续';
+    return 'Continue';
   }
 
   String get _progressLabel {
     if (_isAgreementPage) {
-      return '用户协议';
+      return 'Terms of Service';
     }
     if (_isStoragePage) {
-      return '存储位置';
+      return 'Storage Location';
     }
     if (_isModePage) {
-      return '启动方式';
+      return 'Setup Method';
     }
     if (_isModelPage) {
-      return '模型配置';
+      return 'Model Configuration';
     }
     if (_isImportPage) {
-      return '导入配置';
+      return 'Import Configuration';
     }
     if (_isDeviceSpacePage) {
-      return '设备空间';
+      return 'Device Space';
     }
     if (_isPermissionPage) {
-      return '系统授权';
+      return 'System Permissions';
     }
-    return '欢迎';
+    return 'Welcome';
   }
 
   VoidCallback get _primaryAction {
@@ -1700,7 +1700,7 @@ class _AiSetupSharedChrome extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          '正在准备本地运行时',
+                          'Preparing the local runtime',
                           style: textTheme.labelMedium?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w700,
@@ -1729,7 +1729,7 @@ class _AiSetupSharedChrome extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: const Text('跳过'),
+                      child: const Text('Skip'),
                     ),
                   ),
                 ),
@@ -1747,7 +1747,7 @@ class _AiSetupSharedChrome extends StatelessWidget {
                     icon: const Icon(Icons.arrow_back_rounded),
                     color: colorScheme.primary,
                     disabledColor: colorScheme.onSurface.withValues(alpha: 0.3),
-                    tooltip: '上一页',
+                    tooltip: 'Previous page',
                   ),
                 ),
               ),
@@ -1800,7 +1800,7 @@ class _AiSetupSharedChrome extends StatelessWidget {
                         Flexible(
                           child: Text(
                             introActive && chromeProgress < 0.5
-                                ? '开始'
+                                ? 'Start'
                                 : primaryActionLabel,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
