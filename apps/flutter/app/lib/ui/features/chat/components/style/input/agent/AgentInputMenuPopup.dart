@@ -978,8 +978,8 @@ class _AgentInputMenuData {
 }
 
 enum _ToolPermissionMode {
-  readOnly('只读', core_proxy.AiPermissionMode.readOnly),
-  workspaceWrite('读写', core_proxy.AiPermissionMode.workspaceWrite),
+  readOnly('Read-only', core_proxy.AiPermissionMode.readOnly),
+  workspaceWrite('Read/Write', core_proxy.AiPermissionMode.workspaceWrite),
   full('Full', core_proxy.AiPermissionMode.full);
 
   const _ToolPermissionMode(this.label, this.permissionMode);

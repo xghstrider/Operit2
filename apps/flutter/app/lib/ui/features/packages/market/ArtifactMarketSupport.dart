@@ -29,11 +29,11 @@ class MarketAppVersionCompatibility {
   /// Returns a user-facing explanation for the rejected compatibility bound.
   String get message => switch (kind) {
     MarketAppVersionCompatibilityKind.belowMinimum =>
-      '客户端版本过低：当前版本 $currentAppVersion，'
-          '该资源要求至少为 $requiredAppVersion。请更新客户端后再下载。',
+      'Client version too low: current version $currentAppVersion, '
+          'this resource requires at least $requiredAppVersion. Please update the client before downloading.',
     MarketAppVersionCompatibilityKind.aboveMaximum =>
-      '客户端版本过高：当前版本 $currentAppVersion，'
-          '该资源最高支持到 $requiredAppVersion。请使用受支持的客户端版本。',
+      'Client version too high: current version $currentAppVersion, '
+          'this resource supports up to $requiredAppVersion. Please use a supported client version.',
   };
 }
 
@@ -98,7 +98,7 @@ void ensureMarketEntryVersionSupported({
           .firstOrNull,
   };
   if (version == null) {
-    throw StateError('市场条目缺少要安装的版本信息。');
+    throw StateError('Market entry is missing the version info to install.');
   }
   ensureMarketAppVersionSupported(
     minAppVersion: version.minAppVer,
@@ -120,7 +120,7 @@ class _MarketAppVersion implements Comparable<_MarketAppVersion> {
       r'^(\d+)\.(\d+)\.(\d+)(?:\+(\d+))?$',
     ).firstMatch(value.trim());
     if (match == null) {
-      throw FormatException('版本号必须使用 x.y.z 或 x.y.z+n 格式：$value');
+      throw FormatException('Version number must use the x.y.z or x.y.z+n format: $value');
     }
     return _MarketAppVersion(
       major: int.parse(match.group(1)!),

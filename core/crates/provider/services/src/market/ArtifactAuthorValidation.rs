@@ -76,10 +76,10 @@ fn inspectToolPkgAuthorDeclaration(
         zip::ZipArchive::new(Cursor::new(sourceBytes)).map_err(|error| error.to_string())?;
     let entryIndex = ToolPkgArchiveParser::buildZipEntryIndex(&mut archive);
     let manifestEntryName = findToolPkgManifestEntryName(&entryIndex.entryNames)
-        .ok_or_else(|| "toolpkg 缺少 manifest.hjson 或 manifest.json".to_string())?;
+        .ok_or_else(|| "toolpkg is missing manifest.hjson or manifest.json".to_string())?;
     let manifestText =
         ToolPkgArchiveParser::readZipEntryText(&mut archive, &entryIndex, &manifestEntryName)
-            .ok_or_else(|| "无法读取 toolpkg manifest".to_string())?;
+            .ok_or_else(|| "Failed to read toolpkg manifest".to_string())?;
     inspectAuthorDeclarationFromMetadata(&manifestText)
 }
 

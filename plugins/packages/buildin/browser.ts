@@ -2,11 +2,11 @@
 {
     "name": "browser",
     "display_name": {
-        "zh": "Browser 自动化操作",
+        "zh": "Browser Automation Operations",
         "en": "Browser Automation"
     },
     "description": {
-        "zh": "严格对齐 Playwright MCP 默认 browser 工具面的浏览器自动化工具集。",
+        "zh": "A browser automation toolkit strictly aligned with the default Playwright MCP browser tool surface.",
         "en": "Browser automation tools aligned to the default Playwright MCP browser surface."
     },
     "enabledByDefault": true,
@@ -14,169 +14,169 @@
     "tools": [
         {
             "name": "click",
-            "description": { "zh": "按快照 ref 点击页面元素，包括同源 iframe 内的元素。", "en": "Click an element by snapshot ref, including refs inside same-origin iframes." },
+            "description": { "zh": "Click an element by snapshot ref, including refs inside same-origin iframes.", "en": "Click an element by snapshot ref, including refs inside same-origin iframes." },
             "parameters": [
-                { "name": "ref", "description": { "zh": "快照中的目标元素引用；和 selector 至少提供一个。", "en": "Target element ref from the snapshot; provide ref or selector." }, "type": "string", "required": false },
-                { "name": "selector", "description": { "zh": "可选，元素选择器。", "en": "Optional element selector." }, "type": "string", "required": false },
-                { "name": "element", "description": { "zh": "可选，人类可读元素描述。", "en": "Optional human-readable element description." }, "type": "string", "required": false },
-                { "name": "doubleClick", "description": { "zh": "可选，是否双击。", "en": "Optional double click." }, "type": "boolean", "required": false },
-                { "name": "button", "description": { "zh": "可选，left/right/middle。", "en": "Optional mouse button: left/right/middle." }, "type": "string", "required": false },
-                { "name": "modifiers", "description": { "zh": "可选，修饰键数组。", "en": "Optional modifier keys array." }, "type": "array", "required": false }
+                { "name": "ref", "description": { "zh": "Target element ref from the snapshot; provide ref or selector.", "en": "Target element ref from the snapshot; provide ref or selector." }, "type": "string", "required": false },
+                { "name": "selector", "description": { "zh": "Optional element selector.", "en": "Optional element selector." }, "type": "string", "required": false },
+                { "name": "element", "description": { "zh": "Optional human-readable element description.", "en": "Optional human-readable element description." }, "type": "string", "required": false },
+                { "name": "doubleClick", "description": { "zh": "Optional double click.", "en": "Optional double click." }, "type": "boolean", "required": false },
+                { "name": "button", "description": { "zh": "Optional mouse button: left/right/middle.", "en": "Optional mouse button: left/right/middle." }, "type": "string", "required": false },
+                { "name": "modifiers", "description": { "zh": "Optional modifier keys array.", "en": "Optional modifier keys array." }, "type": "array", "required": false }
             ]
         },
         {
             "name": "close",
-            "description": { "zh": "关闭当前 tab。", "en": "Close the current tab." },
+            "description": { "zh": "Close the current tab.", "en": "Close the current tab." },
             "parameters": []
         },
         {
             "name": "close_all",
-            "description": { "zh": "关闭全部 tab。", "en": "Close all tabs." },
+            "description": { "zh": "Close all tabs.", "en": "Close all tabs." },
             "parameters": []
         },
         {
             "name": "console_messages",
-            "description": { "zh": "读取控制台消息。", "en": "Read console messages." },
+            "description": { "zh": "Read console messages.", "en": "Read console messages." },
             "parameters": [
-                { "name": "level", "description": { "zh": "可选，日志级别：error/warning/info/debug，默认 info。", "en": "Optional log level: error/warning/info/debug. Defaults to info." }, "type": "string", "required": false },
-                { "name": "filename", "description": { "zh": "可选，保存输出的文件名。", "en": "Optional output file name." }, "type": "string", "required": false }
+                { "name": "level", "description": { "zh": "Optional log level: error/warning/info/debug. Defaults to info.", "en": "Optional log level: error/warning/info/debug. Defaults to info." }, "type": "string", "required": false },
+                { "name": "filename", "description": { "zh": "Optional output file name.", "en": "Optional output file name." }, "type": "string", "required": false }
             ]
         },
         {
             "name": "drag",
-            "description": { "zh": "在两个元素之间拖拽。", "en": "Drag between two elements." },
+            "description": { "zh": "Drag between two elements.", "en": "Drag between two elements." },
             "parameters": [
-                { "name": "startElement", "description": { "zh": "源元素的人类可读描述。", "en": "Human-readable source element description." }, "type": "string", "required": true },
-                { "name": "startRef", "description": { "zh": "源元素 ref。", "en": "Source element ref." }, "type": "string", "required": true },
-                { "name": "endElement", "description": { "zh": "目标元素的人类可读描述。", "en": "Human-readable target element description." }, "type": "string", "required": true },
-                { "name": "endRef", "description": { "zh": "目标元素 ref。", "en": "Target element ref." }, "type": "string", "required": true }
+                { "name": "startElement", "description": { "zh": "Human-readable source element description.", "en": "Human-readable source element description." }, "type": "string", "required": true },
+                { "name": "startRef", "description": { "zh": "Source element ref.", "en": "Source element ref." }, "type": "string", "required": true },
+                { "name": "endElement", "description": { "zh": "Human-readable target element description.", "en": "Human-readable target element description." }, "type": "string", "required": true },
+                { "name": "endRef", "description": { "zh": "Target element ref.", "en": "Target element ref." }, "type": "string", "required": true }
             ]
         },
         {
             "name": "evaluate",
-            "description": { "zh": "在页面或元素上执行 JavaScript 函数。", "en": "Evaluate a JavaScript function on the page or an element." },
+            "description": { "zh": "Evaluate a JavaScript function on the page or an element.", "en": "Evaluate a JavaScript function on the page or an element." },
             "parameters": [
-                { "name": "function", "description": { "zh": "要执行的函数源码。", "en": "Function source to execute." }, "type": "string", "required": true },
-                { "name": "element", "description": { "zh": "可选，人类可读元素描述。", "en": "Optional human-readable element description." }, "type": "string", "required": false },
-                { "name": "ref", "description": { "zh": "可选，目标元素 ref。", "en": "Optional target element ref." }, "type": "string", "required": false }
+                { "name": "function", "description": { "zh": "Function source to execute.", "en": "Function source to execute." }, "type": "string", "required": true },
+                { "name": "element", "description": { "zh": "Optional human-readable element description.", "en": "Optional human-readable element description." }, "type": "string", "required": false },
+                { "name": "ref", "description": { "zh": "Optional target element ref.", "en": "Optional target element ref." }, "type": "string", "required": false }
             ]
         },
         {
             "name": "upload",
-            "description": { "zh": "向当前文件选择器上传文件。", "en": "Upload files to the current file chooser." },
+            "description": { "zh": "Upload files to the current file chooser.", "en": "Upload files to the current file chooser." },
             "parameters": [
-                { "name": "paths", "description": { "zh": "可选，绝对路径数组；不传则取消 file chooser。", "en": "Optional absolute file paths; omit to cancel the file chooser." }, "type": "array", "required": false }
+                { "name": "paths", "description": { "zh": "Optional absolute file paths; omit to cancel the file chooser.", "en": "Optional absolute file paths; omit to cancel the file chooser." }, "type": "array", "required": false }
             ]
         },
         {
             "name": "fill_form",
-            "description": { "zh": "批量填写表单字段。", "en": "Fill multiple form fields." },
+            "description": { "zh": "Fill multiple form fields.", "en": "Fill multiple form fields." },
             "parameters": [
-                { "name": "fields", "description": { "zh": "字段数组。", "en": "Array of form fields." }, "type": "array", "required": true }
+                { "name": "fields", "description": { "zh": "Array of form fields.", "en": "Array of form fields." }, "type": "array", "required": true }
             ]
         },
         {
             "name": "handle_dialog",
-            "description": { "zh": "处理当前对话框。", "en": "Handle the current dialog." },
+            "description": { "zh": "Handle the current dialog.", "en": "Handle the current dialog." },
             "parameters": [
-                { "name": "accept", "description": { "zh": "是否接受对话框。", "en": "Whether to accept the dialog." }, "type": "boolean", "required": true },
-                { "name": "promptText", "description": { "zh": "可选，prompt 的输入文本。", "en": "Optional prompt text." }, "type": "string", "required": false }
+                { "name": "accept", "description": { "zh": "Whether to accept the dialog.", "en": "Whether to accept the dialog." }, "type": "boolean", "required": true },
+                { "name": "promptText", "description": { "zh": "Optional prompt text.", "en": "Optional prompt text." }, "type": "string", "required": false }
             ]
         },
         {
             "name": "hover",
-            "description": { "zh": "悬停到页面元素上。", "en": "Hover over an element." },
+            "description": { "zh": "Hover over an element.", "en": "Hover over an element." },
             "parameters": [
-                { "name": "ref", "description": { "zh": "目标元素 ref。", "en": "Target element ref." }, "type": "string", "required": true },
-                { "name": "element", "description": { "zh": "可选，人类可读元素描述。", "en": "Optional human-readable element description." }, "type": "string", "required": false }
+                { "name": "ref", "description": { "zh": "Target element ref.", "en": "Target element ref." }, "type": "string", "required": true },
+                { "name": "element", "description": { "zh": "Optional human-readable element description.", "en": "Optional human-readable element description." }, "type": "string", "required": false }
             ]
         },
         {
             "name": "goto",
-            "description": { "zh": "导航到指定 URL。", "en": "Navigate to a URL." },
+            "description": { "zh": "Navigate to a URL.", "en": "Navigate to a URL." },
             "parameters": [
-                { "name": "url", "description": { "zh": "目标 URL。", "en": "Target URL." }, "type": "string", "required": true }
+                { "name": "url", "description": { "zh": "Target URL.", "en": "Target URL." }, "type": "string", "required": true }
             ]
         },
         {
             "name": "back",
-            "description": { "zh": "后退到上一页。", "en": "Go back to the previous page." },
+            "description": { "zh": "Go back to the previous page.", "en": "Go back to the previous page." },
             "parameters": []
         },
         {
             "name": "network_requests",
-            "description": { "zh": "读取当前页面的网络请求。", "en": "Read network requests for the current page." },
+            "description": { "zh": "Read network requests for the current page.", "en": "Read network requests for the current page." },
             "parameters": [
-                { "name": "includeStatic", "description": { "zh": "可选，是否包含静态资源请求，默认 false。", "en": "Optional include static resource requests. Defaults to false." }, "type": "boolean", "required": false },
-                { "name": "filename", "description": { "zh": "可选，保存输出的文件名。", "en": "Optional output file name." }, "type": "string", "required": false }
+                { "name": "includeStatic", "description": { "zh": "Optional include static resource requests. Defaults to false.", "en": "Optional include static resource requests. Defaults to false." }, "type": "boolean", "required": false },
+                { "name": "filename", "description": { "zh": "Optional output file name.", "en": "Optional output file name." }, "type": "string", "required": false }
             ]
         },
         {
             "name": "press_key",
-            "description": { "zh": "按下键盘按键。", "en": "Press a keyboard key." },
+            "description": { "zh": "Press a keyboard key.", "en": "Press a keyboard key." },
             "parameters": [
-                { "name": "key", "description": { "zh": "按键名。", "en": "Key name." }, "type": "string", "required": true }
+                { "name": "key", "description": { "zh": "Key name.", "en": "Key name." }, "type": "string", "required": true }
             ]
         },
         {
             "name": "resize",
-            "description": { "zh": "调整浏览器视口大小。", "en": "Resize the browser viewport." },
+            "description": { "zh": "Resize the browser viewport.", "en": "Resize the browser viewport." },
             "parameters": [
-                { "name": "width", "description": { "zh": "宽度。", "en": "Width." }, "type": "number", "required": true },
-                { "name": "height", "description": { "zh": "高度。", "en": "Height." }, "type": "number", "required": true }
+                { "name": "width", "description": { "zh": "Width.", "en": "Width." }, "type": "number", "required": true },
+                { "name": "height", "description": { "zh": "Height.", "en": "Height." }, "type": "number", "required": true }
             ]
         },
         {
             "name": "run_code",
-            "description": { "zh": "运行 Playwright 风格代码片段。", "en": "Run a Playwright-style code snippet." },
+            "description": { "zh": "Run a Playwright-style code snippet.", "en": "Run a Playwright-style code snippet." },
             "parameters": [
-                { "name": "code", "description": { "zh": "代码片段。", "en": "Code snippet." }, "type": "string", "required": true }
+                { "name": "code", "description": { "zh": "Code snippet.", "en": "Code snippet." }, "type": "string", "required": true }
             ]
         },
         {
             "name": "select_option",
-            "description": { "zh": "在下拉框中选择选项。", "en": "Select options in a dropdown." },
+            "description": { "zh": "Select options in a dropdown.", "en": "Select options in a dropdown." },
             "parameters": [
-                { "name": "ref", "description": { "zh": "目标元素 ref。", "en": "Target element ref." }, "type": "string", "required": true },
-                { "name": "values", "description": { "zh": "要选择的值数组。", "en": "Values to select." }, "type": "array", "required": true },
-                { "name": "element", "description": { "zh": "可选，人类可读元素描述。", "en": "Optional human-readable element description." }, "type": "string", "required": false }
+                { "name": "ref", "description": { "zh": "Target element ref.", "en": "Target element ref." }, "type": "string", "required": true },
+                { "name": "values", "description": { "zh": "Values to select.", "en": "Values to select." }, "type": "array", "required": true },
+                { "name": "element", "description": { "zh": "Optional human-readable element description.", "en": "Optional human-readable element description." }, "type": "string", "required": false }
             ]
         },
         {
             "name": "snapshot",
-            "description": { "zh": "获取当前页面结构化快照，包括同源 iframe 内容。", "en": "Get a structured page snapshot, including same-origin iframe content." },
+            "description": { "zh": "Get a structured page snapshot, including same-origin iframe content.", "en": "Get a structured page snapshot, including same-origin iframe content." },
             "parameters": [
-                { "name": "filename", "description": { "zh": "可选，保存快照的文件名。", "en": "Optional snapshot output file name." }, "type": "string", "required": false },
-                { "name": "selector", "description": { "zh": "可选，作为快照根节点的元素选择器。", "en": "Optional root element selector for a partial snapshot." }, "type": "string", "required": false },
-                { "name": "depth", "description": { "zh": "可选，限制快照树深度。", "en": "Optional snapshot tree depth limit." }, "type": "number", "required": false }
+                { "name": "filename", "description": { "zh": "Optional snapshot output file name.", "en": "Optional snapshot output file name." }, "type": "string", "required": false },
+                { "name": "selector", "description": { "zh": "Optional root element selector for a partial snapshot.", "en": "Optional root element selector for a partial snapshot." }, "type": "string", "required": false },
+                { "name": "depth", "description": { "zh": "Optional snapshot tree depth limit.", "en": "Optional snapshot tree depth limit." }, "type": "number", "required": false }
             ]
         },
         {
             "name": "type",
-            "description": { "zh": "向可编辑元素输入文本。", "en": "Type text into an editable element." },
+            "description": { "zh": "Type text into an editable element.", "en": "Type text into an editable element." },
             "parameters": [
-                { "name": "ref", "description": { "zh": "目标元素 ref。", "en": "Target element ref." }, "type": "string", "required": true },
-                { "name": "text", "description": { "zh": "输入文本。", "en": "Text to type." }, "type": "string", "required": true },
-                { "name": "element", "description": { "zh": "可选，人类可读元素描述。", "en": "Optional human-readable element description." }, "type": "string", "required": false },
-                { "name": "submit", "description": { "zh": "可选，输入后是否提交。", "en": "Optional submit after typing." }, "type": "boolean", "required": false },
-                { "name": "slowly", "description": { "zh": "可选，是否逐字输入。", "en": "Optional type slowly." }, "type": "boolean", "required": false }
+                { "name": "ref", "description": { "zh": "Target element ref.", "en": "Target element ref." }, "type": "string", "required": true },
+                { "name": "text", "description": { "zh": "Text to type.", "en": "Text to type." }, "type": "string", "required": true },
+                { "name": "element", "description": { "zh": "Optional human-readable element description.", "en": "Optional human-readable element description." }, "type": "string", "required": false },
+                { "name": "submit", "description": { "zh": "Optional submit after typing.", "en": "Optional submit after typing." }, "type": "boolean", "required": false },
+                { "name": "slowly", "description": { "zh": "Optional type slowly.", "en": "Optional type slowly." }, "type": "boolean", "required": false }
             ]
         },
         {
             "name": "wait_for",
-            "description": { "zh": "等待文本出现、消失或等待指定时间。", "en": "Wait for text to appear, disappear, or for a duration." },
+            "description": { "zh": "Wait for text to appear, disappear, or for a duration.", "en": "Wait for text to appear, disappear, or for a duration." },
             "parameters": [
-                { "name": "time", "description": { "zh": "可选，等待秒数。", "en": "Optional number of seconds to wait." }, "type": "number", "required": false },
-                { "name": "text", "description": { "zh": "可选，等待出现的文本。", "en": "Optional text to wait for." }, "type": "string", "required": false },
-                { "name": "textGone", "description": { "zh": "可选，等待消失的文本。", "en": "Optional text to wait to disappear." }, "type": "string", "required": false }
+                { "name": "time", "description": { "zh": "Optional number of seconds to wait.", "en": "Optional number of seconds to wait." }, "type": "number", "required": false },
+                { "name": "text", "description": { "zh": "Optional text to wait for.", "en": "Optional text to wait for." }, "type": "string", "required": false },
+                { "name": "textGone", "description": { "zh": "Optional text to wait to disappear.", "en": "Optional text to wait to disappear." }, "type": "string", "required": false }
             ]
         },
         {
             "name": "tabs",
-            "description": { "zh": "列出、创建、切换或关闭 tab。", "en": "List, create, select, or close tabs." },
+            "description": { "zh": "List, create, select, or close tabs.", "en": "List, create, select, or close tabs." },
             "parameters": [
-                { "name": "action", "description": { "zh": "操作：list/create/select/close。", "en": "Action: list/create/select/close." }, "type": "string", "required": true },
-                { "name": "index", "description": { "zh": "可选，0-based tab 索引。", "en": "Optional 0-based tab index." }, "type": "number", "required": false }
+                { "name": "action", "description": { "zh": "Action: list/create/select/close.", "en": "Action: list/create/select/close." }, "type": "string", "required": true },
+                { "name": "index", "description": { "zh": "Optional 0-based tab index.", "en": "Optional 0-based tab index." }, "type": "number", "required": false }
             ]
         }
     ]

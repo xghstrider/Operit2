@@ -134,7 +134,7 @@ class _ToolPkgDesktopWidgetsScreenState
                           onPressed: () => _addToDesktop(definition),
                           icon: const Icon(Icons.add_to_home_screen),
                           label: Text(
-                            _language == 'en' ? 'Add to desktop' : '添加到桌面',
+                            _language == 'en' ? 'Add to desktop' : 'Add to Desktop',
                           ),
                         ),
                       ),

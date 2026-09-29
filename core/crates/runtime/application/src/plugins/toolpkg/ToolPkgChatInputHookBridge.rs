@@ -25,7 +25,7 @@ pub const CHAT_INPUT_SUBMIT_ACTION_REPLACE: &str = "replace";
 /// Builds the chat-input timeout notice with the exact package and Hook ID.
 fn build_chat_input_timeout_message(hook: &ToolPkgChatInputHookRegistration) -> String {
     format!(
-        "前置插件「{}:{}」响应超时，已跳过并继续发送",
+        "Pre-send plugin \"{}:{}\" response timed out; skipped and continuing to send",
         hook.containerPackageName, hook.hookId
     )
 }

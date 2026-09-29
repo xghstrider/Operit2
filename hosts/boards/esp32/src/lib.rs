@@ -70,7 +70,7 @@ pub fn esp32_2432s028HostEnvironment() -> HostEnvironmentDescriptor {
     descriptor.capabilities.push("robot.face".to_string());
     descriptor.structuredCapabilities.push(HostCapability {
         id: "robot.face".to_string(),
-        displayName: "机器人表情屏".to_string(),
+        displayName: "Robot Emotion Screen".to_string(),
         scope: CapabilityScope::Device,
         operations: vec![CapabilityOperation::Read, CapabilityOperation::Write],
     });
@@ -79,7 +79,7 @@ pub fn esp32_2432s028HostEnvironment() -> HostEnvironmentDescriptor {
         .push(HostOnboardingRequirement {
             id: "board.esp32_2432s028.face".to_string(),
             title: "ESP32-2432S028 robot face".to_string(),
-            description: "显示当前机器人表情屏的板级服务状态。".to_string(),
+            description: "Shows the board-level service status of the current robot emotion screen.".to_string(),
             capabilityIds: vec!["robot.face".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,

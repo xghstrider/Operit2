@@ -25,30 +25,30 @@ const comparisonOptions: { value: Comparison; label: string }[] = [
   { value: "GTE", label: "≥" },
   { value: "LT", label: "<" },
   { value: "LTE", label: "≤" },
-  { value: "CONTAINS", label: "包含" },
-  { value: "NOT_CONTAINS", label: "不包含" },
-  { value: "IN", label: "属于" },
-  { value: "NOT_IN", label: "不属于" },
+  { value: "CONTAINS", label: "Contains" },
+  { value: "NOT_CONTAINS", label: "Does Not Contain" },
+  { value: "IN", label: "In" },
+  { value: "NOT_IN", label: "Not In" },
 ];
 
 const logicOptions = [
-  { value: "AND", label: "且" },
-  { value: "OR", label: "或" },
+  { value: "AND", label: "And" },
+  { value: "OR", label: "Or" },
 ];
 
 const extractModeOptions: { value: ExtractMode; label: string }[] = [
-  { value: "REGEX", label: "正则提取" },
-  { value: "JSON", label: "JSON 取值" },
-  { value: "SUB", label: "截取文本" },
-  { value: "CONCAT", label: "拼接文本" },
-  { value: "RANDOM_INT", label: "随机整数" },
-  { value: "RANDOM_STRING", label: "随机文本" },
+  { value: "REGEX", label: "Regex Extraction" },
+  { value: "JSON", label: "JSON Access" },
+  { value: "SUB", label: "Substring" },
+  { value: "CONCAT", label: "Concatenation" },
+  { value: "RANDOM_INT", label: "Random Integer" },
+  { value: "RANDOM_STRING", label: "Random Text" },
 ];
 
 const scheduleTypeOptions = [
-  { value: "interval", label: "按间隔执行" },
-  { value: "specific_time", label: "指定时间执行" },
-  { value: "cron", label: "Cron 表达式" },
+  { value: "interval", label: "Run at Interval" },
+  { value: "specific_time", label: "Run at Specific Time" },
+  { value: "cron", label: "Cron Expression" },
 ];
 
 /** Edits literals and upstream references using the persisted parameter contract. */
@@ -74,7 +74,7 @@ function Parameter({
     <Stack spacing={1}>
       <Typography variant="body2">
         {label}
-        {schema?.required ? " · 必填" : " · 可选"}
+        {schema?.required ? " · Required" : " · Optional"}
       </Typography>
       {schema?.description && (
         <Typography variant="caption" color="text.secondary">
@@ -84,22 +84,22 @@ function Parameter({
       <TextField
         select
         size="small"
-        label="值来源"
+        label="Value Source"
         value={"value" in value ? "literal" : "reference"}
         onChange={(event) => {
           if (event.target.value === "literal") change({ value: "" });
           else if (nodes.length) change({ nodeId: nodes[0].id });
         }}
       >
-        <MenuItem value="literal">固定值</MenuItem>
+        <MenuItem value="literal">Fixed Value</MenuItem>
         <MenuItem value="reference" disabled={!nodes.length}>
-          节点输出
+          Node Output
         </MenuItem>
       </TextField>
       {"value" in value ? (
         booleanTypes.has(type) ? (
           <FormControlLabel
-            label={literalValue === "true" ? "开启" : "关闭"}
+            label={literalValue === "true" ? "On" : "Off"}
             control={
               <Switch
                 checked={literalValue === "true"}
@@ -123,7 +123,7 @@ function Parameter({
         <TextField
           select
           size="small"
-          label="来源节点"
+          label="Source Node"
           value={value.nodeId}
           onChange={(event) => change({ nodeId: event.target.value })}
         >
@@ -218,7 +218,7 @@ export function NodeForm({
   function selectTool(actionType: string) {
     if (node.type !== "execute") return;
     const tool = orderedTools.find((item) => item.name === actionType);
-    if (!tool) throw new Error(`工具元数据不存在：${actionType}`);
+    if (!tool) throw new Error(`Tool metadata does not exist: ${actionType}`);
     const actionConfig = Object.fromEntries(
       tool.parameters.map((parameter) => [
         parameter.name,
@@ -231,14 +231,14 @@ export function NodeForm({
   }
   return (
     <Stack spacing={2} sx={{ pt: 1 }}>
-      {field("节点名称", "name", node.name)}
-      {field("说明", "description", node.description)}
+      {field("Node Name", "name", node.name)}
+      {field("Description", "description", node.description)}
       {node.type === "trigger" && (
         <>
           <TextField
             select
             size="small"
-            label="触发方式"
+            label="Trigger Type"
             value={node.triggerType}
             onChange={(event) => {
               const kind = event.target.value as typeof node.triggerType;
@@ -260,10 +260,10 @@ export function NodeForm({
             }}
           >
             {Object.entries({
-              manual: "手动",
-              schedule: "定时",
-              app_open: "应用启动",
-              event: "宿主事件",
+              manual: "Manual",
+              schedule: "Schedule",
+              app_open: "App Open",
+              event: "Host Event",
             }).map(([value, label]) => (
               <MenuItem key={value} value={value}>
                 {label}
@@ -272,7 +272,7 @@ export function NodeForm({
           </TextField>
           {node.triggerType === "event" && (
             <TextField
-              label="事件主题"
+              label="Event Topic"
               size="small"
               value={node.triggerConfig.topic}
               onChange={(event) => config("topic", event.target.value)}
@@ -283,7 +283,7 @@ export function NodeForm({
               <TextField
                 select
                 size="small"
-                label="定时方式"
+                label="Schedule Type"
                 value={node.triggerConfig.schedule_type}
                 onChange={(event) =>
                   change({
@@ -324,7 +324,7 @@ export function NodeForm({
               {["enabled", "repeat"].map((name) => (
                 <FormControlLabel
                   key={name}
-                  label={name === "enabled" ? "启用定时" : "重复"}
+                  label={name === "enabled" ? "Enable Schedule" : "Repeat"}
                   control={
                     <Switch
                       checked={node.triggerConfig[name] === "true"}
@@ -342,13 +342,13 @@ export function NodeForm({
           <TextField
             select
             size="small"
-            label="执行工具"
+            label="Tool to Execute"
             value={node.actionType}
             onChange={(event) => selectTool(event.target.value)}
             helperText={
               selectedTool
-                ? `${selectedTool.source === "package" ? "工具包" : "内置工具"} · ${selectedTool.category}`
-                : "请选择运行时提供的工具"
+                ? `${selectedTool.source === "package" ? "Tool Package" : "Built-in Tool"} · ${selectedTool.category}`
+                : "Select a tool provided by the runtime"
             }
           >
             {orderedTools.map((tool) => (
@@ -385,12 +385,12 @@ export function NodeForm({
               ))
             ) : (
               <Typography variant="body2" color="text.secondary">
-                此工具不需要参数
+                This tool requires no parameters
               </Typography>
             )
           ) : null}
           <FormControlLabel
-            label="JavaScript 执行"
+            label="JavaScript Execution"
             control={
               <Switch
                 checked={node.jsCode !== null}
@@ -404,7 +404,7 @@ export function NodeForm({
             <TextField
               multiline
               minRows={6}
-              label="脚本（inputs、trigger、Tools、toolCall）"
+              label="Script (inputs, trigger, Tools, toolCall)"
               value={node.jsCode}
               onChange={(event) => set("jsCode", event.target.value)}
             />
@@ -414,14 +414,14 @@ export function NodeForm({
       {node.type === "condition" && (
         <>
           <Parameter
-            label="左值"
+            label="Left Value"
             value={node.left}
             nodes={sources}
             change={(value) => set("left", value)}
           />
-          {select("比较方式", "operator", node.operator, comparisonOptions)}
+          {select("Comparison", "operator", node.operator, comparisonOptions)}
           <Parameter
-            label="右值"
+            label="Right Value"
             value={node.right}
             nodes={sources}
             change={(value) => set("right", value)}
@@ -429,23 +429,23 @@ export function NodeForm({
         </>
       )}
       {node.type === "logic" &&
-        select("逻辑运算", "operator", node.operator, logicOptions)}
+        select("Logic Operation", "operator", node.operator, logicOptions)}
       {node.type === "extract" && (
         <>
-          {select("运算方式", "mode", node.mode, extractModeOptions)}
+          {select("Operation Mode", "mode", node.mode, extractModeOptions)}
           <Parameter
-            label="输入值"
+            label="Input Value"
             value={node.source}
             nodes={sources}
             change={(value) => set("source", value)}
           />
           {["REGEX", "JSON"].includes(node.mode) &&
-            field("表达式 / JSON 路径", "expression", node.expression)}
-          {node.mode === "REGEX" && field("捕获组", "group", node.group, true)}
+            field("Expression / JSON Path", "expression", node.expression)}
+          {node.mode === "REGEX" && field("Capture Group", "group", node.group, true)}
           {node.mode === "SUB" && (
             <>
-              {field("起始位置", "startIndex", node.startIndex, true)}
-              {field("长度（-1 到结尾）", "length", node.length, true)}
+              {field("Start Position", "startIndex", node.startIndex, true)}
+              {field("Length (-1 to end)", "length", node.length, true)}
             </>
           )}
           {node.mode === "CONCAT" && (
@@ -453,7 +453,7 @@ export function NodeForm({
               {node.others.map((value, index) => (
                 <Stack key={index}>
                   <Parameter
-                    label={"拼接值 " + (index + 1)}
+                    label={"Concatenated Value " + (index + 1)}
                     value={value}
                     nodes={sources}
                     change={(next) =>
@@ -473,21 +473,21 @@ export function NodeForm({
                       )
                     }
                   >
-                    移除
+                    Remove
                   </Button>
                 </Stack>
               ))}
               <Button
                 onClick={() => set("others", [...node.others, { value: "" }])}
               >
-                添加拼接值
+                Add Concatenated Value
               </Button>
             </>
           )}
           {["RANDOM_INT", "RANDOM_STRING"].includes(node.mode) && (
             <>
               <FormControlLabel
-                label="使用固定值"
+                label="Use Fixed Value"
                 control={
                   <Switch
                     checked={node.useFixed}
@@ -496,22 +496,22 @@ export function NodeForm({
                 }
               />
               {node.useFixed ? (
-                field("固定值", "fixedValue", node.fixedValue)
+                field("Fixed Value", "fixedValue", node.fixedValue)
               ) : node.mode === "RANDOM_INT" ? (
                 <>
-                  {field("最小值", "randomMin", node.randomMin, true)}
-                  {field("最大值", "randomMax", node.randomMax, true)}
+                  {field("Minimum", "randomMin", node.randomMin, true)}
+                  {field("Maximum", "randomMax", node.randomMax, true)}
                 </>
               ) : (
                 <>
                   {field(
-                    "长度",
+                    "Length",
                     "randomStringLength",
                     node.randomStringLength,
                     true,
                   )}
                   {field(
-                    "字符集",
+                    "Character Set",
                     "randomStringCharset",
                     node.randomStringCharset,
                   )}

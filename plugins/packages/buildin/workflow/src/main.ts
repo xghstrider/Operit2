@@ -12,9 +12,9 @@ ToolPkg.ipc.on("workflow.web", (request, meta) => receive(request as import("./s
 
 /** Registers the plugin UI, public service and host-owned trigger sources. */
 export function registerToolPkg(): boolean {
-  ToolPkg.registerUiRoute({ id: "workflow", route: ROUTE, screen, runtime: "compose_dsl", keepAlive: true, title: { zh: "工作流", en: "Workflow" } });
-  ToolPkg.registerNavigationEntry({ id: "workflow_sidebar", route: ROUTE, surface: "main_sidebar_plugins", title: { zh: "工作流", en: "Workflow" }, icon: "AccountTree", order: 140 });
-  ToolPkg.registerNavigationEntry({ id: "workflow_toolbox", route: ROUTE, surface: "toolbox", title: { zh: "工作流", en: "Workflow" }, icon: "AccountTree", order: 140 });
+  ToolPkg.registerUiRoute({ id: "workflow", route: ROUTE, screen, runtime: "compose_dsl", keepAlive: true, title: { zh: "Workflow", en: "Workflow" } });
+  ToolPkg.registerNavigationEntry({ id: "workflow_sidebar", route: ROUTE, surface: "main_sidebar_plugins", title: { zh: "Workflow", en: "Workflow" }, icon: "AccountTree", order: 140 });
+  ToolPkg.registerNavigationEntry({ id: "workflow_toolbox", route: ROUTE, surface: "toolbox", title: { zh: "Workflow", en: "Workflow" }, icon: "AccountTree", order: 140 });
   ToolPkg.registerHostEventHook({ id: "workflow_clock", source: "interval", trigger: { kind: "interval", intervalMs: 60000 }, function: onClock });
   ToolPkg.registerAppLifecycleHook({ id: "workflow_open", event: "application_on_create", function: onOpen });
   ToolPkg.registerManifestExtension({ key: "workflow_templates", function: onManifestExtension });
@@ -24,13 +24,13 @@ export function registerToolPkg(): boolean {
 
 /** Imports workflow template declarations from dependent ToolPkg manifests. */
 export async function onManifestExtension(event: ToolPkg.ManifestExtensionHookEvent): Promise<void> {
-  if (event.eventPayload.extensionKey !== "workflow_templates") throw new Error(`不支持的 manifest 扩展：${event.eventPayload.extensionKey}`);
+  if (event.eventPayload.extensionKey !== "workflow_templates") throw new Error(`Unsupported manifest extension: ${event.eventPayload.extensionKey}`);
   const entries = event.eventPayload.extension;
-  if (!Array.isArray(entries)) throw new Error("workflow_templates 必须是数组");
+  if (!Array.isArray(entries)) throw new Error("workflow_templates must be an array");
   const useEnglish = getLang().toLowerCase().startsWith("en");
   const templates: ManifestWorkflowTemplate[] = [];
   for (const item of entries) {
-    if (item === null || typeof item !== "object" || Array.isArray(item)) throw new Error("workflow_templates 项必须是对象");
+    if (item === null || typeof item !== "object" || Array.isArray(item)) throw new Error("workflow_templates item must be an object");
     const record = item as ToolPkg.JsonObject;
     const templateId = requireManifestString(record.id, "id");
     const resourceKey = requireManifestString(record.resource_key, "resource_key");
@@ -46,13 +46,13 @@ export async function onManifestExtension(event: ToolPkg.ManifestExtensionHookEv
 
 /** Reads a required string field from a manifest extension object. */
 function requireManifestString(value: ToolPkg.JsonValue | undefined, field: string): string {
-  if (typeof value !== "string" || value.trim() === "") throw new Error(`workflow_templates.${field} 必须是非空字符串`);
+  if (typeof value !== "string" || value.trim() === "") throw new Error(`workflow_templates.${field} must be a non-empty string`);
   return value.trim();
 }
 
 /** Resolves one localized manifest value for the active language. */
 function localizedManifestString(value: ToolPkg.JsonValue | undefined, useEnglish: boolean, field: string): string {
-  if (value === null || typeof value !== "object" || Array.isArray(value)) throw new Error(`workflow_templates.${field} 必须是本地化对象`);
+  if (value === null || typeof value !== "object" || Array.isArray(value)) throw new Error(`workflow_templates.${field} must be a localized object`);
   const selected = (value as ToolPkg.JsonObject)[useEnglish ? "en" : "zh"];
   return requireManifestString(selected, `${field}.${useEnglish ? "en" : "zh"}`);
 }

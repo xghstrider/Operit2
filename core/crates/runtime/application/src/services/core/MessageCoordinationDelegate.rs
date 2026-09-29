@@ -1135,7 +1135,7 @@ impl MessageCoordinationDelegate {
                     0,
                     finalUserMessageContent,
                 )],
-                roleName: "用户".to_string(),
+                roleName: "User".to_string(),
                 displayMode: if turnOptions.hideUserMessage {
                     ChatMessageDisplayMode::HIDDEN_PLACEHOLDER
                 } else {
@@ -1158,7 +1158,7 @@ impl MessageCoordinationDelegate {
 
         let mut timeline = Vec::<(String, String)>::new();
         if !originalUserText.trim().is_empty() {
-            timeline.push(("用户".to_string(), originalUserText.clone()));
+            timeline.push(("User".to_string(), originalUserText.clone()));
         }
 
         let memberCardsById = orderedMembers
@@ -1458,7 +1458,7 @@ impl MessageCoordinationDelegate {
                 participantNames.push(name.to_string());
             }
         }
-        participantNames.push("用户（用户）".to_string());
+        participantNames.push("User (user)".to_string());
         participantNames.join("、")
     }
 

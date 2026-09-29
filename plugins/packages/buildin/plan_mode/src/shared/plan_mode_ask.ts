@@ -153,9 +153,9 @@ export function buildPlanaskAnswerMessage(
     })
     .filter((item) => item !== "");
 
-  const lines = ["计划确认答复："];
+  const lines = ["Plan confirmation reply:"];
   if (parsed.title) {
-    lines.push(`主题：${parsed.title}`);
+    lines.push(`Topic: ${parsed.title}`);
   }
   selectedQuestions.forEach((item) => lines.push(item));
   return lines.join("\n");

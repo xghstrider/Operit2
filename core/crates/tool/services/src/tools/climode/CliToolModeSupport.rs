@@ -37,15 +37,15 @@ impl HiddenToolSourceKind {
     pub fn label(&self, useEnglish: bool) -> String {
         match self {
             HiddenToolSourceKind::BUILTIN => {
-                if useEnglish { "built-in" } else { "内置" }.to_string()
+                if useEnglish { "built-in" } else { "built-in" }.to_string()
             }
             HiddenToolSourceKind::INTERNAL => {
-                if useEnglish { "internal" } else { "内部" }.to_string()
+                if useEnglish { "internal" } else { "internal" }.to_string()
             }
-            HiddenToolSourceKind::PACKAGE => if useEnglish { "package" } else { "包" }.to_string(),
+            HiddenToolSourceKind::PACKAGE => if useEnglish { "package" } else { "package" }.to_string(),
             HiddenToolSourceKind::MCP => if useEnglish { "mcp" } else { "MCP" }.to_string(),
             HiddenToolSourceKind::ACTIVATION => {
-                if useEnglish { "activation" } else { "激活" }.to_string()
+                if useEnglish { "activation" } else { "activation" }.to_string()
             }
         }
     }
@@ -150,20 +150,20 @@ impl CliToolModeSupport {
             vec![
                 ToolPrompt {
                     name: SEARCH_TOOL_NAME.to_string(),
-                    description: "仅搜索隐藏工具目录。先用它发现隐藏工具名和参数形态。".to_string(),
+                    description: "Only searches the hidden tool catalog. Use it first to discover hidden tool names and parameter shapes.".to_string(),
                     parameters: String::new(),
                     parametersStructured: Some(vec![
                         ToolParameterSchema {
                             name: "query".to_string(),
                             r#type: "string".to_string(),
-                            description: "要搜索的工具能力或隐藏工具名".to_string(),
+                            description: "The tool capability or hidden tool name to search for".to_string(),
                             required: true,
                             default: None,
                         },
                         ToolParameterSchema {
                             name: "limit".to_string(),
                             r#type: "integer".to_string(),
-                            description: "可选，返回的最大结果数".to_string(),
+                            description: "Optional, maximum number of results to return".to_string(),
                             required: false,
                             default: Some(DEFAULT_SEARCH_LIMIT.to_string()),
                         },
@@ -173,14 +173,14 @@ impl CliToolModeSupport {
                 },
                 ToolPrompt {
                     name: PROXY_TOOL_NAME.to_string(),
-                    description: "在 search 发现目标工具名和参数形态后，代理执行隐藏工具。"
+                    description: "After search discovers the target tool name and parameter shape, the Agent executes the hidden tool."
                         .to_string(),
                     parameters: String::new(),
                     parametersStructured: Some(vec![
                         ToolParameterSchema {
                             name: "tool_name".to_string(),
                             r#type: "string".to_string(),
-                            description: "隐藏目标工具名，例如 read_file 或 packageName:toolName"
+                            description: "Hidden target tool name, e.g. read_file or packageName:toolName"
                                 .to_string(),
                             required: true,
                             default: None,
@@ -188,7 +188,7 @@ impl CliToolModeSupport {
                         ToolParameterSchema {
                             name: "params".to_string(),
                             r#type: "object".to_string(),
-                            description: "转发给隐藏目标工具的 JSON 参数对象".to_string(),
+                            description: "JSON arguments object forwarded to the hidden target tool".to_string(),
                             required: true,
                             default: None,
                         },
@@ -209,17 +209,17 @@ impl CliToolModeSupport {
 - All real capabilities are hidden behind `proxy`.
 - Do not call hidden tools directly. Use `search` first, then call `proxy` with the discovered target tool name and JSON params."#
         } else {
-            r#"CLI 工具模式
-- 当前只有两个公开工具：`search` 和 `proxy`。
-- `search` 只搜索隐藏工具目录，不会直接读文件、搜代码或访问网页。
-- 所有真实能力都隐藏在 `proxy` 后面。
-- 不要直接调用隐藏工具。先用 `search`，再用发现到的目标工具名和 JSON 参数调用 `proxy`。"#
+            r#"CLI TOOL MODE
+- Only two public tools are available: `search` and `proxy`.
+- `search` only searches the hidden tool catalog. It does not read files, search code, or browse the web.
+- All real capabilities are hidden behind `proxy`.
+- Do not call hidden tools directly. Use `search` first, then call `proxy` with the discovered target tool name and JSON params."#
         };
         let category = SystemToolPromptCategory {
             categoryName: if useEnglish {
                 "Public tools"
             } else {
-                "公开工具"
+                "Public tools"
             }
             .to_string(),
             categoryHeader: String::new(),
@@ -404,7 +404,7 @@ impl CliToolModeSupport {
                 )
             } else {
                 format!(
-                    "没有隐藏工具匹配“{query}”。请尝试更宽泛的能力关键词，然后再用发现到的目标工具名调用 proxy。"
+                    "No hidden tools matched \"{query}\". Try a broader capability keyword, then call proxy with a discovered target tool name."
                 )
             };
         }
@@ -413,7 +413,7 @@ impl CliToolModeSupport {
         if useEnglish {
             output.push_str(&format!("Hidden tool search results for \"{query}\":\n"));
         } else {
-            output.push_str(&format!("“{query}”的隐藏工具搜索结果：\n"));
+            output.push_str(&format!("Hidden tool search results for \"{query}\":\n"));
         }
         for (index, entry) in results.iter().enumerate() {
             output.push_str(&format!(
@@ -427,7 +427,7 @@ impl CliToolModeSupport {
                 output.push_str(if useEnglish {
                     "No description."
                 } else {
-                    "无描述。"
+                    "No description."
                 });
                 output.push('\n');
             } else {
@@ -438,7 +438,7 @@ impl CliToolModeSupport {
             if useEnglish {
                 output.push_str(&format!("Target: `{}`\n", entry.target_tool_name));
             } else {
-                output.push_str(&format!("目标工具：`{}`\n", entry.target_tool_name));
+                output.push_str(&format!("Target: `{}`\n", entry.target_tool_name));
             }
             match &entry.suggested_params_json {
                 Some(params) if !params.trim().is_empty() => {
@@ -446,7 +446,7 @@ impl CliToolModeSupport {
                     if useEnglish {
                         output.push_str(&format!("Params hint: `{params}`\n"));
                     } else {
-                        output.push_str(&format!("参数示例：`{params}`\n"));
+                        output.push_str(&format!("Params hint: `{params}`\n"));
                     }
                 }
                 _ if !entry.parameter_hints.is_empty() => {
@@ -454,7 +454,7 @@ impl CliToolModeSupport {
                     if useEnglish {
                         output.push_str("Params: ");
                     } else {
-                        output.push_str("参数：");
+                        output.push_str("Params: ");
                     }
                     output.push_str(&entry.parameter_hints.join("; "));
                     output.push('\n');
@@ -476,7 +476,7 @@ impl CliToolModeSupport {
             )
         } else {
             format!(
-                "工具“{attemptedToolName}”在 CLI 工具模式下是隐藏的。请先用 `search` 查找隐藏目标工具，再调用 `proxy`。"
+                "Tool '{attemptedToolName}' is hidden in CLI tool mode. Use 'search' to find the hidden target tool, then call 'proxy'."
             )
         }
     }
@@ -486,7 +486,7 @@ impl CliToolModeSupport {
         if useEnglish {
             "This tool is only available in CLI tool mode.".to_string()
         } else {
-            "该工具仅在 CLI 工具模式下可用。".to_string()
+            "This tool is only available in CLI tool mode.".to_string()
         }
     }
 
@@ -498,7 +498,7 @@ impl CliToolModeSupport {
             )
         } else {
             format!(
-                "隐藏目标工具“{targetToolName}”不可用。请先用 `search` 发现有效的隐藏工具名和参数。"
+                "Hidden target tool '{targetToolName}' is unavailable. Use 'search' first to discover a valid hidden tool name and params."
             )
         }
     }
@@ -508,7 +508,7 @@ impl CliToolModeSupport {
         if useEnglish {
             format!("Hidden target tool '{targetToolName}' is reserved and cannot be called through proxy.")
         } else {
-            format!("隐藏目标工具“{targetToolName}”是保留目标，不能通过 proxy 调用。")
+            format!("Hidden target tool '{targetToolName}' is reserved and cannot be called through proxy.")
         }
     }
 
@@ -517,7 +517,7 @@ impl CliToolModeSupport {
         if useEnglish {
             "The current role card is not allowed to access this hidden tool.".to_string()
         } else {
-            "当前角色卡无权访问这个隐藏工具。".to_string()
+            "The current role card is not allowed to access this hidden tool.".to_string()
         }
     }
 

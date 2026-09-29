@@ -77,7 +77,7 @@ class _PackageToolRunDialogState extends State<PackageToolRunDialog> {
               if (widget.tool.parameters.isNotEmpty) ...<Widget>[
                 const SizedBox(height: 16),
                 Text(
-                  '参数',
+                  'Parameters',
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -107,7 +107,7 @@ class _PackageToolRunDialogState extends State<PackageToolRunDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: _executing ? null : () => Navigator.of(context).pop(),
-          child: const Text('关闭'),
+          child: const Text('Close'),
         ),
         FilledButton.icon(
           onPressed: _executing ? null : _execute,
@@ -118,7 +118,7 @@ class _PackageToolRunDialogState extends State<PackageToolRunDialog> {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : const Icon(Icons.play_arrow),
-          label: Text(_executing ? '运行中' : '运行'),
+          label: Text(_executing ? 'Running' : 'Run'),
         ),
       ],
     );
@@ -140,7 +140,7 @@ class _PackageToolRunDialogState extends State<PackageToolRunDialog> {
                   .CoreOperitPluginSdkJsSdkResultsToolResultData.stringResultData(
                 value: const core_proxy.StringResultData(value: ''),
               ),
-          error: '缺少必填参数：${missing.join(", ")}',
+          error: 'Missing required parameters: ${missing.join(", ")}',
         );
       });
       return;

@@ -58,9 +58,9 @@ class SettingsCategorySpec {
         icon: Icons.memory_outlined,
       ),
       SettingsCategory.tts => const SettingsCategorySpec(
-        title: '语音与识别',
-        subtitle: 'TTS 与 STT 供应商',
-        description: '管理语音合成与语音识别供应商，并分别选择当前配置。',
+        title: 'Speech and Recognition',
+        subtitle: 'TTS and STT providers',
+        description: 'Manage text-to-speech (TTS) and speech-to-text (STT) providers, and select the current configuration for each.',
         icon: Icons.record_voice_over_outlined,
       ),
       SettingsCategory.characters => SettingsCategorySpec(
@@ -112,9 +112,9 @@ class SettingsCategorySpec {
         icon: Icons.devices_outlined,
       ),
       SettingsCategory.about => const SettingsCategorySpec(
-        title: '关于 Operit2',
-        subtitle: '版本、项目与许可',
-        description: '查看 Operit2 的版本信息、项目链接和开源许可证。',
+        title: 'About Operit2',
+        subtitle: 'Version, project, and license',
+        description: 'View the Operit2 version information, project links, and open-source license.',
         icon: Icons.info_outline,
       ),
     };

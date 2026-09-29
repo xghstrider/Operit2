@@ -1427,12 +1427,12 @@ fn internalToolCategoriesEnSource() -> Vec<SystemToolPromptCategory> {
 fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
     vec![
         category(
-            "内部工具",
+            "Internal tools",
             "",
             vec![
                 tool(
                     "get_terminal_info",
-                    "获取终端平台信息和支持的终端类型。",
+                    "Get terminal platform information and supported terminal types.",
                     "",
                     vec![],
                     "",
@@ -1440,116 +1440,116 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "apply_file",
-                    "通过查找并替换/删除匹配的内容块来编辑文件。",
+                    "Edit files by finding and replacing/deleting matching content blocks.",
                     "",
                     vec![
-                        param("path", "string", "文件路径", true, None),
-                        param("type", "string", "操作类型：replace | delete | create", true, None),
-                        param("old", "string", "用于匹配/替换/删除的原始内容（replace/delete必填）", false, None),
-                        param("new", "string", "要插入的新内容（replace/create必填）", false, None)
+                        param("path", "string", "File path", true, None),
+                        param("type", "string", "Operation type: replace | delete | create", true, None),
+                        param("old", "string", "Original content to match/replace/delete (required for replace/delete)", false, None),
+                        param("new", "string", "New content to insert (required for replace/create)", false, None)
                     ],
-                    "\n  - **工作原理**:\n    - 工具会在文件当前内容中对 `old` 做最佳的模糊匹配（不依赖行号），然后执行指定操作。\n    - 你可以多次调用本工具，对同一个文件做多处独立修改。\n\n  - **参数**:\n    - `type`:\n      - `replace`: 用 `new` 替换匹配到的 `old`\n      - `delete`: 删除匹配到的 `old`\n      - `create`: 当文件不存在时创建文件（用 `new` 作为完整文件内容）\n    - `old`: `replace` / `delete` 必填\n    - `new`: `replace` / `create` 必填\n\n  - **关键规则**:\n    1. **如果需要重写整个已存在文件**：不要用 apply_file 直接覆盖。请先 `delete_file`，再使用 `apply_file` 且 `type=create`。\n    2. **如果需要修改已存在文件**：必须用 `type=replace`（或 `type=delete`）并提供 `old/new`（或 `old`）。不要删除整个文件再重写。\n",
+                    "\n  - **How it works**:\n    - The tool performs a best-effort fuzzy match of `old` against the file's current content (line numbers are not used), then performs the specified operation.\n    - You can call this tool multiple times to make several independent edits to the same file.\n\n  - **Parameters**:\n    - `type`:\n      - `replace`: replace the matched `old` with `new`\n      - `delete`: delete the matched `old`\n      - `create`: create the file when it does not exist (using `new` as the full file content)\n    - `old`: required for `replace` / `delete`\n    - `new`: required for `replace` / `create`\n\n  - **Key rules**:\n    1. **If you need to rewrite an entire existing file**: do not use apply_file to overwrite it directly. First use `delete_file`, then use `apply_file` with `type=create`.\n    2. **If you need to modify an existing file**: you must use `type=replace` (or `type=delete`) and provide `old/new` (or `old`). Do not delete the whole file and rewrite it.\n",
                     "",
                 ),
                 tool(
                     "create_terminal_session",
-                    "创建或获取终端会话。",
+                    "Create or get a terminal session.",
                     "",
                     vec![
-                        param("session_name", "string", "终端会话名称", true, None),
-                        param("type", "string", "可选终端类型。Linux host 支持 linux。Windows host 支持 bash 和 powershell。", false, None)
+                        param("session_name", "string", "Terminal session name", true, None),
+                        param("type", "string", "Optional terminal type. Linux host supports linux. Windows host supports bash and powershell.", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "execute_in_terminal_session",
-                    "在终端会话中执行命令，并一次性返回完整输出。",
+                    "Execute a command in a terminal session and return the complete output in one go.",
                     "",
                     vec![
-                        param("session_id", "string", "终端会话 ID", true, None),
-                        param("command", "string", "要执行的命令", true, None),
-                        param("timeout_ms", "integer", "可选，超时时间（毫秒）", false, Some("1800000".to_string()))
+                        param("session_id", "string", "Terminal session ID", true, None),
+                        param("command", "string", "The command to execute", true, None),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("1800000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "execute_in_terminal_session_streaming",
-                    "在终端会话中执行命令，并流式返回输出。",
+                    "Execute a command in a terminal session and stream the output back.",
                     "",
                     vec![
-                        param("session_id", "string", "终端会话 ID", true, None),
-                        param("command", "string", "要执行的命令", true, None),
-                        param("timeout_ms", "integer", "可选，超时时间（毫秒）", false, Some("1800000".to_string()))
+                        param("session_id", "string", "Terminal session ID", true, None),
+                        param("command", "string", "The command to execute", true, None),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("1800000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "execute_hidden_terminal_command",
-                    "在隐藏的非 PTY 终端执行器中执行命令。使用相同 executor_key 的命令会复用同一个后台登录上下文，且不会显示在可见终端 UI 中。",
+                    "Execute a command in a hidden non-PTY terminal executor. Commands using the same executor_key reuse the same background login context and are not shown in the visible terminal UI.",
                     "",
                     vec![
-                        param("command", "string", "要执行的命令", true, None),
-                        param("type", "string", "可选终端类型。Linux host 支持 linux。Windows host 支持 bash 和 powershell。", false, None),
-                        param("executor_key", "string", "可选，用于复用同一个后台 shell 上下文的隐藏执行器 key", false, Some("default".to_string())),
-                        param("timeout_ms", "integer", "可选，超时时间（毫秒）", false, Some("120000".to_string()))
+                        param("command", "string", "The command to execute", true, None),
+                        param("type", "string", "Optional terminal type. Linux host supports linux. Windows host supports bash and powershell.", false, None),
+                        param("executor_key", "string", "Optional, hidden executor key used to reuse the same background shell context", false, Some("default".to_string())),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("120000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "input_in_terminal_session",
-                    "向终端会话写入输入。input 与 control 至少传一个。通常先发送 input，再发送 control=enter 提交内容。",
+                    "Write input to a terminal session. Provide at least one of input and control. Usually send input first, then send control=enter to submit the content.",
                     "",
                     vec![
-                        param("session_id", "string", "终端会话 ID", true, None),
-                        param("input", "string", "要写入终端的文本（可包含换行）", false, None),
-                        param("control", "string", "控制键或修饰键（如 enter/tab/esc/up/down/left/right/home/end/pageup/pagedown，或 control=ctrl 且 input=c 表示 Ctrl+C）", false, None)
+                        param("session_id", "string", "Terminal session ID", true, None),
+                        param("input", "string", "Text to write to the terminal (may contain newlines)", false, None),
+                        param("control", "string", "Control key or modifier key (e.g. enter/tab/esc/up/down/left/right/home/end/pageup/pagedown, or control=ctrl with input=c for Ctrl+C)", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "close_terminal_session",
-                    "关闭终端会话。",
+                    "Close the terminal session.",
                     "",
                     vec![
-                        param("session_id", "string", "终端会话 ID", true, None)
+                        param("session_id", "string", "Terminal session ID", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "get_terminal_session_screen",
-                    "获取终端会话当前可见 PTY 屏幕内容（仅一屏，不包含历史滚动缓冲）。",
+                    "Get the currently visible PTY screen content of a terminal session (one screen only, excluding the scrollback history buffer).",
                     "",
                     vec![
-                        param("session_id", "string", "终端会话 ID", true, None)
+                        param("session_id", "string", "Terminal session ID", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "music_play",
-                    "使用应用内置音乐播放器播放音频。",
+                    "Play audio using the app's built-in music player.",
                     "",
                     vec![
-                        param("source", "string", "音频来源", true, None),
-                        param("source_type", "string", "来源类型：path | url | uri", true, None),
-                        param("title", "string", "可选，显示标题", false, None),
-                        param("artist", "string", "可选，显示艺术家", false, None),
-                        param("loop", "boolean", "可选，循环当前曲目", false, None),
-                        param("volume", "number", "可选，0 到 1", false, None),
-                        param("start_position_ms", "integer", "可选，开始播放位置，单位毫秒", false, None)
+                        param("source", "string", "Audio source", true, None),
+                        param("source_type", "string", "Source type: path | url | uri", true, None),
+                        param("title", "string", "Optional, display title", false, None),
+                        param("artist", "string", "Optional, display artist", false, None),
+                        param("loop", "boolean", "Optional, loop the current track", false, None),
+                        param("volume", "number", "Optional, 0 to 1", false, None),
+                        param("start_position_ms", "integer", "Optional, playback start position in milliseconds", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "music_pause",
-                    "暂停当前应用内音乐播放。",
+                    "Pause the current in-app music playback.",
                     "",
                     Vec::new(),
                     "",
@@ -1557,7 +1557,7 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "music_resume",
-                    "继续当前应用内音乐播放。",
+                    "Resume the current in-app music playback.",
                     "",
                     Vec::new(),
                     "",
@@ -1565,7 +1565,7 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "music_stop",
-                    "停止当前应用内音乐播放。",
+                    "Stop the current in-app music playback.",
                     "",
                     Vec::new(),
                     "",
@@ -1573,27 +1573,27 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "music_seek",
-                    "跳转当前应用内音乐播放位置。",
+                    "Seek the current in-app music playback position.",
                     "",
                     vec![
-                        param("position_ms", "integer", "目标位置，单位毫秒", true, None)
+                        param("position_ms", "integer", "Target position in milliseconds", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "music_set_volume",
-                    "设置当前应用内音乐播放音量。",
+                    "Set the current in-app music playback volume.",
                     "",
                     vec![
-                        param("volume", "number", "音量，0 到 1", true, None)
+                        param("volume", "number", "Volume, 0 to 1", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "music_status",
-                    "获取当前应用内音乐播放状态。",
+                    "Get the current in-app music playback state.",
                     "",
                     Vec::new(),
                     "",
@@ -1601,7 +1601,7 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "request_bluetooth_permission",
-                    "请求当前平台的蓝牙权限。",
+                    "Request Bluetooth permission on the current platform.",
                     "",
                     Vec::new(),
                     "",
@@ -1609,7 +1609,7 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "get_bluetooth_state",
-                    "获取蓝牙适配器支持情况、启用状态和状态标签。",
+                    "Get Bluetooth adapter support, enabled state, and state label.",
                     "",
                     Vec::new(),
                     "",
@@ -1617,7 +1617,7 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "request_enable_bluetooth",
-                    "请求在当前平台启用蓝牙。",
+                    "Request to enable Bluetooth on the current platform.",
                     "",
                     Vec::new(),
                     "",
@@ -1625,7 +1625,7 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "list_bluetooth_bonded_devices",
-                    "列出已配对的蓝牙设备。",
+                    "List paired Bluetooth devices.",
                     "",
                     Vec::new(),
                     "",
@@ -1633,204 +1633,204 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "scan_bluetooth_devices",
-                    "扫描附近的蓝牙 Classic 和 BLE 设备。",
+                    "Scan for nearby Bluetooth Classic and BLE devices.",
                     "",
                     vec![
-                        param("duration_ms", "integer", "可选，扫描时长，单位毫秒", false, Some("10000".to_string())),
-                        param("include_ble", "boolean", "可选，是否包含 BLE 设备", false, Some("true".to_string()))
+                        param("duration_ms", "integer", "Optional, scan duration in milliseconds", false, Some("10000".to_string())),
+                        param("include_ble", "boolean", "Optional, whether to include BLE devices", false, Some("true".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_connect",
-                    "连接蓝牙 Classic 设备。",
+                    "Connect to a Bluetooth Classic device.",
                     "",
                     vec![
-                        param("address", "string", "蓝牙设备地址", true, None),
-                        param("uuid", "string", "可选，服务 UUID", false, None)
+                        param("address", "string", "Bluetooth device address", true, None),
+                        param("uuid", "string", "Optional, service UUID", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_listen",
-                    "创建蓝牙 Classic 监听会话。",
+                    "Create a Bluetooth Classic listening session.",
                     "",
                     vec![
-                        param("name", "string", "可选，服务名称", false, None),
-                        param("uuid", "string", "可选，服务 UUID", false, None)
+                        param("name", "string", "Optional, service name", false, None),
+                        param("uuid", "string", "Optional, service UUID", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_accept",
-                    "从监听会话接受一个蓝牙 Classic 连接。",
+                    "Accept a Bluetooth Classic connection from the listening session.",
                     "",
                     vec![
-                        param("listener_session_id", "string", "监听会话 ID", true, None),
-                        param("timeout_ms", "integer", "可选，超时时间，单位毫秒", false, Some("30000".to_string()))
+                        param("listener_session_id", "string", "Listening session ID", true, None),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("30000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_send",
-                    "向蓝牙 Classic 会话发送文本或 base64 字节。",
+                    "Send text or base64 bytes to a Bluetooth Classic session.",
                     "",
                     vec![
-                        param("session_id", "string", "蓝牙会话 ID", true, None),
-                        param("text", "string", "文本载荷；text 和 data_base64 必须二选一", false, None),
-                        param("data_base64", "string", "base64 载荷；text 和 data_base64 必须二选一", false, None)
+                        param("session_id", "string", "Bluetooth session ID", true, None),
+                        param("text", "string", "Text payload; either text or data_base64 must be provided", false, None),
+                        param("data_base64", "string", "base64 payload; either text or data_base64 must be provided", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_read",
-                    "从蓝牙 Classic 会话读取数据。",
+                    "Read data from a Bluetooth Classic session.",
                     "",
                     vec![
-                        param("session_id", "string", "蓝牙会话 ID", true, None),
-                        param("max_bytes", "integer", "可选，最大读取字节数", false, Some("4096".to_string())),
-                        param("timeout_ms", "integer", "可选，超时时间，单位毫秒", false, Some("30000".to_string()))
+                        param("session_id", "string", "Bluetooth session ID", true, None),
+                        param("max_bytes", "integer", "Optional, maximum number of bytes to read", false, Some("4096".to_string())),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("30000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_send_and_read",
-                    "向蓝牙 Classic 会话发送文本或 base64 字节并读取响应。",
+                    "Send text or base64 bytes to a Bluetooth Classic session and read the response.",
                     "",
                     vec![
-                        param("session_id", "string", "蓝牙会话 ID", true, None),
-                        param("text", "string", "文本载荷；text 和 data_base64 必须二选一", false, None),
-                        param("data_base64", "string", "base64 载荷；text 和 data_base64 必须二选一", false, None),
-                        param("max_bytes", "integer", "可选，最大读取字节数", false, Some("4096".to_string())),
-                        param("timeout_ms", "integer", "可选，超时时间，单位毫秒", false, Some("30000".to_string()))
+                        param("session_id", "string", "Bluetooth session ID", true, None),
+                        param("text", "string", "Text payload; either text or data_base64 must be provided", false, None),
+                        param("data_base64", "string", "base64 payload; either text or data_base64 must be provided", false, None),
+                        param("max_bytes", "integer", "Optional, maximum number of bytes to read", false, Some("4096".to_string())),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("30000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_close",
-                    "关闭蓝牙 Classic 监听、Classic 会话或 BLE 会话。",
+                    "Close a Bluetooth Classic listener, Classic session, or BLE session.",
                     "",
                     vec![
-                        param("session_id", "string", "蓝牙会话 ID", true, None)
+                        param("session_id", "string", "Bluetooth session ID", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_ble_connect",
-                    "连接 BLE 设备。",
+                    "Connect to a BLE device.",
                     "",
                     vec![
-                        param("address", "string", "BLE 设备地址", true, None),
-                        param("auto_connect", "boolean", "可选，在支持的平台请求自动连接", false, Some("false".to_string()))
+                        param("address", "string", "BLE device address", true, None),
+                        param("auto_connect", "boolean", "Optional, request auto connection on supported platforms", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_ble_discover_services",
-                    "发现 BLE 会话的服务和特征。",
+                    "Discover services and characteristics of a BLE session.",
                     "",
                     vec![
-                        param("session_id", "string", "BLE 会话 ID", true, None),
-                        param("timeout_ms", "integer", "可选，超时时间，单位毫秒", false, Some("30000".to_string()))
+                        param("session_id", "string", "BLE session ID", true, None),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("30000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_ble_read_characteristic",
-                    "读取 BLE 特征。",
+                    "Read a BLE characteristic.",
                     "",
                     vec![
-                        param("session_id", "string", "BLE 会话 ID", true, None),
-                        param("service_uuid", "string", "BLE 服务 UUID", true, None),
-                        param("characteristic_uuid", "string", "BLE 特征 UUID", true, None),
-                        param("timeout_ms", "integer", "可选，超时时间，单位毫秒", false, Some("30000".to_string()))
+                        param("session_id", "string", "BLE session ID", true, None),
+                        param("service_uuid", "string", "BLE service UUID", true, None),
+                        param("characteristic_uuid", "string", "BLE characteristic UUID", true, None),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("30000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_ble_write_characteristic",
-                    "向 BLE 特征写入文本或 base64 字节。",
+                    "Write text or base64 bytes to a BLE characteristic.",
                     "",
                     vec![
-                        param("session_id", "string", "BLE 会话 ID", true, None),
-                        param("service_uuid", "string", "BLE 服务 UUID", true, None),
-                        param("characteristic_uuid", "string", "BLE 特征 UUID", true, None),
-                        param("text", "string", "文本载荷；text 和 data_base64 必须二选一", false, None),
-                        param("data_base64", "string", "base64 载荷；text 和 data_base64 必须二选一", false, None)
+                        param("session_id", "string", "BLE session ID", true, None),
+                        param("service_uuid", "string", "BLE service UUID", true, None),
+                        param("characteristic_uuid", "string", "BLE characteristic UUID", true, None),
+                        param("text", "string", "Text payload; either text or data_base64 must be provided", false, None),
+                        param("data_base64", "string", "base64 payload; either text or data_base64 must be provided", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_ble_write_and_read_characteristic",
-                    "向一个 BLE 特征写入文本或 base64 字节，并读取另一个 BLE 特征。",
+                    "Write text or base64 bytes to one BLE characteristic and read another BLE characteristic.",
                     "",
                     vec![
-                        param("session_id", "string", "BLE 会话 ID", true, None),
-                        param("write_service_uuid", "string", "写入 BLE 服务 UUID", true, None),
-                        param("write_characteristic_uuid", "string", "写入 BLE 特征 UUID", true, None),
-                        param("read_service_uuid", "string", "读取 BLE 服务 UUID", true, None),
-                        param("read_characteristic_uuid", "string", "读取 BLE 特征 UUID", true, None),
-                        param("text", "string", "文本载荷；text 和 data_base64 必须二选一", false, None),
-                        param("data_base64", "string", "base64 载荷；text 和 data_base64 必须二选一", false, None),
-                        param("timeout_ms", "integer", "可选，超时时间，单位毫秒", false, Some("30000".to_string()))
+                        param("session_id", "string", "BLE session ID", true, None),
+                        param("write_service_uuid", "string", "BLE service UUID to write to", true, None),
+                        param("write_characteristic_uuid", "string", "BLE characteristic UUID to write to", true, None),
+                        param("read_service_uuid", "string", "BLE service UUID to read from", true, None),
+                        param("read_characteristic_uuid", "string", "BLE characteristic UUID to read from", true, None),
+                        param("text", "string", "Text payload; either text or data_base64 must be provided", false, None),
+                        param("data_base64", "string", "base64 payload; either text or data_base64 must be provided", false, None),
+                        param("timeout_ms", "integer", "Optional, timeout in milliseconds", false, Some("30000".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_ble_subscribe_characteristic",
-                    "订阅或取消订阅 BLE 特征通知。",
+                    "Subscribe to or unsubscribe from BLE characteristic notifications.",
                     "",
                     vec![
-                        param("session_id", "string", "BLE 会话 ID", true, None),
-                        param("service_uuid", "string", "BLE 服务 UUID", true, None),
-                        param("characteristic_uuid", "string", "BLE 特征 UUID", true, None),
-                        param("enable", "boolean", "可选，true 表示订阅，false 表示取消订阅", false, Some("true".to_string()))
+                        param("session_id", "string", "BLE session ID", true, None),
+                        param("service_uuid", "string", "BLE service UUID", true, None),
+                        param("characteristic_uuid", "string", "BLE characteristic UUID", true, None),
+                        param("enable", "boolean", "Optional, true to subscribe, false to unsubscribe", false, Some("true".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "bluetooth_ble_read_notifications",
-                    "读取 BLE 会话已缓存的特征通知。",
+                    "Read cached characteristic notifications of a BLE session.",
                     "",
                     vec![
-                        param("session_id", "string", "BLE 会话 ID", true, None),
-                        param("limit", "integer", "可选，最大通知条数", false, Some("50".to_string()))
+                        param("session_id", "string", "BLE session ID", true, None),
+                        param("limit", "integer", "Optional, maximum number of notifications", false, Some("50".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_click",
-                    "按 browser_snapshot 的 ref 点击当前页面元素，包括同源 iframe 内的 ref。",
+                    "Click a current page element by its ref from browser_snapshot, including refs inside same-origin iframes.",
                     "",
                     vec![
-                        param("ref", "string", "来自 browser_snapshot 输出的目标元素 ref；ref 和 selector 至少提供一个", false, None),
-                        param("selector", "string", "可选，ref 不可用时使用的 CSS 选择器", false, None),
-                        param("element", "string", "可选，人类可读元素描述", false, None),
-                        param("doubleClick", "boolean", "可选，是否双击", false, Some("false".to_string())),
-                        param("button", "string", "可选鼠标按键：left/right/middle", false, Some("left".to_string())),
-                        param("modifiers", "array", "可选修饰键数组：Alt/Control/ControlOrMeta/Meta/Shift", false, None)
+                        param("ref", "string", "Target element ref from browser_snapshot output; provide at least one of ref and selector", false, None),
+                        param("selector", "string", "Optional, CSS selector to use when ref is unavailable", false, None),
+                        param("element", "string", "Optional, human-readable element description", false, None),
+                        param("doubleClick", "boolean", "Optional, whether to double-click", false, Some("false".to_string())),
+                        param("button", "string", "Optional mouse button: left/right/middle", false, Some("left".to_string())),
+                        param("modifiers", "array", "Optional array of modifier keys: Alt/Control/ControlOrMeta/Meta/Shift", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_close",
-                    "关闭当前浏览器 tab。关闭最后一个 tab 时也会关闭浏览器浮窗。",
+                    "Close the current browser tab. Closing the last tab also closes the browser floating window.",
                     "",
                     Vec::new(),
                     "",
@@ -1838,7 +1838,7 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "browser_close_all",
-                    "关闭全部浏览器 tab，并关闭浏览器浮窗。",
+                    "Close all browser tabs and close the browser floating window.",
                     "",
                     Vec::new(),
                     "",
@@ -1846,95 +1846,95 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "browser_console_messages",
-                    "读取当前页面的浏览器控制台消息。",
+                    "Read the browser console messages of the current page.",
                     "",
                     vec![
-                        param("level", "string", "可选，控制台级别：error/warning/info/debug", false, Some("info".to_string())),
-                        param("filename", "string", "可选，大结果输出文件名", false, None)
+                        param("level", "string", "Optional, console level: error/warning/info/debug", false, Some("info".to_string())),
+                        param("filename", "string", "Optional, output filename for large results", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_drag",
-                    "在两个页面元素之间执行拖拽。",
+                    "Perform a drag and drop between two page elements.",
                     "",
                     vec![
-                        param("startElement", "string", "源元素的人类可读描述", true, None),
-                        param("startRef", "string", "源元素 ref", true, None),
-                        param("endElement", "string", "目标元素的人类可读描述", true, None),
-                        param("endRef", "string", "目标元素 ref", true, None)
+                        param("startElement", "string", "Human-readable description of the source element", true, None),
+                        param("startRef", "string", "Source element ref", true, None),
+                        param("endElement", "string", "Human-readable description of the target element", true, None),
+                        param("endRef", "string", "Target element ref", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_evaluate",
-                    "在页面上或目标元素上执行 JavaScript 函数。",
+                    "Execute a JavaScript function on the page or on a target element.",
                     "",
                     vec![
-                        param("function", "string", "() => { ... } 或 (element) => { ... }", true, None),
-                        param("element", "string", "可选，人类可读元素描述", false, None),
-                        param("ref", "string", "可选，目标元素 ref；提供 element 时必须同时提供", false, None)
+                        param("function", "string", "() => { ... } or (element) => { ... }", true, None),
+                        param("element", "string", "Optional, human-readable element description", false, None),
+                        param("ref", "string", "Optional, target element ref; must be provided together with element", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_file_upload",
-                    "向当前 file chooser 上传一个或多个文件。不传 paths 时取消选择器。",
+                    "Upload one or more files to the current file chooser. Cancels the chooser when paths is not provided.",
                     "",
                     vec![
-                        param("paths", "array", "可选，绝对文件路径数组", false, None)
+                        param("paths", "array", "Optional, array of absolute file paths", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_fill_form",
-                    "批量填写当前页面的多个表单字段。",
+                    "Fill in multiple form fields on the current page in batch.",
                     "",
                     vec![
-                        param("fields", "array", "字段对象数组，每项包含 name/type/value 以及 ref 或 selector", true, None)
+                        param("fields", "array", "Array of field objects, each containing name/type/value plus a ref or selector", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_handle_dialog",
-                    "接受或取消当前打开的对话框。",
+                    "Accept or dismiss the currently open dialog.",
                     "",
                     vec![
-                        param("accept", "boolean", "true 表示接受，false 表示取消", true, None),
-                        param("promptText", "string", "可选，处理 prompt 时输入的文本", false, None)
+                        param("accept", "boolean", "true to accept, false to dismiss", true, None),
+                        param("promptText", "string", "Optional, text to enter when handling a prompt", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_hover",
-                    "悬停到当前页面的目标元素上。",
+                    "Hover over a target element on the current page.",
                     "",
                     vec![
-                        param("element", "string", "可选，人类可读元素描述", false, None),
-                        param("ref", "string", "目标元素 ref", true, None)
+                        param("element", "string", "Optional, human-readable element description", false, None),
+                        param("ref", "string", "Target element ref", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_navigate",
-                    "让当前活动 tab 跳转到指定 URL。若当前没有 tab，会自动创建首个 tab。",
+                    "Navigate the currently active tab to the specified URL. If there is no tab yet, the first tab is created automatically.",
                     "",
                     vec![
-                        param("url", "string", "目标 URL", true, None)
+                        param("url", "string", "Target URL", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_navigate_back",
-                    "在当前 tab 历史中后退。",
+                    "Go back in the current tab's history.",
                     "",
                     Vec::new(),
                     "",
@@ -1942,124 +1942,124 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "browser_network_requests",
-                    "读取当前页面记录到的网络请求。",
+                    "Read the network requests recorded for the current page.",
                     "",
                     vec![
-                        param("includeStatic", "boolean", "可选，是否包含静态资源请求", false, Some("false".to_string())),
-                        param("filename", "string", "可选，大结果输出文件名", false, None)
+                        param("includeStatic", "boolean", "Optional, whether to include static resource requests", false, Some("false".to_string())),
+                        param("filename", "string", "Optional, output filename for large results", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_press_key",
-                    "在当前页面按下一个键盘按键。",
+                    "Press a keyboard key on the current page.",
                     "",
                     vec![
-                        param("key", "string", "按键名，例如 ArrowLeft 或 a", true, None)
+                        param("key", "string", "Key name, e.g. ArrowLeft or a", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_resize",
-                    "调整浏览器视口大小。",
+                    "Resize the browser viewport.",
                     "",
                     vec![
-                        param("width", "number", "视口宽度", true, None),
-                        param("height", "number", "视口高度", true, None)
+                        param("width", "number", "Viewport width", true, None),
+                        param("height", "number", "Viewport height", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_run_code",
-                    "运行 Playwright 风格的代码片段。",
+                    "Run a Playwright-style code snippet.",
                     "",
                     vec![
-                        param("code", "string", "Playwright 风格 JavaScript 代码片段", true, None)
+                        param("code", "string", "Playwright-style JavaScript code snippet", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_select_option",
-                    "在下拉元素中选择一个或多个选项值。",
+                    "Select one or more option values in a dropdown element.",
                     "",
                     vec![
-                        param("element", "string", "可选，人类可读元素描述", false, None),
-                        param("ref", "string", "来自 browser_snapshot 输出的目标下拉元素 ref", true, None),
-                        param("values", "array", "要选择的值或可见文本数组", true, None)
+                        param("element", "string", "Optional, human-readable element description", false, None),
+                        param("ref", "string", "Target dropdown element ref from browser_snapshot output", true, None),
+                        param("values", "array", "Array of values or visible texts to select", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_snapshot",
-                    "抓取当前页面的结构化无障碍风格快照，包括同源 iframe 内容。",
+                    "Capture a structured accessibility-style snapshot of the current page, including same-origin iframe content.",
                     "",
                     vec![
-                        param("filename", "string", "可选，输出快照文件名", false, None),
-                        param("selector", "string", "可选，局部快照的根元素选择器", false, None),
-                        param("depth", "integer", "可选，快照树深度限制", false, None)
+                        param("filename", "string", "Optional, output snapshot filename", false, None),
+                        param("selector", "string", "Optional, root element selector for a partial snapshot", false, None),
+                        param("depth", "integer", "Optional, snapshot tree depth limit", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_take_screenshot",
-                    "截取当前页面或特定元素的截图。",
+                    "Take a screenshot of the current page or a specific element.",
                     "",
                     vec![
-                        param("type", "string", "可选，图片类型：png 或 jpeg", false, Some("png".to_string())),
-                        param("filename", "string", "可选，输出文件名", false, None),
-                        param("element", "string", "可选，元素描述；提供时必须同时提供 ref", false, None),
-                        param("ref", "string", "可选，元素 ref；提供时必须同时提供 element", false, None),
-                        param("fullPage", "boolean", "可选，是否整页截图；元素截图时不可使用", false, Some("false".to_string()))
+                        param("type", "string", "Optional, image type: png or jpeg", false, Some("png".to_string())),
+                        param("filename", "string", "Optional, output filename", false, None),
+                        param("element", "string", "Optional, element description; ref must be provided together with it", false, None),
+                        param("ref", "string", "Optional, element ref; element must be provided together with it", false, None),
+                        param("fullPage", "boolean", "Optional, whether to take a full-page screenshot; not available for element screenshots", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_type",
-                    "向可编辑元素输入文本。",
+                    "Type text into an editable element.",
                     "",
                     vec![
-                        param("element", "string", "可选，人类可读元素描述", false, None),
-                        param("ref", "string", "来自 browser_snapshot 输出的目标元素 ref", true, None),
-                        param("text", "string", "要输入的文本", true, None),
-                        param("submit", "boolean", "可选，输入后是否按 Enter 提交", false, Some("false".to_string())),
-                        param("slowly", "boolean", "可选，是否逐字符输入", false, Some("false".to_string()))
+                        param("element", "string", "Optional, human-readable element description", false, None),
+                        param("ref", "string", "Target element ref from browser_snapshot output", true, None),
+                        param("text", "string", "Text to type", true, None),
+                        param("submit", "boolean", "Optional, whether to press Enter to submit after typing", false, Some("false".to_string())),
+                        param("slowly", "boolean", "Optional, whether to type character by character", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_wait_for",
-                    "等待文本出现、消失，或等待指定时长。",
+                    "Wait for text to appear or disappear, or wait for a specified duration.",
                     "",
                     vec![
-                        param("time", "number", "可选，等待秒数", false, None),
-                        param("text", "string", "可选，等待出现的文本", false, None),
-                        param("textGone", "string", "可选，等待消失的文本", false, None)
+                        param("time", "number", "Optional, number of seconds to wait", false, None),
+                        param("text", "string", "Optional, text to wait for to appear", false, None),
+                        param("textGone", "string", "Optional, text to wait for to disappear", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "browser_tabs",
-                    "使用 0-based 索引列出、创建、切换或关闭浏览器 tab。",
+                    "List, create, switch, or close browser tabs using 0-based indexes.",
                     "",
                     vec![
-                        param("action", "string", "list/create/select/close 之一", true, None),
-                        param("index", "integer", "可选，select 或 close 使用的 tab 索引", false, None)
+                        param("action", "string", "One of list/create/select/close", true, None),
+                        param("index", "integer", "Optional, tab index used by select or close", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "device_info",
-                    "获取设备信息。",
+                    "Get device information.",
                     "",
                     Vec::new(),
                     "",
@@ -2069,92 +2069,92 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
             "",
         ),
         category(
-            "拓展记忆工具",
+            "Extended Memory Tools",
             "",
             vec![
                 tool(
                     "create_memory",
-                    "在记忆库中创建新的记忆节点。当你想保存重要信息供将来参考时使用。",
+                    "Create a new memory node in the memory library. Use it when you want to save important information for future reference.",
                     "",
                     vec![
-                        param("target_owner_key", "string", "必需，记忆 owner key，例如 character:<character-id> 或 shared:<shared-id>", true, None),
-                        param("title", "string", "必需, 字符串", true, None),
-                        param("content", "string", "必需, 字符串", true, None),
-                        param("content_type", "string", "可选", false, Some("\"text/plain\"".to_string())),
-                        param("source", "string", "可选", false, Some("\"ai_created\"".to_string())),
-                        param("folder_path", "string", "可选", false, Some("\"\"".to_string())),
-                        param("tags", "string", "可选, 逗号分隔的字符串", false, None)
+                        param("target_owner_key", "string", "Required, memory owner key, e.g. character:<character-id> or shared:<shared-id>", true, None),
+                        param("title", "string", "Required, string", true, None),
+                        param("content", "string", "Required, string", true, None),
+                        param("content_type", "string", "Optional", false, Some("\"text/plain\"".to_string())),
+                        param("source", "string", "Optional", false, Some("\"ai_created\"".to_string())),
+                        param("folder_path", "string", "Optional", false, Some("\"\"".to_string())),
+                        param("tags", "string", "Optional, comma-separated string", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "update_memory",
-                    "通过标题更新现有的记忆节点。用于修改现有记忆的内容或元数据。",
+                    "Update an existing memory node by title. Used to modify the content or metadata of an existing memory.",
                     "",
                     vec![
-                        param("target_owner_key", "string", "必需，记忆 owner key，例如 character:<character-id> 或 shared:<shared-id>", true, None),
-                        param("old_title", "string", "必需, 字符串，用于识别记忆", true, None),
-                        param("new_title", "string", "可选, 字符串, 重命名时的新标题", false, None),
-                        param("content", "string", "可选, 字符串", false, None),
-                        param("content_type", "string", "可选, 字符串", false, None),
-                        param("source", "string", "可选, 字符串", false, None),
-                        param("credibility", "number", "可选, 浮点数 0-1", false, None),
-                        param("importance", "number", "可选, 浮点数 0-1", false, None),
-                        param("folder_path", "string", "可选, 字符串", false, None),
-                        param("tags", "string", "可选, 逗号分隔的字符串", false, None)
+                        param("target_owner_key", "string", "Required, memory owner key, e.g. character:<character-id> or shared:<shared-id>", true, None),
+                        param("old_title", "string", "Required, string, used to identify the memory", true, None),
+                        param("new_title", "string", "Optional, string, new title when renaming", false, None),
+                        param("content", "string", "Optional, string", false, None),
+                        param("content_type", "string", "Optional, string", false, None),
+                        param("source", "string", "Optional, string", false, None),
+                        param("credibility", "number", "Optional, float 0-1", false, None),
+                        param("importance", "number", "Optional, float 0-1", false, None),
+                        param("folder_path", "string", "Optional, string", false, None),
+                        param("tags", "string", "Optional, comma-separated string", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "delete_memory",
-                    "通过标题从记忆库中删除记忆节点。谨慎使用，此操作不可逆。",
+                    "Delete a memory node from the memory library by title. Use with caution; this operation is irreversible.",
                     "",
                     vec![
-                        param("target_owner_key", "string", "必需，记忆 owner key，例如 character:<character-id> 或 shared:<shared-id>", true, None),
-                        param("title", "string", "必需, 字符串，用于识别记忆", true, None)
+                        param("target_owner_key", "string", "Required, memory owner key, e.g. character:<character-id> or shared:<shared-id>", true, None),
+                        param("title", "string", "Required, string, used to identify the memory", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "link_memories",
-                    "在记忆库中的两个记忆之间创建语义链接。用于建立相关概念、事实或信息片段之间的关系。这有助于构建知识图谱结构，以便更好地检索和理解记忆。",
+                    "Create a semantic link between two memories in the memory library. Used to build relationships between related concepts, facts, or pieces of information. This helps build a knowledge graph structure for better memory retrieval and understanding.",
                     "",
                     vec![
-                        param("target_owner_key", "string", "必需，记忆 owner key，例如 character:<character-id> 或 shared:<shared-id>", true, None),
-                        param("source_title", "string", "必需, 字符串, 源记忆的标题", true, None),
-                        param("target_title", "string", "必需, 字符串, 目标记忆的标题", true, None),
-                        param("link_type", "string", "可选, 字符串, 关系类型，如\"related\"（相关）、\"causes\"（导致）、\"explains\"（解释）、\"part_of\"（部分）、\"contradicts\"（矛盾）等", false, Some("\"related\"".to_string())),
-                        param("weight", "number", "可选, 浮点数 0.0-1.0, 链接强度，1.0表示最强", false, Some("0.7".to_string())),
-                        param("description", "string", "可选, 字符串, 关于关系的额外上下文", false, Some("\"\"".to_string()))
+                        param("target_owner_key", "string", "Required, memory owner key, e.g. character:<character-id> or shared:<shared-id>", true, None),
+                        param("source_title", "string", "Required, string, title of the source memory", true, None),
+                        param("target_title", "string", "Required, string, title of the target memory", true, None),
+                        param("link_type", "string", "Optional, string, relation type, e.g. \"related\", \"causes\", \"explains\", \"part_of\", \"contradicts\", etc.", false, Some("\"related\"".to_string())),
+                        param("weight", "number", "Optional, float 0.0-1.0, link strength, 1.0 is the strongest", false, Some("0.7".to_string())),
+                        param("description", "string", "Optional, string, additional context about the relation", false, Some("\"\"".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "query_memory_links",
-                    "查询记忆图谱中的链接。支持按 link_id、source_title、target_title、link_type 过滤。适合在更新/删除链接前先精确定位目标。",
+                    "Query links in the memory graph. Supports filtering by link_id, source_title, target_title, and link_type. Suitable for precisely locating a target before updating/deleting a link.",
                     "",
                     vec![
-                        param("target_owner_key", "string", "必需，记忆 owner key，例如 character:<character-id> 或 shared:<shared-id>", true, None),
-                        param("link_id", "integer", "可选, 精确链接ID", false, None),
-                        param("source_title", "string", "可选, 源记忆精确标题", false, None),
-                        param("target_title", "string", "可选, 目标记忆精确标题", false, None),
-                        param("link_type", "string", "可选, 关系类型过滤", false, None),
-                        param("limit", "integer", "可选, 整数 1-200, 返回链接数量上限", false, Some("20".to_string()))
+                        param("target_owner_key", "string", "Required, memory owner key, e.g. character:<character-id> or shared:<shared-id>", true, None),
+                        param("link_id", "integer", "Optional, exact link ID", false, None),
+                        param("source_title", "string", "Optional, exact title of the source memory", false, None),
+                        param("target_title", "string", "Optional, exact title of the target memory", false, None),
+                        param("link_type", "string", "Optional, relation type filter", false, None),
+                        param("limit", "integer", "Optional, integer 1-200, maximum number of links to return", false, Some("20".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "update_user_preferences",
-                    "直接更新 USER.md。当稳定的用户信息或用户工作方式需要写入用户画像 markdown 时使用。",
+                    "Update USER.md directly. Use it when stable user information or the user's way of working needs to be written into the user profile markdown.",
                     "",
                     vec![
-                        param("target_owner_key", "string", "必需，记忆 owner key，例如 character:<character-id> 或 shared:<shared-id>", true, None),
-                        param("content", "string", "必需，更新后的完整 USER.md markdown 内容", true, None)
+                        param("target_owner_key", "string", "Required, memory owner key, e.g. character:<character-id> or shared:<shared-id>", true, None),
+                        param("content", "string", "Required, the updated full USER.md markdown content", true, None)
                     ],
                     "",
                     "",
@@ -2163,12 +2163,12 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
             "",
         ),
         category(
-            "拓展 HTTP 工具",
+            "Extended HTTP Tools",
             "",
             vec![
                 tool(
                     "http_request",
-                    "发送HTTP请求。",
+                    "Send an HTTP request.",
                     "",
                     vec![
                         param("url", "string", "url", true, None),
@@ -2176,29 +2176,29 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                         param("headers", "string", "headers", false, None),
                         param("body", "string", "body", false, None),
                         param("body_type", "string", "json/form/text/xml", false, None),
-                        param("ignore_ssl", "boolean", "是否忽略HTTPS证书校验，true/false", false, None)
+                        param("ignore_ssl", "boolean", "Whether to ignore HTTPS certificate verification, true/false", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "multipart_request",
-                    "上传文件。",
+                    "Upload files.",
                     "",
                     vec![
                         param("url", "string", "url", true, None),
                         param("method", "string", "POST/PUT", true, None),
                         param("headers", "string", "headers", false, None),
                         param("form_data", "string", "form_data", false, None),
-                        param("files", "string", "JSON数组字符串。每个元素是对象: {\"field_name\": 字符串, \"file_path\": 字符串, 可选 \"content_type\": 字符串, 可选 \"file_name\": 字符串}", false, None),
-                        param("ignore_ssl", "boolean", "是否忽略HTTPS证书校验，true/false", false, None)
+                        param("files", "string", "JSON array string. Each element is an object: {\"field_name\": string, \"file_path\": string, optional \"content_type\": string, optional \"file_name\": string}", false, None),
+                        param("ignore_ssl", "boolean", "Whether to ignore HTTPS certificate verification, true/false", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "manage_cookies",
-                    "管理cookies。",
+                    "Manage cookies.",
                     "",
                     vec![
                         param("action", "string", "get/set/clear", true, None),
@@ -2212,91 +2212,91 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
             "",
         ),
         category(
-            "拓展文件工具",
+            "Extended File Tools",
             "",
             vec![
                 tool(
                     "file_exists",
-                    "检查文件或目录是否存在。",
+                    "Check whether a file or directory exists.",
                     "",
                     vec![
-                        param("path", "string", "目标路径", true, None)
+                        param("path", "string", "Target path", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "move_file",
-                    "移动或重命名文件或目录。",
+                    "Move or rename a file or directory.",
                     "",
                     vec![
-                        param("source", "string", "源路径", true, None),
-                        param("destination", "string", "目标路径", true, None)
+                        param("source", "string", "Source path", true, None),
+                        param("destination", "string", "Target path", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "copy_file",
-                    "通过 VFS 路径复制文件或目录。",
+                    "Copy a file or directory via VFS paths.",
                     "",
                     vec![
-                        param("source", "string", "源路径", true, None),
-                        param("destination", "string", "目标路径", true, None),
-                        param("recursive", "boolean", "布尔值", false, Some("false".to_string()))
+                        param("source", "string", "Source path", true, None),
+                        param("destination", "string", "Target path", true, None),
+                        param("recursive", "boolean", "Boolean", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "file_info",
-                    "获取文件或目录的详细信息，包括类型、大小、权限、所有者、组和最后修改时间。",
+                    "Get detailed information about a file or directory, including type, size, permissions, owner, group, and last modified time.",
                     "",
                     vec![
-                        param("path", "string", "目标路径", true, None)
+                        param("path", "string", "Target path", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "zip_files",
-                    "压缩文件或目录。",
+                    "Compress a file or directory.",
                     "",
                     vec![
-                        param("source", "string", "要压缩的路径", true, None),
-                        param("destination", "string", "输出zip文件", true, None)
+                        param("source", "string", "Path to compress", true, None),
+                        param("destination", "string", "Output zip file", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "unzip_files",
-                    "解压zip文件。",
+                    "Extract a zip file.",
                     "",
                     vec![
-                        param("source", "string", "zip文件路径", true, None),
-                        param("destination", "string", "解压路径", true, None)
+                        param("source", "string", "Zip file path", true, None),
+                        param("destination", "string", "Extraction path", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "open_file",
-                    "使用系统默认应用程序打开文件。",
+                    "Open a file with the system default application.",
                     "",
                     vec![
-                        param("path", "string", "文件路径", true, None)
+                        param("path", "string", "File path", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "share_file",
-                    "与其他应用程序共享文件。",
+                    "Share a file with other applications.",
                     "",
                     vec![
-                        param("path", "string", "文件路径", true, None),
-                        param("title", "string", "可选的共享标题", false, Some("\"Share File\"".to_string()))
+                        param("path", "string", "File path", true, None),
+                        param("title", "string", "Optional share title", false, Some("\"Share File\"".to_string()))
                     ],
                     "",
                     "",
@@ -2305,26 +2305,26 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
             "",
         ),
         category(
-            "对话工具",
+            "Conversation Tools",
             "",
             vec![
                 tool(
                     "start_chat_service",
-                    "启动对话服务（悬浮窗）。",
+                    "Start the conversation service (floating window).",
                     "",
                     vec![
-                        param("initial_mode", "string", "可选，初始悬浮模式：WINDOW, BALL, VOICE_BALL, FULLSCREEN, RESULT_DISPLAY, SCREEN_OCR", false, None),
-                        param("auto_enter_voice_chat", "boolean", "可选，为 true 时在打开 FULLSCREEN 时自动进入语音模式", false, Some("false".to_string())),
-                        param("wake_launched", "boolean", "可选，若由唤醒词启动则为 true，以便 UI 调整行为", false, Some("false".to_string())),
-                        param("timeout_ms", "integer", "可选，超时后自动关闭悬浮窗（毫秒），<=0 禁用自动关闭", false, None),
-                        param("keep_if_exists", "boolean", "可选，若服务已在运行则不强制切换悬浮窗模式", false, None)
+                        param("initial_mode", "string", "Optional, initial floating mode: WINDOW, BALL, VOICE_BALL, FULLSCREEN, RESULT_DISPLAY, SCREEN_OCR", false, None),
+                        param("auto_enter_voice_chat", "boolean", "Optional, when true, automatically enter voice mode when opening FULLSCREEN", false, Some("false".to_string())),
+                        param("wake_launched", "boolean", "Optional, true if launched by a wake word so the UI can adjust its behavior", false, Some("false".to_string())),
+                        param("timeout_ms", "integer", "Optional, automatically close the floating window after the timeout (ms); <=0 disables auto-close", false, None),
+                        param("keep_if_exists", "boolean", "Optional, do not force switching the floating window mode if the service is already running", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "stop_chat_service",
-                    "停止对话服务（悬浮窗）。",
+                    "Stop the conversation service (floating window).",
                     "",
                     Vec::new(),
                     "",
@@ -2332,105 +2332,105 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "create_new_chat",
-                    "创建新的对话。",
+                    "Create a new conversation.",
                     "",
                     vec![
-                        param("group", "string", "新对话分组名（可选）", false, None),
-                        param("set_as_current_chat", "boolean", "可选，是否切换到新对话（默认 true）", false, None),
-                        param("character_card_id", "string", "可选，创建对话时绑定的角色卡 ID", false, None)
+                        param("group", "string", "New conversation group name (optional)", false, None),
+                        param("set_as_current_chat", "boolean", "Optional, whether to switch to the new conversation (default true)", false, None),
+                        param("character_card_id", "string", "Optional, character card ID to bind when creating the conversation", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "list_chats",
-                    "列出所有对话（支持筛选与排序）。",
+                    "List all conversations (supports filtering and sorting).",
                     "",
                     vec![
-                        param("query", "string", "可选，标题关键字筛选", false, None),
-                        param("match", "string", "可选，contains | exact | regex（默认 contains）", false, None),
-                        param("limit", "integer", "可选，最多返回条数（默认 50）", false, None),
-                        param("sort_by", "string", "可选，updatedAt | createdAt | messageCount（默认 updatedAt）", false, None),
-                        param("sort_order", "string", "可选，asc | desc（默认 desc）", false, None)
+                        param("query", "string", "Optional, filter by title keyword", false, None),
+                        param("match", "string", "Optional, contains | exact | regex (default contains)", false, None),
+                        param("limit", "integer", "Optional, maximum number of entries to return (default 50)", false, None),
+                        param("sort_by", "string", "Optional, updatedAt | createdAt | messageCount (default updatedAt)", false, None),
+                        param("sort_order", "string", "Optional, asc | desc (default desc)", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "find_chat",
-                    "按标题查找对话并返回其信息。",
+                    "Find a conversation by title and return its information.",
                     "",
                     vec![
-                        param("query", "string", "标题关键字/正则", true, None),
-                        param("match", "string", "可选，contains | exact | regex（默认 contains）", false, None),
-                        param("index", "integer", "可选，选择第 N 个匹配（默认 0）", false, None)
+                        param("query", "string", "Title keyword/regex", true, None),
+                        param("match", "string", "Optional, contains | exact | regex (default contains)", false, None),
+                        param("index", "integer", "Optional, select the Nth match (default 0)", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "agent_status",
-                    "查询对话的输入处理状态。",
+                    "Query the input processing state of a conversation.",
                     "",
                     vec![
-                        param("chat_id", "string", "目标对话 ID", true, None)
+                        param("chat_id", "string", "Target conversation ID", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "switch_chat",
-                    "切换到指定对话。",
+                    "Switch to the specified conversation.",
                     "",
                     vec![
-                        param("chat_id", "string", "目标对话 ID", true, None)
+                        param("chat_id", "string", "Target conversation ID", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "update_chat_title",
-                    "更新对话标题。",
+                    "Update the conversation title.",
                     "",
                     vec![
-                        param("chat_id", "string", "目标对话 ID", true, None),
-                        param("title", "string", "新的对话标题", true, None)
+                        param("chat_id", "string", "Target conversation ID", true, None),
+                        param("title", "string", "New conversation title", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "delete_chat",
-                    "按 ID 删除对话。",
+                    "Delete a conversation by ID.",
                     "",
                     vec![
-                        param("chat_id", "string", "目标对话 ID", true, None)
+                        param("chat_id", "string", "Target conversation ID", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "send_message_to_ai",
-                    "向 AI 发送消息。",
+                    "Send a message to the AI.",
                     "",
                     vec![
-                        param("message", "string", "消息内容", true, None),
-                        param("chat_id", "string", "可选，目标对话 ID", false, None),
-                        param("runtime", "string", "可选，本次发送使用的 runtime：main | floating（默认 floating）", false, None),
-                        param("role_card_id", "string", "可选，本次发送使用的角色卡 ID", false, None),
-                        param("sender_name", "string", "可选，当以用户身份发送时的显示名称", false, None),
-                        param("persist_turn", "boolean", "可选，本轮用户消息与 AI 回复是否持久化到聊天历史，默认 true", false, None),
-                        param("notify_reply", "boolean", "可选，覆盖本轮是否发送回复完成通知", false, None),
-                        param("hide_user_message", "boolean", "可选，仅在 UI 中隐藏用户消息正文并显示占位标记，同时保留原文进入历史与上下文", false, None),
-                        param("disable_warning", "boolean", "可选，关闭本轮 AI 生成的 warning 标记；为 true 时，依赖 warning 继续重试的分支会直接停止", false, None),
-                        param("timeout_ms", "integer", "可选，本次发送的最长等待时间（毫秒），覆盖响应流获取与 AI 回复等待；默认 180000", false, None)
+                        param("message", "string", "Message content", true, None),
+                        param("chat_id", "string", "Optional, target conversation ID", false, None),
+                        param("runtime", "string", "Optional, runtime used for this send: main | floating (default floating)", false, None),
+                        param("role_card_id", "string", "Optional, character card ID used for this send", false, None),
+                        param("sender_name", "string", "Optional, display name when sending as the user", false, None),
+                        param("persist_turn", "boolean", "Optional, whether the user message and AI reply of this turn are persisted to chat history, default true", false, None),
+                        param("notify_reply", "boolean", "Optional, overrides whether a reply-completion notification is sent for this turn", false, None),
+                        param("hide_user_message", "boolean", "Optional, hide only the user message body in the UI and show a placeholder marker, while keeping the original text in history and context", false, None),
+                        param("disable_warning", "boolean", "Optional, disable the AI-generated warning marker for this turn; when true, branches that rely on warnings to continue retrying stop directly", false, None),
+                        param("timeout_ms", "integer", "Optional, maximum wait time for this send (ms), overriding response stream fetching and AI reply waiting; default 180000", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "list_character_cards",
-                    "列出所有角色卡。",
+                    "List all character cards.",
                     "",
                     Vec::new(),
                     "",
@@ -2438,12 +2438,12 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "get_chat_messages",
-                    "读取指定对话的消息内容（跨话题读取）。",
+                    "Read the message content of the specified conversation (cross-topic read).",
                     "",
                     vec![
-                        param("chat_id", "string", "目标对话 ID", true, None),
-                        param("order", "string", "可选，asc/desc（默认 desc）", false, None),
-                        param("limit", "integer", "可选，返回消息条数（默认20，最大200）", false, None)
+                        param("chat_id", "string", "Target conversation ID", true, None),
+                        param("order", "string", "Optional, asc/desc (default desc)", false, None),
+                        param("limit", "integer", "Optional, number of messages to return (default 20, max 200)", false, None)
                     ],
                     "",
                     "",
@@ -2452,49 +2452,49 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
             "",
         ),
         category(
-            "内部文件工具",
+            "Internal File Tools",
             "",
             vec![
                 tool(
                     "read_file_full",
-                    "读取完整文件内容（不限制大小）。",
+                    "Read the full file content (no size limit).",
                     "",
                     vec![
-                        param("path", "string", "文件路径", true, None),
-                        param("text_only", "boolean", "可选", false, Some("false".to_string()))
+                        param("path", "string", "File path", true, None),
+                        param("text_only", "boolean", "Optional", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "read_file_binary",
-                    "读取二进制文件并返回 Base64 内容。",
+                    "Read a binary file and return its Base64 content.",
                     "",
                     vec![
-                        param("path", "string", "文件路径", true, None)
+                        param("path", "string", "File path", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "write_file",
-                    "写入文件内容。",
+                    "Write file content.",
                     "",
                     vec![
-                        param("path", "string", "文件路径", true, None),
-                        param("content", "string", "文件内容", true, None),
-                        param("append", "boolean", "可选", false, Some("false".to_string()))
+                        param("path", "string", "File path", true, None),
+                        param("content", "string", "File content", true, None),
+                        param("append", "boolean", "Optional", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "write_file_binary",
-                    "将 Base64 内容写入二进制文件。",
+                    "Write Base64 content to a binary file.",
                     "",
                     vec![
-                        param("path", "string", "文件路径", true, None),
-                        param("base64Content", "string", "Base64 编码内容", true, None)
+                        param("path", "string", "File path", true, None),
+                        param("base64Content", "string", "Base64 encoded content", true, None)
                     ],
                     "",
                     "",
@@ -2503,101 +2503,101 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
             "",
         ),
         category(
-            "内部 UI 工具",
+            "Internal UI Tools",
             "",
             vec![
                 tool(
                     "get_page_info",
-                    "获取当前页面/窗口 UI 信息。",
+                    "Get the current page/window UI information.",
                     "",
                     vec![
-                        param("format", "string", "可选，xml/json", false, Some("xml".to_string())),
-                        param("detail", "string", "可选", false, Some("summary".to_string())),
-                        param("display", "string", "可选，多屏 display id", false, None)
+                        param("format", "string", "Optional, xml/json", false, Some("xml".to_string())),
+                        param("detail", "string", "Optional", false, Some("summary".to_string())),
+                        param("display", "string", "Optional, display id for multi-screen", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "tap",
-                    "点击屏幕坐标。",
+                    "Tap screen coordinates.",
                     "",
                     vec![
-                        param("x", "integer", "x 坐标", true, None),
-                        param("y", "integer", "y 坐标", true, None),
-                        param("display", "string", "可选，多屏 display id", false, None)
+                        param("x", "integer", "x coordinate", true, None),
+                        param("y", "integer", "y coordinate", true, None),
+                        param("display", "string", "Optional, display id for multi-screen", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "long_press",
-                    "长按屏幕坐标。",
+                    "Long-press screen coordinates.",
                     "",
                     vec![
-                        param("x", "integer", "x 坐标", true, None),
-                        param("y", "integer", "y 坐标", true, None),
-                        param("display", "string", "可选，多屏 display id", false, None)
+                        param("x", "integer", "x coordinate", true, None),
+                        param("y", "integer", "y coordinate", true, None),
+                        param("display", "string", "Optional, display id for multi-screen", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "swipe",
-                    "执行滑动手势。",
+                    "Perform a swipe gesture.",
                     "",
                     vec![
-                        param("start_x", "integer", "起始 x", true, None),
-                        param("start_y", "integer", "起始 y", true, None),
-                        param("end_x", "integer", "结束 x", true, None),
-                        param("end_y", "integer", "结束 y", true, None),
-                        param("duration", "integer", "可选，持续时间（毫秒）", false, Some("300".to_string())),
-                        param("display", "string", "可选，多屏 display id", false, None)
+                        param("start_x", "integer", "Start x", true, None),
+                        param("start_y", "integer", "Start y", true, None),
+                        param("end_x", "integer", "End x", true, None),
+                        param("end_y", "integer", "End y", true, None),
+                        param("duration", "integer", "Optional, duration in milliseconds", false, Some("300".to_string())),
+                        param("display", "string", "Optional, display id for multi-screen", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "click_element",
-                    "点击 UI 元素（resourceId / className / contentDesc / bounds）。",
+                    "Click a UI element (resourceId / className / contentDesc / bounds).",
                     "",
                     vec![
-                        param("resourceId", "string", "可选", false, None),
-                        param("className", "string", "可选", false, None),
-                        param("contentDesc", "string", "可选", false, None),
-                        param("bounds", "string", "可选，格式：[left,top][right,bottom]", false, None),
-                        param("partialMatch", "boolean", "可选，是否启用部分匹配", false, Some("false".to_string())),
-                        param("index", "integer", "可选", false, Some("0".to_string())),
-                        param("display", "string", "可选，多屏 display id", false, None)
+                        param("resourceId", "string", "Optional", false, None),
+                        param("className", "string", "Optional", false, None),
+                        param("contentDesc", "string", "Optional", false, None),
+                        param("bounds", "string", "Optional, format: [left,top][right,bottom]", false, None),
+                        param("partialMatch", "boolean", "Optional, whether to enable partial matching", false, Some("false".to_string())),
+                        param("index", "integer", "Optional", false, Some("0".to_string())),
+                        param("display", "string", "Optional, display id for multi-screen", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "set_input_text",
-                    "设置输入框文本（可传空字符串以清空）。",
+                    "Set input box text (pass an empty string to clear it).",
                     "",
                     vec![
-                        param("text", "string", "要输入的文本", true, None),
-                        param("display", "string", "可选，多屏 display id", false, None)
+                        param("text", "string", "Text to enter", true, None),
+                        param("display", "string", "Optional, display id for multi-screen", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "press_key",
-                    "按下按键（keyevent）。",
+                    "Press a key (keyevent).",
                     "",
                     vec![
-                        param("key_code", "string", "按键码，例如 KEYCODE_HOME", true, None),
-                        param("display", "string", "可选，多屏 display id", false, None)
+                        param("key_code", "string", "Key code, e.g. KEYCODE_HOME", true, None),
+                        param("display", "string", "Optional, display id for multi-screen", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "capture_screenshot",
-                    "截取屏幕截图并返回文件路径。",
+                    "Take a screenshot and return the file path.",
                     "",
                     Vec::new(),
                     "",
@@ -2605,13 +2605,13 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "run_ui_subagent",
-                    "运行轻量 UI 自动化子代理。",
+                    "Run a lightweight UI automation sub-agent.",
                     "",
                     vec![
-                        param("intent", "string", "任务描述", true, None),
-                        param("max_steps", "integer", "可选", false, Some("20".to_string())),
-                        param("agent_id", "string", "可选，可复用的 agent 会话 ID。不传或传 'default' 时使用主屏幕；传入且不为 'default' 时表示请求使用对应的虚拟屏幕会话，虚拟屏幕必须处于可用状态，否则本次运行将失败。", false, None),
-                        param("target_app", "string", "可选，目标应用包名", false, None)
+                        param("intent", "string", "Task description", true, None),
+                        param("max_steps", "integer", "Optional", false, Some("20".to_string())),
+                        param("agent_id", "string", "Optional, reusable agent session ID. When omitted or set to 'default', the main screen is used; when set to something other than 'default', it requests the corresponding virtual screen session, which must be available, otherwise this run fails.", false, None),
+                        param("target_app", "string", "Optional, target app package name", false, None)
                     ],
                     "",
                     "",
@@ -2620,36 +2620,36 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
             "",
         ),
         category(
-            "软件设置工具",
+            "Software Settings Tools",
             "",
             vec![
                 tool(
                     "read_environment_variable",
-                    "按 key 读取环境变量当前值。",
+                    "Read the current value of an environment variable by key.",
                     "",
                     vec![
-                        param("key", "string", "环境变量名", true, None)
+                        param("key", "string", "Environment variable name", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "write_environment_variable",
-                    "按 key 写入环境变量；value 为空时清除该变量。",
+                    "Write an environment variable by key; when value is empty the variable is cleared.",
                     "",
                     vec![
-                        param("key", "string", "环境变量名", true, None),
-                        param("value", "string", "可选，写入值；空值清除该变量", false, None)
+                        param("key", "string", "Environment variable name", true, None),
+                        param("value", "string", "Optional, value to write; an empty value clears the variable", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "execute_cli_command",
-                    "按参数数组执行 Operit CLI 命令，并返回 stdout/stderr 输出。",
+                    "Execute an Operit CLI command with an argument array and return the stdout/stderr output.",
                     "",
                     vec![
-                        param("args", "string", "CLI 参数 JSON 字符串数组，对应 Tools.SoftwareSettings.exec(args)", true, None)
+                        param("args", "string", "JSON string array of CLI arguments, corresponding to Tools.SoftwareSettings.exec(args)", true, None)
                     ],
                     "",
                     "",
@@ -2658,12 +2658,12 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
             "",
         ),
         category(
-            "内部系统工具",
+            "Internal System Tools",
             "",
             vec![
                 tool(
                     "close_all_virtual_displays",
-                    "关闭所有虚拟屏幕。",
+                    "Close all virtual screens.",
                     "",
                     Vec::new(),
                     "",
@@ -2671,131 +2671,131 @@ fn internalToolCategoriesCnSource() -> Vec<SystemToolPromptCategory> {
                 ),
                 tool(
                     "modify_system_setting",
-                    "修改系统设置。",
+                    "Modify a system setting.",
                     "",
                     vec![
-                        param("setting", "string", "设置项 key（别名：key）", true, None),
-                        param("value", "string", "设置值", true, None),
-                        param("namespace", "string", "可选，system/secure/global", false, Some("system".to_string()))
+                        param("setting", "string", "Setting key (alias: key)", true, None),
+                        param("value", "string", "Setting value", true, None),
+                        param("namespace", "string", "Optional, system/secure/global", false, Some("system".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "get_system_setting",
-                    "获取系统设置。",
+                    "Get a system setting.",
                     "",
                     vec![
-                        param("setting", "string", "设置项 key（别名：key）", true, None),
-                        param("namespace", "string", "可选，system/secure/global", false, Some("system".to_string()))
+                        param("setting", "string", "Setting key (alias: key)", true, None),
+                        param("namespace", "string", "Optional, system/secure/global", false, Some("system".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "install_app",
-                    "通过当前 host 请求安装应用（需要用户确认）。",
+                    "Request app installation through the current host (requires user confirmation).",
                     "",
                     vec![
-                        param("path", "string", "当前 host 的安装文件路径，例如 Android APK、Windows MSI/MSIX/EXE 或 Linux 桌面安装文件", true, None)
+                        param("path", "string", "Installer file path on the current host, e.g. Android APK, Windows MSI/MSIX/EXE, or a Linux desktop installer file", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "uninstall_app",
-                    "通过当前 host 请求卸载应用（需要用户确认）。",
+                    "Request app uninstallation through the current host (requires user confirmation).",
                     "",
                     vec![
-                        param("package_name", "string", "host 应用/包标识，例如 Android 包名、Windows Appx/MSIX 包名或 MSI 产品码、Linux Flatpak 应用 ID 或本地 .desktop 文件", true, None)
+                        param("package_name", "string", "Host app/package identifier, e.g. Android package name, Windows Appx/MSIX package name or MSI product code, Linux Flatpak app ID, or a local .desktop file", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "list_installed_apps",
-                    "列出已安装应用。",
+                    "List installed apps.",
                     "",
                     vec![
-                        param("include_system_apps", "boolean", "可选", false, Some("false".to_string()))
+                        param("include_system_apps", "boolean", "Optional", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "start_app",
-                    "通过当前 host 启动应用。",
+                    "Launch an app through the current host.",
                     "",
                     vec![
-                        param("package_name", "string", "host 应用/包标识或可执行文件名", true, None),
-                        param("activity", "string", "可选，Android Activity 类名", false, None)
+                        param("package_name", "string", "Host app/package identifier or executable name", true, None),
+                        param("activity", "string", "Optional, Android Activity class name", false, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "stop_app",
-                    "通过当前 host 停止应用后台进程。",
+                    "Stop the app's background process through the current host.",
                     "",
                     vec![
-                        param("package_name", "string", "host 应用/包标识或进程名", true, None)
+                        param("package_name", "string", "Host app/package identifier or process name", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "get_notifications",
-                    "在当前 host 暴露通知历史/监听接口时获取通知。",
+                    "Get notifications when the current host exposes a notification history/listening interface.",
                     "",
                     vec![
-                        param("limit", "integer", "可选", false, Some("10".to_string())),
-                        param("include_ongoing", "boolean", "可选", false, Some("false".to_string()))
+                        param("limit", "integer", "Optional", false, Some("10".to_string())),
+                        param("include_ongoing", "boolean", "Optional", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "get_app_usage_time",
-                    "读取当前 host 的前台或进程使用时长。Android 使用 Usage Access；桌面 host 返回平台 host 能提供的数据。",
+                    "Read foreground or per-app usage duration on the current host. Android uses Usage Access; desktop hosts return the data the platform host can provide.",
                     "",
                     vec![
-                        param("package_name", "string", "可选，精确应用包名", false, None),
-                        param("since_hours", "integer", "可选，向前统计多少小时", false, Some("24".to_string())),
-                        param("limit", "integer", "可选，不传 package_name 时最多返回多少个应用", false, Some("10".to_string())),
-                        param("include_system_apps", "boolean", "可选，不传 package_name 时是否包含系统应用", false, Some("false".to_string()))
+                        param("package_name", "string", "Optional, exact app package name", false, None),
+                        param("since_hours", "integer", "Optional, how many hours back to aggregate", false, Some("24".to_string())),
+                        param("limit", "integer", "Optional, maximum number of apps to return when package_name is not provided", false, Some("10".to_string())),
+                        param("include_system_apps", "boolean", "Optional, whether to include system apps when package_name is not provided", false, Some("false".to_string()))
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "toast",
-                    "在当前 host 显示短提示。",
+                    "Show a short toast on the current host.",
                     "",
                     vec![
-                        param("message", "string", "Toast 文本", true, None)
+                        param("message", "string", "Toast text", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "send_notification",
-                    "使用 AI 回复完成的通知通道发送通知。",
+                    "Send a notification using the AI reply completion notification channel.",
                     "",
                     vec![
-                        param("title", "string", "可选", false, None),
-                        param("message", "string", "通知内容", true, None)
+                        param("title", "string", "Optional", false, None),
+                        param("message", "string", "Notification content", true, None)
                     ],
                     "",
                     "",
                 ),
                 tool(
                     "get_device_location",
-                    "获取当前 host 的设备位置信息。",
+                    "Get the device location information of the current host.",
                     "",
                     vec![
-                        param("timeout", "integer", "可选，超时（秒）", false, Some("10".to_string())),
-                        param("high_accuracy", "boolean", "可选", false, Some("false".to_string())),
-                        param("include_address", "boolean", "可选", false, Some("true".to_string()))
+                        param("timeout", "integer", "Optional, timeout in seconds", false, Some("10".to_string())),
+                        param("high_accuracy", "boolean", "Optional", false, Some("false".to_string())),
+                        param("include_address", "boolean", "Optional", false, Some("true".to_string()))
                     ],
                     "",
                     "",

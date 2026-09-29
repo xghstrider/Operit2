@@ -1953,33 +1953,33 @@ class _MarketMinePaneState extends State<_MarketMinePane> {
             onLogout: _logout,
           ),
         const SizedBox(height: 16),
-        _MineSectionTitle(text: '管理'),
+        _MineSectionTitle(text: 'Manage'),
         _MineActionCard(
           icon: Icons.settings_outlined,
-          title: '我的市场',
-          subtitle: '查看发布记录、通知和审核状态。',
+          title: 'My Marketplace',
+          subtitle: 'View publishing records, notifications, and review status.',
           onTap: () => _openArtifactManage(context),
         ),
         const SizedBox(height: 16),
-        _MineSectionTitle(text: '发布'),
+        _MineSectionTitle(text: 'Publish'),
         _MineActionCard(
           icon: Icons.add,
-          title: '发布 Artifact',
-          subtitle: '发布脚本、包或运行时资源。',
+          title: 'Publish Artifact',
+          subtitle: 'Publish scripts, packages, or runtime resources.',
           onTap: () => _openArtifactPublish(context),
         ),
         const SizedBox(height: 10),
         _MineActionCard(
           icon: Icons.psychology_outlined,
-          title: '发布 Skill',
-          subtitle: '发布 GitHub 仓库形式的技能。',
+          title: 'Publish Skill',
+          subtitle: 'Publish skills as GitHub repositories.',
           onTap: () => _openRepoPublish(context, 'skill'),
         ),
         const SizedBox(height: 10),
         _MineActionCard(
           icon: Icons.hub_outlined,
-          title: '发布 MCP',
-          subtitle: '发布 GitHub 仓库形式的 MCP 服务。',
+          title: 'Publish MCP',
+          subtitle: 'Publish MCP services as GitHub repositories.',
           onTap: () => _openRepoPublish(context, 'mcp'),
         ),
       ],
@@ -2051,8 +2051,8 @@ class _MineAccountLoadingCard extends StatelessWidget {
       material: true,
       child: const ListTile(
         leading: M3LoadingIndicator(size: 24),
-        title: Text('GitHub 账号'),
-        subtitle: Text('正在读取登录状态'),
+        title: Text('GitHub Account'),
+        subtitle: Text('Reading login status'),
       ),
     );
   }
@@ -2143,23 +2143,23 @@ class _MineAccountCard extends StatelessWidget {
         title: Text(
           loggedIn && currentUser != null
               ? _githubDisplayName(currentUser)
-              : 'GitHub 账号',
+              : 'GitHub Account',
         ),
         subtitle: Text(
           loggedIn && currentUser != null
               ? '@${currentUser.login}'
-              : '发布和管理市场内容需要登录。',
+              : 'Publishing and managing marketplace content requires login.',
         ),
         trailing: loggedIn
             ? IconButton.outlined(
                 onPressed: onLogout,
                 icon: const Icon(Icons.logout, size: 18),
-                tooltip: '退出',
+                tooltip: 'Sign Out',
               )
             : FilledButton.tonalIcon(
                 onPressed: onLogin,
                 icon: const Icon(Icons.login, size: 18),
-                label: const Text('登录'),
+                label: const Text('Sign In'),
               ),
       ),
     );

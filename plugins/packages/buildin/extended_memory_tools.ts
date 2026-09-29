@@ -3,11 +3,11 @@
     "name": "extended_memory_tools",
 
     "display_name": {
-        "zh": "增强记忆工具",
+        "zh": "Extended Memory Tools",
         "en": "Extended Memory Tools"
     },
     "description": {
-        "zh": "拓展记忆工具包：提供创建、更新、删除、移动、链接记忆，以及更新 USER.md 的能力。",
+        "zh": "Extended memory toolkit: provides creating, updating, deleting, and moving memories, linking memories, and updating USER.md.",
         "en": "Extended memory tools: create, update, delete, move, link memories, and update USER.md."
     },
     "category": "Memory",
@@ -15,97 +15,97 @@
     "tools": [
         {
             "name": "create_memory",
-            "description": { "zh": "创建新的记忆节点。", "en": "Create a new memory node." },
+            "description": { "zh": "Create a new memory node.", "en": "Create a new memory node." },
             "parameters": [
-                { "name": "title", "description": { "zh": "记忆标题", "en": "Memory title" }, "type": "string", "required": true },
-                { "name": "content", "description": { "zh": "记忆内容", "en": "Memory content" }, "type": "string", "required": true },
-                { "name": "content_type", "description": { "zh": "可选：内容类型，默认 text/plain", "en": "Optional: content type (default: text/plain)" }, "type": "string", "required": false },
-                { "name": "source", "description": { "zh": "可选：来源，默认 ai_created", "en": "Optional: source (default: ai_created)" }, "type": "string", "required": false },
-                { "name": "folder_path", "description": { "zh": "可选：文件夹路径，默认空", "en": "Optional: folder path (default: empty)" }, "type": "string", "required": false },
-                { "name": "tags", "description": { "zh": "可选：标签（逗号分隔字符串）", "en": "Optional: tags (comma-separated string)" }, "type": "string", "required": false }
+                { "name": "title", "description": { "zh": "Memory title", "en": "Memory title" }, "type": "string", "required": true },
+                { "name": "content", "description": { "zh": "Memory content", "en": "Memory content" }, "type": "string", "required": true },
+                { "name": "content_type", "description": { "zh": "Optional: content type (default: text/plain)", "en": "Optional: content type (default: text/plain)" }, "type": "string", "required": false },
+                { "name": "source", "description": { "zh": "Optional: source (default: ai_created)", "en": "Optional: source (default: ai_created)" }, "type": "string", "required": false },
+                { "name": "folder_path", "description": { "zh": "Optional: folder path (default: empty)", "en": "Optional: folder path (default: empty)" }, "type": "string", "required": false },
+                { "name": "tags", "description": { "zh": "Optional: tags (comma-separated string)", "en": "Optional: tags (comma-separated string)" }, "type": "string", "required": false }
             ]
         },
         {
             "name": "update_memory",
-            "description": { "zh": "按标题更新已有记忆节点。", "en": "Update an existing memory node by title." },
+            "description": { "zh": "Update an existing memory node by title.", "en": "Update an existing memory node by title." },
             "parameters": [
-                { "name": "old_title", "description": { "zh": "原始标题（用于定位记忆）", "en": "Old title (to locate the memory)" }, "type": "string", "required": true },
-                { "name": "new_title", "description": { "zh": "可选：新标题（重命名）", "en": "Optional: new title (rename)" }, "type": "string", "required": false },
-                { "name": "content", "description": { "zh": "可选：新内容", "en": "Optional: new content" }, "type": "string", "required": false },
-                { "name": "content_type", "description": { "zh": "可选：内容类型", "en": "Optional: content type" }, "type": "string", "required": false },
-                { "name": "source", "description": { "zh": "可选：来源", "en": "Optional: source" }, "type": "string", "required": false },
-                { "name": "credibility", "description": { "zh": "可选：可信度 0-1", "en": "Optional: credibility 0-1" }, "type": "number", "required": false },
-                { "name": "importance", "description": { "zh": "可选：重要性 0-1", "en": "Optional: importance 0-1" }, "type": "number", "required": false },
-                { "name": "folder_path", "description": { "zh": "可选：文件夹路径", "en": "Optional: folder path" }, "type": "string", "required": false },
-                { "name": "tags", "description": { "zh": "可选：标签（逗号分隔字符串）", "en": "Optional: tags (comma-separated string)" }, "type": "string", "required": false }
+                { "name": "old_title", "description": { "zh": "Old title (to locate the memory)", "en": "Old title (to locate the memory)" }, "type": "string", "required": true },
+                { "name": "new_title", "description": { "zh": "Optional: new title (rename)", "en": "Optional: new title (rename)" }, "type": "string", "required": false },
+                { "name": "content", "description": { "zh": "Optional: new content", "en": "Optional: new content" }, "type": "string", "required": false },
+                { "name": "content_type", "description": { "zh": "Optional: content type", "en": "Optional: content type" }, "type": "string", "required": false },
+                { "name": "source", "description": { "zh": "Optional: source", "en": "Optional: source" }, "type": "string", "required": false },
+                { "name": "credibility", "description": { "zh": "Optional: credibility 0-1", "en": "Optional: credibility 0-1" }, "type": "number", "required": false },
+                { "name": "importance", "description": { "zh": "Optional: importance 0-1", "en": "Optional: importance 0-1" }, "type": "number", "required": false },
+                { "name": "folder_path", "description": { "zh": "Optional: folder path", "en": "Optional: folder path" }, "type": "string", "required": false },
+                { "name": "tags", "description": { "zh": "Optional: tags (comma-separated string)", "en": "Optional: tags (comma-separated string)" }, "type": "string", "required": false }
             ]
         },
         {
             "name": "delete_memory",
-            "description": { "zh": "按标题删除记忆节点（不可逆）。", "en": "Delete a memory node by title (irreversible)." },
+            "description": { "zh": "Delete a memory node by title (irreversible).", "en": "Delete a memory node by title (irreversible)." },
             "parameters": [
-                { "name": "title", "description": { "zh": "要删除的记忆标题", "en": "Memory title to delete" }, "type": "string", "required": true }
+                { "name": "title", "description": { "zh": "Memory title to delete", "en": "Memory title to delete" }, "type": "string", "required": true }
             ]
         },
         {
             "name": "move_memory",
-            "description": { "zh": "批量移动记忆到新文件夹。可按标题列表和来源文件夹筛选。", "en": "Move memories to another folder in batch. Filter by titles and source folder." },
+            "description": { "zh": "Move memories to another folder in batch. Filter by titles and source folder.", "en": "Move memories to another folder in batch. Filter by titles and source folder." },
             "parameters": [
-                { "name": "target_folder_path", "description": { "zh": "目标文件夹路径（空字符串表示未分类）", "en": "Target folder path (empty string means uncategorized)" }, "type": "string", "required": true },
-                { "name": "titles", "description": { "zh": "可选：标题列表（逗号或换行分隔）", "en": "Optional: title list (comma/newline separated)" }, "type": "string", "required": false },
-                { "name": "source_folder_path", "description": { "zh": "可选：来源文件夹路径（空字符串表示未分类）", "en": "Optional: source folder path (empty string means uncategorized)" }, "type": "string", "required": false }
+                { "name": "target_folder_path", "description": { "zh": "Target folder path (empty string means uncategorized)", "en": "Target folder path (empty string means uncategorized)" }, "type": "string", "required": true },
+                { "name": "titles", "description": { "zh": "Optional: title list (comma/newline separated)", "en": "Optional: title list (comma/newline separated)" }, "type": "string", "required": false },
+                { "name": "source_folder_path", "description": { "zh": "Optional: source folder path (empty string means uncategorized)", "en": "Optional: source folder path (empty string means uncategorized)" }, "type": "string", "required": false }
             ]
         },
         {
             "name": "link_memories",
-            "description": { "zh": "创建两条记忆之间的语义链接。", "en": "Create a semantic link between two memories." },
+            "description": { "zh": "Create a semantic link between two memories.", "en": "Create a semantic link between two memories." },
             "parameters": [
-                { "name": "source_title", "description": { "zh": "源记忆标题", "en": "Source memory title" }, "type": "string", "required": true },
-                { "name": "target_title", "description": { "zh": "目标记忆标题", "en": "Target memory title" }, "type": "string", "required": true },
-                { "name": "link_type", "description": { "zh": "可选：关系类型，默认 related", "en": "Optional: link type (default: related)" }, "type": "string", "required": false },
-                { "name": "weight", "description": { "zh": "可选：强度 0-1，默认 0.7", "en": "Optional: weight 0-1 (default: 0.7)" }, "type": "number", "required": false },
-                { "name": "description", "description": { "zh": "可选：关系描述", "en": "Optional: relationship description" }, "type": "string", "required": false }
+                { "name": "source_title", "description": { "zh": "Source memory title", "en": "Source memory title" }, "type": "string", "required": true },
+                { "name": "target_title", "description": { "zh": "Target memory title", "en": "Target memory title" }, "type": "string", "required": true },
+                { "name": "link_type", "description": { "zh": "Optional: link type (default: related)", "en": "Optional: link type (default: related)" }, "type": "string", "required": false },
+                { "name": "weight", "description": { "zh": "Optional: weight 0-1 (default: 0.7)", "en": "Optional: weight 0-1 (default: 0.7)" }, "type": "number", "required": false },
+                { "name": "description", "description": { "zh": "Optional: relationship description", "en": "Optional: relationship description" }, "type": "string", "required": false }
             ]
         },
         {
             "name": "query_memory_links",
-            "description": { "zh": "查询记忆链接（可按 ID、源标题、目标标题、关系类型过滤）。", "en": "Query memory links (filter by id, source, target, or type)." },
+            "description": { "zh": "Query memory links (filter by id, source, target, or type).", "en": "Query memory links (filter by id, source, target, or type)." },
             "parameters": [
-                { "name": "link_id", "description": { "zh": "可选：链接ID", "en": "Optional: link id" }, "type": "number", "required": false },
-                { "name": "source_title", "description": { "zh": "可选：源记忆标题", "en": "Optional: source memory title" }, "type": "string", "required": false },
-                { "name": "target_title", "description": { "zh": "可选：目标记忆标题", "en": "Optional: target memory title" }, "type": "string", "required": false },
-                { "name": "link_type", "description": { "zh": "可选：关系类型", "en": "Optional: relation type" }, "type": "string", "required": false },
-                { "name": "limit", "description": { "zh": "可选：返回上限 1-200，默认20", "en": "Optional: limit 1-200, default 20" }, "type": "number", "required": false }
+                { "name": "link_id", "description": { "zh": "Optional: link id", "en": "Optional: link id" }, "type": "number", "required": false },
+                { "name": "source_title", "description": { "zh": "Optional: source memory title", "en": "Optional: source memory title" }, "type": "string", "required": false },
+                { "name": "target_title", "description": { "zh": "Optional: target memory title", "en": "Optional: target memory title" }, "type": "string", "required": false },
+                { "name": "link_type", "description": { "zh": "Optional: relation type", "en": "Optional: relation type" }, "type": "string", "required": false },
+                { "name": "limit", "description": { "zh": "Optional: limit 1-200, default 20", "en": "Optional: limit 1-200, default 20" }, "type": "number", "required": false }
             ]
         },
         {
             "name": "update_memory_link",
-            "description": { "zh": "更新记忆链接（按 link_id 或 source/target/link_type 定位）。", "en": "Update a memory link (by link_id or source/target/link_type)." },
+            "description": { "zh": "Update a memory link (by link_id or source/target/link_type).", "en": "Update a memory link (by link_id or source/target/link_type)." },
             "parameters": [
-                { "name": "link_id", "description": { "zh": "可选：链接ID", "en": "Optional: link ID" }, "type": "number", "required": false },
-                { "name": "source_title", "description": { "zh": "可选：源记忆标题（未提供 link_id 时使用）", "en": "Optional: source title (used when link_id is not provided)" }, "type": "string", "required": false },
-                { "name": "target_title", "description": { "zh": "可选：目标记忆标题（未提供 link_id 时使用）", "en": "Optional: target title (used when link_id is not provided)" }, "type": "string", "required": false },
-                { "name": "link_type", "description": { "zh": "可选：当前关系类型（用于唯一定位）", "en": "Optional: current relation type (for unique resolution)" }, "type": "string", "required": false },
-                { "name": "new_link_type", "description": { "zh": "可选：新的关系类型", "en": "Optional: new relation type" }, "type": "string", "required": false },
-                { "name": "weight", "description": { "zh": "可选：新的强度 0-1", "en": "Optional: new weight 0-1" }, "type": "number", "required": false },
-                { "name": "description", "description": { "zh": "可选：新的关系描述", "en": "Optional: new relationship description" }, "type": "string", "required": false }
+                { "name": "link_id", "description": { "zh": "Optional: link ID", "en": "Optional: link ID" }, "type": "number", "required": false },
+                { "name": "source_title", "description": { "zh": "Optional: source title (used when link_id is not provided)", "en": "Optional: source title (used when link_id is not provided)" }, "type": "string", "required": false },
+                { "name": "target_title", "description": { "zh": "Optional: target title (used when link_id is not provided)", "en": "Optional: target title (used when link_id is not provided)" }, "type": "string", "required": false },
+                { "name": "link_type", "description": { "zh": "Optional: current relation type (for unique resolution)", "en": "Optional: current relation type (for unique resolution)" }, "type": "string", "required": false },
+                { "name": "new_link_type", "description": { "zh": "Optional: new relation type", "en": "Optional: new relation type" }, "type": "string", "required": false },
+                { "name": "weight", "description": { "zh": "Optional: new weight 0-1", "en": "Optional: new weight 0-1" }, "type": "number", "required": false },
+                { "name": "description", "description": { "zh": "Optional: new relationship description", "en": "Optional: new relationship description" }, "type": "string", "required": false }
             ]
         },
         {
             "name": "delete_memory_link",
-            "description": { "zh": "删除记忆链接（按 link_id 或 source/target/link_type 定位）。", "en": "Delete a memory link (by link_id or source/target/link_type)." },
+            "description": { "zh": "Delete a memory link (by link_id or source/target/link_type).", "en": "Delete a memory link (by link_id or source/target/link_type)." },
             "parameters": [
-                { "name": "link_id", "description": { "zh": "可选：链接ID", "en": "Optional: link ID" }, "type": "number", "required": false },
-                { "name": "source_title", "description": { "zh": "可选：源记忆标题（未提供 link_id 时使用）", "en": "Optional: source title (used when link_id is not provided)" }, "type": "string", "required": false },
-                { "name": "target_title", "description": { "zh": "可选：目标记忆标题（未提供 link_id 时使用）", "en": "Optional: target title (used when link_id is not provided)" }, "type": "string", "required": false },
-                { "name": "link_type", "description": { "zh": "可选：关系类型（用于唯一定位）", "en": "Optional: relation type (for unique resolution)" }, "type": "string", "required": false }
+                { "name": "link_id", "description": { "zh": "Optional: link ID", "en": "Optional: link ID" }, "type": "number", "required": false },
+                { "name": "source_title", "description": { "zh": "Optional: source title (used when link_id is not provided)", "en": "Optional: source title (used when link_id is not provided)" }, "type": "string", "required": false },
+                { "name": "target_title", "description": { "zh": "Optional: target title (used when link_id is not provided)", "en": "Optional: target title (used when link_id is not provided)" }, "type": "string", "required": false },
+                { "name": "link_type", "description": { "zh": "Optional: relation type (for unique resolution)", "en": "Optional: relation type (for unique resolution)" }, "type": "string", "required": false }
             ]
         },
         {
             "name": "update_user_preferences",
-            "description": { "zh": "覆盖当前角色绑定记忆库的 USER.md。", "en": "Overwrite USER.md for the current character\u0027s bound memory store." },
+            "description": { "zh": "Overwrite USER.md for the current character\u0027s bound memory store.", "en": "Overwrite USER.md for the current character\u0027s bound memory store." },
             "parameters": [
-                { "name": "content", "description": { "zh": "新的 USER.md 内容", "en": "New USER.md content" }, "type": "string", "required": true }
+                { "name": "content", "description": { "zh": "New USER.md content", "en": "New USER.md content" }, "type": "string", "required": true }
             ]
         }
     ]
@@ -212,7 +212,7 @@ const ExtendedMemoryTools = (function () {
             folderPath: params.folder_path,
             tags: params.tags,
         });
-        return { success: typeof result === 'string' && result.length > 0, message: '记忆创建完成', data: result };
+        return { success: typeof result === 'string' && result.length > 0, message: 'Memory created', data: result };
     }
 
     /** Executes this memory operation in the active caller's bound store. */
@@ -229,7 +229,7 @@ const ExtendedMemoryTools = (function () {
             folderPath: params.folder_path,
             tags: params.tags,
         });
-        return { success: typeof result === 'string' && result.length > 0, message: '记忆更新完成', data: result };
+        return { success: typeof result === 'string' && result.length > 0, message: 'Memory updated', data: result };
     }
 
     /** Executes this memory operation in the active caller's bound store. */
@@ -238,7 +238,7 @@ const ExtendedMemoryTools = (function () {
             targetOwnerKey: await getBoundMemoryOwnerKey(),
             title: requireText(params?.title, 'title'),
         });
-        return { success: typeof result === 'string' && result.length > 0, message: '记忆删除完成', data: result };
+        return { success: typeof result === 'string' && result.length > 0, message: 'Memory deleted', data: result };
     }
 
     /** Executes this memory operation in the active caller's bound store. */
@@ -249,7 +249,7 @@ const ExtendedMemoryTools = (function () {
             titles: parseTitles(params?.titles),
             sourceFolderPath: params.source_folder_path,
         });
-        return { success: typeof result === 'string' && result.length > 0, message: '记忆移动完成', data: result };
+        return { success: typeof result === 'string' && result.length > 0, message: 'Memory moved', data: result };
     }
 
     /** Executes this memory operation in the active caller's bound store. */
@@ -262,7 +262,7 @@ const ExtendedMemoryTools = (function () {
             weight: params.weight,
             description: params.description,
         });
-        return { success: !!result, message: '记忆链接创建完成', data: result };
+        return { success: !!result, message: 'Memory link created', data: result };
     }
 
     /** Executes this memory operation in the active caller's bound store. */
@@ -275,7 +275,7 @@ const ExtendedMemoryTools = (function () {
             linkType: params.link_type,
             limit: params.limit,
         });
-        return { success: !!result, message: '记忆链接查询完成', data: result };
+        return { success: !!result, message: 'Memory link query completed', data: result };
     }
 
     /** Executes this memory operation in the active caller's bound store. */
@@ -290,7 +290,7 @@ const ExtendedMemoryTools = (function () {
             weight: params.weight,
             description: params.description,
         });
-        return { success: !!result, message: '记忆链接更新完成', data: result };
+        return { success: !!result, message: 'Memory link updated', data: result };
     }
 
     /** Executes this memory operation in the active caller's bound store. */
@@ -302,7 +302,7 @@ const ExtendedMemoryTools = (function () {
             targetTitle: params.target_title,
             linkType: params.link_type,
         });
-        return { success: typeof result === 'string' ? result.length > 0 : !!result, message: '记忆链接删除完成', data: result };
+        return { success: typeof result === 'string' ? result.length > 0 : !!result, message: 'Memory link deleted', data: result };
     }
 
     /** Executes this memory operation in the active caller's bound store. */
@@ -311,7 +311,7 @@ const ExtendedMemoryTools = (function () {
             targetOwnerKey: await getBoundMemoryOwnerKey(),
             content: requireText(params?.content, 'content'),
         });
-        return { success: typeof result === 'string' && result.length > 0, message: 'USER.md 更新完成', data: result };
+        return { success: typeof result === 'string' && result.length > 0, message: 'USER.md updated', data: result };
     }
 
     /** Completes a tool invocation with its result or reported error. */
@@ -324,7 +324,7 @@ const ExtendedMemoryTools = (function () {
             console.error(`Tool ${func.name} failed unexpectedly`, error);
             complete({
                 success: false,
-                message: `工具执行失败: ${message}`,
+                message: `Tool execution failed: ${message}`,
             });
         }
     }
@@ -333,7 +333,7 @@ const ExtendedMemoryTools = (function () {
     async function main(): Promise<void> {
         complete({
             success: true,
-            message: 'extended_memory_tools 工具包已加载',
+            message: 'extended_memory_tools package loaded',
             data: {
                 tools: [
                     'create_memory',

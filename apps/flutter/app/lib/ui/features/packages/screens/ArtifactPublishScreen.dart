@@ -1700,7 +1700,7 @@ Future<void> _ensureFreshPublishIdentityAvailable({
       (entry) => _normalizePublishTitle(entry.title) == normalizedTitle,
     );
     if (titleConflict) {
-      throw StateError('名字「$displayName」已存在。');
+      throw StateError('The name "$displayName" already exists.');
     }
     final runtimeConflict = entries.any((entry) {
       final existingRuntimePackageId = entry.artifact?.runtimePackageId ?? '';
@@ -1713,7 +1713,7 @@ Future<void> _ensureFreshPublishIdentityAvailable({
               normalizedRuntimePackageId;
     });
     if (runtimeConflict) {
-      throw StateError('ID「$runtimePackageId」已存在。');
+      throw StateError('The ID "$runtimePackageId" already exists.');
     }
   }
 }
@@ -1862,7 +1862,7 @@ String? _normalizeAppVersionOrNull(String value) {
     r'^(\d+)\.(\d+)\.(\d+)(?:\+(\d+))?$',
   ).firstMatch(trimmed);
   if (match == null) {
-    throw StateError('版本格式应为 1.2.3 或 1.2.3+4');
+    throw StateError('Version format should be 1.2.3 or 1.2.3+4');
   }
   final build = match.group(4);
   return build == null
@@ -1875,7 +1875,7 @@ void _validateAppVersionRange(String? minVersion, String? maxVersion) {
     return;
   }
   if (_compareAppVersions(minVersion, maxVersion) > 0) {
-    throw StateError('最低支持版本不能大于最高支持版本');
+    throw StateError('The minimum supported version cannot be greater than the maximum supported version');
   }
 }
 
@@ -1894,7 +1894,7 @@ int _compareAppVersions(String left, String right) {
 List<int> _appVersionParts(String value) {
   final match = RegExp(r'^(\d+)\.(\d+)\.(\d+)(?:\+(\d+))?$').firstMatch(value);
   if (match == null) {
-    throw StateError('版本格式应为 1.2.3 或 1.2.3+4');
+    throw StateError('Version format should be 1.2.3 or 1.2.3+4');
   }
   return <int>[
     int.parse(match.group(1)!),
@@ -1909,7 +1909,7 @@ void _validateStandaloneArtifactRuntimePackageId(String runtimePackageId) {
   if (trimmed.isNotEmpty &&
       _normalizeMarketArtifactId(trimmed) == 'artifact' &&
       trimmed.toLowerCase() != 'artifact') {
-    throw StateError('当前包 ID「$runtimePackageId」无法生成稳定的市场项目 ID。');
+    throw StateError('The current package ID "$runtimePackageId" cannot generate a stable marketplace item ID.');
   }
 }
 
@@ -1998,5 +1998,5 @@ String _formatSupportedAppVersions(String? minVersion, String? maxVersion) {
   if (maxValue.isNotEmpty) {
     return '<= $maxValue';
   }
-  return '未声明';
+  return 'Not declared';
 }

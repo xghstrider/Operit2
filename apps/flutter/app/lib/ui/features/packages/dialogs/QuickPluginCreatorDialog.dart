@@ -45,7 +45,7 @@ class _QuickPluginCreatorDialogState extends State<QuickPluginCreatorDialog> {
     final requirement = _requirementController.text.trim();
     if (requirement.isEmpty) {
       setState(() {
-        _requirementError = '请先输入插件需求';
+        _requirementError = 'Please enter the plugin requirements first';
       });
       return;
     }
@@ -72,7 +72,7 @@ class _QuickPluginCreatorDialogState extends State<QuickPluginCreatorDialog> {
     final colorScheme = Theme.of(context).colorScheme;
     final setupResult = _setupResult;
     return AlertDialog(
-      title: const Text('快速创作你的插件'),
+      title: const Text('Quickly Create Your Plugin'),
       content: SizedBox(
         width: 520,
         child: SingleChildScrollView(
@@ -80,10 +80,10 @@ class _QuickPluginCreatorDialogState extends State<QuickPluginCreatorDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const _DialogSectionTitle('插件需求'),
+              const _DialogSectionTitle('Plugin Requirements'),
               const SizedBox(height: 8),
               Text(
-                '确认后会加入 PackageBuilder skill，并启用 operit_editor 内置包。',
+                'After confirmation, the PackageBuilder skill will be added and the built-in operit_editor package will be enabled.',
                 style: TextStyle(color: colorScheme.onSurfaceVariant),
               ),
               const SizedBox(height: 10),
@@ -93,7 +93,7 @@ class _QuickPluginCreatorDialogState extends State<QuickPluginCreatorDialog> {
                 maxLines: 8,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  hintText: '例如：做一个可以批量整理下载目录图片并生成索引的工具',
+                  hintText: 'For example: a tool that organizes images in the download directory in bulk and generates an index',
                   errorText: _requirementError,
                 ),
                 onChanged: (_) {
@@ -107,7 +107,7 @@ class _QuickPluginCreatorDialogState extends State<QuickPluginCreatorDialog> {
               if (setupResult != null && !setupResult.success) ...<Widget>[
                 const SizedBox(height: 8),
                 Text(
-                  setupResult.error ?? '插件创作环境准备失败',
+                  setupResult.error ?? 'Failed to prepare the plugin creation environment',
                   style: TextStyle(color: colorScheme.error),
                 ),
               ],
@@ -118,13 +118,13 @@ class _QuickPluginCreatorDialogState extends State<QuickPluginCreatorDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: _confirmRunning ? null : () => Navigator.of(context).pop(),
-          child: const Text('取消'),
+          child: const Text('Cancel'),
         ),
         FilledButton(
           onPressed: _confirmRunning ? null : _confirm,
           child: _confirmRunning
               ? const M3LoadingIndicator(size: 16)
-              : const Text('确认'),
+              : const Text('Confirm'),
         ),
       ],
     );

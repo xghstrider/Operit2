@@ -668,7 +668,7 @@ pub fn default_deepseek_model() -> ModelProfile {
     });
     model.builtinToolsOverride = Some(vec![ModelBuiltinTool::disabled(
         BuiltinToolType::WebSearch,
-        "内置联网搜索".to_string(),
+        "Built-in web search".to_string(),
         BuiltinToolRequestFormat::OpenAiWebSearch,
         BuiltinToolExclusivity::CanMixWithExternalTools,
     )]);

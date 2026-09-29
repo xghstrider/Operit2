@@ -35,7 +35,7 @@ function triggerNode(
   triggerType: Trigger["triggerType"] = "manual",
 ): Trigger {
   const node = newNode("trigger", x, y);
-  if (node.type !== "trigger") throw new Error("节点类型不一致");
+  if (node.type !== "trigger") throw new Error("Node type mismatch");
   node.name = name;
   node.triggerType = triggerType;
   return node;
@@ -50,7 +50,7 @@ function executeNode(
   y: number,
 ): Execute {
   const node = newNode("execute", x, y);
-  if (node.type !== "execute") throw new Error("节点类型不一致");
+  if (node.type !== "execute") throw new Error("Node type mismatch");
   node.name = name;
   node.actionType = actionType;
   node.actionConfig = actionConfig;
@@ -60,7 +60,7 @@ function executeNode(
 /** Creates a configured extraction node for deterministic template data. */
 function extractNode(name: string, x: number, y: number): ExtractNode {
   const node = newNode("extract", x, y);
-  if (node.type !== "extract") throw new Error("节点类型不一致");
+  if (node.type !== "extract") throw new Error("Node type mismatch");
   node.name = name;
   return node;
 }
@@ -68,7 +68,7 @@ function extractNode(name: string, x: number, y: number): ExtractNode {
 /** Creates a configured condition node for a template branch. */
 function conditionNode(name: string, x: number, y: number): Condition {
   const node = newNode("condition", x, y);
-  if (node.type !== "condition") throw new Error("节点类型不一致");
+  if (node.type !== "condition") throw new Error("Node type mismatch");
   node.name = name;
   return node;
 }
@@ -76,19 +76,19 @@ function conditionNode(name: string, x: number, y: number): Condition {
 /** Creates a configured logic node for combining condition outputs. */
 function logicNode(name: string, x: number, y: number): Logic {
   const node = newNode("logic", x, y);
-  if (node.type !== "logic") throw new Error("节点类型不一致");
+  if (node.type !== "logic") throw new Error("Node type mismatch");
   node.name = name;
   return node;
 }
 
 /** Builds a manual notification workflow. */
 function manualNotification(): Workflow {
-  const workflow = newWorkflow("手动通知", "手动触发后发送一条系统通知。");
-  const trigger = triggerNode("手动触发", 60, 80);
+  const workflow = newWorkflow("Manual Notification", "Sends a system notification after a manual trigger.");
+  const trigger = triggerNode("Manual Trigger", 60, 80);
   const notification = executeNode(
-    "发送通知",
+    "Send Notification",
     "send_notification",
-    { title: { value: "工作流" }, message: { value: "工作流已执行" } },
+    { title: { value: "Workflow" }, message: { value: "Workflow executed" } },
     300,
     80,
   );
@@ -100,22 +100,22 @@ function manualNotification(): Workflow {
 /** Builds a graph that demonstrates true and false branches. */
 function randomConditionBranch(): Workflow {
   const workflow = newWorkflow(
-    "随机数条件分支",
-    "生成随机数，比较大小，并沿 true / false 连线显示不同结果；不调用外部工具。",
+    "Random Number Condition Branch",
+    "Generates a random number, compares its size, and shows different results along the true / false edges; does not call external tools.",
   );
-  const trigger = triggerNode("手动触发", 60, 100);
-  const random = extractNode("随机数 0–100", 280, 100);
+  const trigger = triggerNode("Manual Trigger", 60, 100);
+  const random = extractNode("Random Number 0–100", 280, 100);
   random.mode = "RANDOM_INT";
-  const condition = conditionNode("大于等于 50", 500, 100);
+  const condition = conditionNode("Greater Than or Equal to 50", 500, 100);
   condition.left = { nodeId: random.id };
   condition.operator = "GTE";
   condition.right = { value: "50" };
-  const yes = extractNode("较大的数", 740, 40);
+  const yes = extractNode("Larger Number", 740, 40);
   yes.mode = "CONCAT";
-  yes.source = { value: "数值 ≥ 50" };
-  const no = extractNode("较小的数", 740, 180);
+  yes.source = { value: "Value ≥ 50" };
+  const no = extractNode("Smaller Number", 740, 180);
   no.mode = "CONCAT";
-  no.source = { value: "数值 < 50" };
+  no.source = { value: "Value < 50" };
   workflow.nodes = [trigger, random, condition, yes, no];
   workflow.connections = [
     connect(trigger, random),
@@ -129,28 +129,28 @@ function randomConditionBranch(): Workflow {
 /** Builds the old web-key extraction and conditional-link workflow. */
 function webKeywordBranch(): Workflow {
   const workflow = newWorkflow(
-    "网页关键字分支",
-    "访问网页后提取 Visit key；页面包含 Example Domain 时继续打开第一个链接，否则访问备用页面。",
+    "Web Keyword Branch",
+    "After visiting the web page, extract the Visit key; if the page contains Example Domain, continue to open the first link, otherwise visit the fallback page.",
   );
-  const trigger = triggerNode("手动触发", 40, 120);
+  const trigger = triggerNode("Manual Trigger", 40, 120);
   const visit = executeNode(
-    "访问网页",
+    "Visit Web Page",
     "visit_web",
     { url: { value: "https://example.com" } },
     260,
     120,
   );
-  const visitKey = extractNode("提取 Visit key", 480, 120);
+  const visitKey = extractNode("Extract Visit key", 480, 120);
   visitKey.mode = "REGEX";
   visitKey.source = { nodeId: visit.id };
   visitKey.expression = "Visit key:\\s*([^\\s]+)";
   visitKey.group = 1;
-  const condition = conditionNode("包含 Example Domain", 700, 120);
+  const condition = conditionNode("Contains Example Domain", 700, 120);
   condition.left = { nodeId: visit.id };
   condition.operator = "CONTAINS";
   condition.right = { value: "Example Domain" };
   const follow = executeNode(
-    "打开第一个链接",
+    "Open First Link",
     "visit_web",
     {
       visit_key: { nodeId: visitKey.id },
@@ -160,7 +160,7 @@ function webKeywordBranch(): Workflow {
     40,
   );
   const fallback = executeNode(
-    "访问备用页面",
+    "Visit Fallback Page",
     "visit_web",
     { url: { value: "https://example.org" } },
     940,
@@ -180,31 +180,31 @@ function webKeywordBranch(): Workflow {
 /** Builds a pure extraction chain that demonstrates output references. */
 function extractionPipeline(): Workflow {
   const workflow = newWorkflow(
-    "数据提取流水线",
-    "用固定值演示字符串拼接、截取和节点输出引用，最后显示处理结果。",
+    "Data Extraction Pipeline",
+    "Demonstrates string concatenation, substring extraction, and node output references with fixed values, then shows the processed result.",
   );
-  const trigger = triggerNode("手动触发", 40, 120);
-  const text = extractNode("固定文本", 260, 40);
+  const trigger = triggerNode("Manual Trigger", 40, 120);
+  const text = extractNode("Fixed Text", 260, 40);
   text.mode = "RANDOM_STRING";
   text.useFixed = true;
   text.fixedValue = "Operit";
   text.randomStringLength = 6;
   text.randomStringCharset = "Operit";
-  const number = extractNode("固定数字", 260, 200);
+  const number = extractNode("Fixed Number", 260, 200);
   number.mode = "RANDOM_INT";
   number.useFixed = true;
   number.fixedValue = "42";
-  const joined = extractNode("拼接结果", 500, 120);
+  const joined = extractNode("Concatenated Result", 500, 120);
   joined.mode = "CONCAT";
   joined.source = { nodeId: text.id };
   joined.others = [{ value: "-" }, { nodeId: number.id }];
-  const preview = extractNode("截取预览", 720, 120);
+  const preview = extractNode("Substring Preview", 720, 120);
   preview.mode = "SUB";
   preview.source = { nodeId: joined.id };
   preview.startIndex = 0;
   preview.length = 8;
   const show = executeNode(
-    "显示结果",
+    "Show Result",
     "toast",
     { message: { nodeId: preview.id } },
     940,
@@ -225,15 +225,15 @@ function extractionPipeline(): Workflow {
 /** Builds the old multi-condition AND branch with deterministic inputs. */
 function logicAndBranch(): Workflow {
   const workflow = newWorkflow(
-    "逻辑与分支",
-    "两个条件同时满足时发送成功通知，否则发送未满足通知。",
+    "Logic AND Branch",
+    "Sends a success notification when both conditions are satisfied; otherwise sends a not-satisfied notification.",
   );
-  const trigger = triggerNode("手动触发", 40, 120);
-  const firstValue = extractNode("条件值 A", 260, 40);
+  const trigger = triggerNode("Manual Trigger", 40, 120);
+  const firstValue = extractNode("Condition Value A", 260, 40);
   firstValue.mode = "RANDOM_INT";
   firstValue.useFixed = true;
   firstValue.fixedValue = "80";
-  const secondValue = extractNode("条件值 B", 260, 200);
+  const secondValue = extractNode("Condition Value B", 260, 200);
   secondValue.mode = "RANDOM_INT";
   secondValue.useFixed = true;
   secondValue.fixedValue = "60";
@@ -245,19 +245,19 @@ function logicAndBranch(): Workflow {
   second.left = { nodeId: secondValue.id };
   second.operator = "GTE";
   second.right = { value: "50" };
-  const all = logicNode("全部满足", 700, 120);
+  const all = logicNode("All Satisfied", 700, 120);
   all.operator = "AND";
   const success = executeNode(
-    "发送成功通知",
+    "Send Success Notification",
     "toast",
-    { message: { value: "两个条件均满足" } },
+    { message: { value: "Both conditions are satisfied" } },
     940,
     40,
   );
   const failure = executeNode(
-    "发送失败通知",
+    "Send Failure Notification",
     "toast",
-    { message: { value: "条件未全部满足" } },
+    { message: { value: "Not all conditions are satisfied" } },
     940,
     200,
   );
@@ -278,10 +278,10 @@ function logicAndBranch(): Workflow {
 /** Builds a scheduled chat workflow that proactively sends a message through the host. */
 function proactiveAiMessage(): Workflow {
   const workflow = newWorkflow(
-    "AI 主动发消息（定时）",
-    "每天 09:00 打开悬浮聊天并向 AI 发送一条主动消息；导入后默认停用，请确认内容和时间后启用。",
+    "AI Proactive Message (Scheduled)",
+    "At 09:00 every day, opens the floating chat and sends a proactive message to the AI; disabled by default after import. Please review the content and time before enabling.",
   );
-  const trigger = triggerNode("每天 09:00", 40, 120, "schedule");
+  const trigger = triggerNode("Daily 09:00", 40, 120, "schedule");
   trigger.triggerConfig = {
     schedule_type: "cron",
     cron_expression: "0 9 * * *",
@@ -289,24 +289,24 @@ function proactiveAiMessage(): Workflow {
     repeat: "true",
   };
   const start = executeNode(
-    "启动聊天服务",
+    "Start Chat Service",
     "start_chat_service",
     { initial_mode: { value: "WINDOW" }, keep_if_exists: { value: "true" } },
     280,
     120,
   );
   const create = executeNode(
-    "创建工作流会话",
+    "Create Workflow Conversation",
     "create_new_chat",
     { group: { value: "workflow" }, set_as_current_chat: { value: "true" } },
     520,
     120,
   );
   const send = executeNode(
-    "发送主动消息",
+    "Send Proactive Message",
     "send_message_to_ai",
     {
-      message: { value: "早上好，请主动告诉我今天最值得关注的一件事。" },
+      message: { value: "Good morning. Please proactively tell me the one thing most worth paying attention to today." },
       runtime: { value: "floating" },
       persist_turn: { value: "true" },
     },

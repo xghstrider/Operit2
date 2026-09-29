@@ -101,7 +101,7 @@ class _PluginDetailsDialogState extends State<PluginDetailsDialog> {
       }
       if (!success) {
         setState(() {
-          _toggleError = '子包状态切换失败：${subpackage.packageName}';
+          _toggleError = 'Failed to toggle subpackage status: ${subpackage.packageName}';
         });
       }
       await _loadDetails();
@@ -166,7 +166,7 @@ class _PluginDetailsDialogState extends State<PluginDetailsDialog> {
               _DescriptionText(description),
               if (widget.plugin.dependencyIssues.isNotEmpty) ...<Widget>[
                 const SizedBox(height: 16),
-                const _SectionTitle(text: '前置插件错误'),
+                const _SectionTitle(text: 'Dependency Plugin Errors'),
                 const SizedBox(height: 8),
                 for (final issue in widget.plugin.dependencyIssues)
                   _ModuleTile(
@@ -183,7 +183,7 @@ class _PluginDetailsDialogState extends State<PluginDetailsDialog> {
                         if (issue.requiredMaxVersion != null)
                           _SmallBadge(text: '<= ${issue.requiredMaxVersion}'),
                         if (issue.installedVersion != null)
-                          _SmallBadge(text: '当前 v${issue.installedVersion}'),
+                          _SmallBadge(text: 'Current v${issue.installedVersion}'),
                       ],
                     ),
                   ),
@@ -268,7 +268,7 @@ class _PluginDetailsDialogState extends State<PluginDetailsDialog> {
                         ? FilledButton.tonalIcon(
                             onPressed: () => widget.onOpenUi(module.routeId),
                             icon: const Icon(Icons.open_in_new, size: 18),
-                            label: const Text('打开'),
+                            label: const Text('Open'),
                             style: FilledButton.styleFrom(
                               visualDensity: VisualDensity.compact,
                               padding: const EdgeInsets.symmetric(
@@ -338,7 +338,7 @@ class _PluginDetailsDialogState extends State<PluginDetailsDialog> {
           OutlinedButton.icon(
             onPressed: widget.onDeletePackage,
             icon: const Icon(Icons.delete_outline),
-            label: const Text('删除'),
+            label: const Text('Delete'),
             style: OutlinedButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
@@ -347,7 +347,7 @@ class _PluginDetailsDialogState extends State<PluginDetailsDialog> {
           OutlinedButton.icon(
             onPressed: () => widget.onOpenUi(null),
             icon: const Icon(Icons.open_in_new_outlined),
-            label: const Text('打开'),
+            label: const Text('Open'),
           ),
       ],
     );
@@ -357,10 +357,10 @@ class _PluginDetailsDialogState extends State<PluginDetailsDialog> {
 /// Provides a user-facing explanation for one structured ToolPkg dependency issue.
 String _dependencyIssueDescription(core_proxy.ToolPkgDependencyIssue issue) {
   return switch (issue.code) {
-    'missing' => '未安装此前置插件。',
-    'disabled' => '此前置插件已安装，但当前未启用。',
-    'version_incompatible' => '此前置插件的版本不满足 manifest 声明的版本范围。',
-    'load_order' => '此前置插件必须排在当前插件之前加载。',
+    'missing' => 'This dependency plugin is not installed.',
+    'disabled' => 'This dependency plugin is installed but not currently enabled.',
+    'version_incompatible' => 'The version of this dependency plugin does not satisfy the range declared in the manifest.',
+    'load_order' => 'This dependency plugin must be loaded before the current plugin.',
     _ => throw StateError(
       'Unsupported ToolPkg dependency issue code: ${issue.code}',
     ),
@@ -370,10 +370,10 @@ String _dependencyIssueDescription(core_proxy.ToolPkgDependencyIssue issue) {
 /// Provides a compact label for one structured ToolPkg dependency issue.
 String _dependencyIssueStatus(core_proxy.ToolPkgDependencyIssue issue) {
   return switch (issue.code) {
-    'missing' => '未安装',
-    'disabled' => '未启用',
-    'version_incompatible' => '版本不兼容',
-    'load_order' => '加载顺序错误',
+    'missing' => 'Not installed',
+    'disabled' => 'Not enabled',
+    'version_incompatible' => 'Version incompatible',
+    'load_order' => 'Load order error',
     _ => throw StateError(
       'Unsupported ToolPkg dependency issue code: ${issue.code}',
     ),
@@ -535,7 +535,7 @@ class PackageDetailsDialog extends StatelessWidget {
           OutlinedButton.icon(
             onPressed: onDeletePackage,
             icon: const Icon(Icons.delete_outline),
-            label: const Text('删除'),
+            label: const Text('Delete'),
             style: OutlinedButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
@@ -560,7 +560,7 @@ class _ToolTile extends StatelessWidget {
       trailing: FilledButton.tonalIcon(
         onPressed: onRun,
         icon: const Icon(Icons.play_arrow, size: 18),
-        label: const Text('运行'),
+        label: const Text('Run'),
         style: FilledButton.styleFrom(
           visualDensity: VisualDensity.compact,
           padding: const EdgeInsets.symmetric(horizontal: 10),

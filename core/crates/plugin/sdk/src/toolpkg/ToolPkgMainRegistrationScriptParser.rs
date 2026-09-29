@@ -588,8 +588,8 @@ mod tests {
             coreCommands: vec![r#"{
                     "id":"hello_command",
                     "name":"hello",
-                    "title":{"en":"Hello","zh":"你好"},
-                    "description":{"en":"Greets the user","zh":"问候用户"},
+                    "title":{"en":"Hello","zh":"Hello"},
+                    "description":{"en":"Greets the user","zh":"Greets the user"},
                     "usage":"/hello <name>",
                     "function":"runHello"
                 }"#

@@ -389,7 +389,7 @@ fn parse_user_message_content(content: &str) -> UserMessageParseResult {
     let workspace_ranges = ChatMarkupRegex::workspace_attachment_ranges(&cleaned_content);
     if let Some((start, end)) = workspace_ranges.first().copied() {
         trailing_attachments.push(UserAttachmentData {
-            file_name: "工作区状态".to_string(),
+            file_name: "Workspace Status".to_string(),
             mime_type: "application/vnd.workspace-context+xml".to_string(),
             file_size: (end - start) as i64,
         });
@@ -905,11 +905,11 @@ mod tests {
     #[test]
     fn user_message_workspace_attachment_is_rendered_as_attachment_chip() {
         let parsed =
-            parse_user_message_content("你好 <workspace_attachment></workspace_attachment>");
+            parse_user_message_content("Hello <workspace_attachment></workspace_attachment>");
 
-        assert_eq!(parsed.processed_text, "你好");
+        assert_eq!(parsed.processed_text, "Hello");
         assert_eq!(parsed.trailing_attachments.len(), 1);
-        assert_eq!(parsed.trailing_attachments[0].file_name, "工作区状态");
+        assert_eq!(parsed.trailing_attachments[0].file_name, "Workspace Status");
         assert_eq!(
             parsed.trailing_attachments[0].mime_type,
             "application/vnd.workspace-context+xml"
@@ -920,7 +920,7 @@ mod tests {
     fn user_message_workspace_attachment_is_rendered_above_user_card() {
         let mut user = ChatMessage::new_with_markdown_timestamp(
             "user".to_string(),
-            "你好 <workspace_attachment></workspace_attachment>".to_string(),
+            "Hello <workspace_attachment></workspace_attachment>".to_string(),
             1,
         );
         user.roleName = String::new();
@@ -936,7 +936,7 @@ mod tests {
         );
         let rendered = dump_logical_lines(&lines);
 
-        let attachment_index = rendered.find("[工作区状态]").expect("attachment chip");
+        let attachment_index = rendered.find("[Workspace Status]").expect("attachment chip");
         let prompt_index = rendered.find("Prompt").expect("prompt header");
         assert!(attachment_index < prompt_index);
         assert!(!rendered.contains("<workspace_attachment"));
@@ -948,7 +948,7 @@ mod tests {
         let block_style = message_block_style("user");
         let attachment_line = render_attachment_chip_lines(
             &[UserAttachmentData {
-                file_name: "工作区状态".to_string(),
+                file_name: "Workspace Status".to_string(),
                 mime_type: "application/vnd.workspace-context+xml".to_string(),
                 file_size: 1,
             }],
@@ -968,7 +968,7 @@ mod tests {
     fn ai_thinking_block_is_collapsed_in_transcript() {
         let mut ai = ChatMessage::new_with_markdown_timestamp(
             "ai".to_string(),
-            "<thinking>内部推理</thinking>\n你好！".to_string(),
+            "<thinking>Internal reasoning</thinking>\nHello!".to_string(),
             1,
         );
         ai.provider = "DEEPSEEK".to_string();
@@ -985,9 +985,9 @@ mod tests {
         );
         let rendered = dump_logical_lines(&lines);
 
-        assert!(rendered.contains("你好"));
+        assert!(rendered.contains("Hello"));
         assert!(rendered.contains("Thinking Process"));
-        assert!(!rendered.contains("内部推理"));
+        assert!(!rendered.contains("Internal reasoning"));
         assert!(!rendered.contains("<thinking>"));
     }
 
@@ -995,7 +995,7 @@ mod tests {
     fn streaming_open_thinking_block_shows_thinking_content() {
         let ai = ChatMessage::new_with_markdown_timestamp(
             "ai".to_string(),
-            "<thinking>内部推理".to_string(),
+            "<thinking>Internal reasoning".to_string(),
             1,
         );
         let mut typewriter_state = TypewriterState::default();
@@ -1011,14 +1011,14 @@ mod tests {
         let rendered = dump_logical_lines(&lines);
 
         assert!(rendered.contains("Thinking Process"));
-        assert!(rendered.contains("内部推理"));
+        assert!(rendered.contains("Internal reasoning"));
     }
 
     #[test]
     fn closed_thinking_keeps_process_title_while_message_still_streams() {
         let ai = ChatMessage::new_with_markdown_timestamp(
             "ai".to_string(),
-            "<thinking>内部推理</thinking>\n你好".to_string(),
+            "<thinking>Internal reasoning</thinking>\nHello".to_string(),
             1,
         );
         let mut typewriter_state = TypewriterState::default();
@@ -1035,8 +1035,8 @@ mod tests {
 
         assert!(rendered.contains("Thinking Process"));
         assert!(!rendered.contains("sweep-title"));
-        assert!(!rendered.contains("内部推理"));
-        assert!(rendered.contains("你好"));
+        assert!(!rendered.contains("Internal reasoning"));
+        assert!(rendered.contains("Hello"));
     }
 
     #[test]
@@ -1098,12 +1098,12 @@ mod tests {
     #[ignore = "debug-only TUI preview; run with --ignored --nocapture"]
     fn tui_user_card_preview() {
         let mut user =
-            ChatMessage::new_with_markdown_timestamp("user".to_string(), "你好".to_string(), 1);
+            ChatMessage::new_with_markdown_timestamp("user".to_string(), "Hello".to_string(), 1);
         user.roleName = String::new();
 
         let mut ai = ChatMessage::new_with_markdown_timestamp(
             "ai".to_string(),
-            "你好！\n我是Operit，一个全能AI助手，很高兴为你服务！\n\n我可以帮你完成各种任务，比如：\n- 文件管理 - 浏览、创建、编辑、删除文件\n- 网页访问 - 查看网页内容、下载文件\n- 代码搜索 - 在项目中查找特定代码\n有什么我可以帮你的吗？"
+            "Hello!\nI am Operit, an all-in-one AI assistant, and I am glad to serve you!\n\nI can help you with all kinds of tasks, such as:\n- File management - browse, create, edit, and delete files\n- Web access - view web page content and download files\n- Code search - find specific code in your project\nWhat can I help you with?"
                 .to_string(),
             2,
         );

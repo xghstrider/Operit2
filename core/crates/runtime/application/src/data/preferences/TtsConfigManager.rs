@@ -566,7 +566,7 @@ fn findAvailableTtsVoice(
 fn defaultSystemTtsConfig(now: i64) -> TtsConfig {
     TtsConfig {
         id: DEFAULT_SYSTEM_TTS_CONFIG_ID.to_string(),
-        name: "系统 TTS".to_string(),
+        name: "System TTS".to_string(),
         providerType: TtsProviderType::SYSTEM_TTS.to_string(),
         endpoint: String::new(),
         apiKey: String::new(),

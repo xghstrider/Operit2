@@ -137,10 +137,10 @@ class PackageManager {
             result.lastUpdateTime = lastUpdateMatch[1];
         }
 
-        // Extract activities - 改进的活动提取正则表达式
+        // Extract activities - improved activity extraction regex
         const activityLines = output.split('\n');
         for (const line of activityLines) {
-            // 寻找活动定义行，形如：12a2137 com.tencent.mobileqq/.activity.JumpActivity filter 9e4da28
+            // Find activity definition lines like: 12a2137 com.tencent.mobileqq/.activity.JumpActivity filter 9e4da28
             const activityMatch = line.match(/\s+([0-9a-f]+)\s+([\w.]+\/)?([\w.]+)\s+filter/);
             if (activityMatch) {
                 const packagePart = activityMatch[2] ? activityMatch[2].replace('/', '') : packageName;
@@ -152,7 +152,7 @@ class PackageManager {
                 }
             }
 
-            // 另一种格式：com.tencent.mobileqq.activity.SplashActivity
+            // Another format: com.tencent.mobileqq.activity.SplashActivity
             const directActivityMatch = line.match(/\s+([\w.]+)\/([\w.]+)/);
             if (directActivityMatch && !activityMatch) {
                 const activityName = directActivityMatch[2];
@@ -162,7 +162,7 @@ class PackageManager {
             }
         }
 
-        // 尝试从 Activity Resolver Table 部分提取活动
+        // Try to extract activities from the Activity Resolver Table section
         const activityTableMatch = output.match(/Activity Resolver Table:[\s\S]+?Non-Data Actions:/);
         if (activityTableMatch) {
             const activityTable = activityTableMatch[0];
@@ -178,13 +178,13 @@ class PackageManager {
             }
         }
 
-        // 查找主活动（通常与 LAUNCHER 类别关联）
+        // Find the main activity (usually associated with the LAUNCHER category)
         const launcherActivityMatch = output.match(/Category: "android\.intent\.category\.LAUNCHER"[\s\S]+?([a-zA-Z0-9_.]+)\/([a-zA-Z0-9_.]+)/);
         if (launcherActivityMatch && launcherActivityMatch[2]) {
             const launcherActivity = launcherActivityMatch[2].startsWith('.') ?
                 `${packageName}${launcherActivityMatch[2]}` : launcherActivityMatch[2];
 
-            // 将主活动放在列表的第一位
+            // Put the main activity first in the list
             if (!result.activities.includes(launcherActivity)) {
                 result.activities.unshift(launcherActivity);
             } else {

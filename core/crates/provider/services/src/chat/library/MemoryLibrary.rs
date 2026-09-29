@@ -121,7 +121,7 @@ impl MemoryLibrary {
                         )
                         .await;
                         if let Err(error) = result {
-                            AppLogger::e(TAG, &format!("保存记忆失败: {error}"));
+                            AppLogger::e(TAG, &format!("Failed to save memory: {error}"));
                         }
                     })
                 }),
@@ -543,7 +543,7 @@ fn buildCandidateSearchQuery(query: &str, solution: &str) -> String {
 #[allow(non_snake_case)]
 fn extractCoreQuestionText(rawQuery: &str) -> String {
     let compact = rawQuery.replace("\r\n", "\n");
-    let cn = Regex::new(r"(?s)问题\s*[：:]\s*(.+?)(?:\n\s*解决方案\s*[：:]|\z)")
+    let cn = Regex::new(r"(?s)Question\s*:\s*(.+?)(?:\n\s*Solution\s*:|\z)")
         .expect("memory regex must compile")
         .captures(&compact)
         .and_then(|captures| {
@@ -564,7 +564,7 @@ fn extractCoreQuestionText(rawQuery: &str) -> String {
         .lines()
         .filter(|line| {
             let trimmed = line.trim_start();
-            !trimmed.starts_with("历史记录:") && !trimmed.starts_with("History:")
+            !trimmed.starts_with("History:") && !trimmed.starts_with("History:")
         })
         .collect::<Vec<_>>()
         .join("\n");
@@ -646,9 +646,9 @@ fn buildAnalysisMessage(
         message.push_str(&solution.chars().take(3000).collect::<String>());
         message.push_str("\n\n");
     } else {
-        message.push_str("问题：\n");
+        message.push_str("Question:\n");
         message.push_str(query);
-        message.push_str("\n\n解决方案：\n");
+        message.push_str("\n\nSolution:\n");
         message.push_str(&solution.chars().take(3000).collect::<String>());
         message.push_str("\n\n");
     }
@@ -665,7 +665,7 @@ fn buildAnalysisMessage(
         message.push_str(if useEnglish {
             "History:\n"
         } else {
-            "历史记录：\n"
+            "History:\n"
         });
         for (index, (role, content)) in recentHistory.iter().enumerate() {
             message.push_str(&format!(
@@ -834,7 +834,7 @@ fn pruneToolResultContent(message: &str) -> String {
             .map(|index| index + 1)
             .unwrap_or(block.raw.len());
         output.push_str(&block.raw[..openEnd]);
-        output.push_str("[工具结果已省略]");
+        output.push_str("[Tool results omitted]");
         output.push_str(&format!("</{}>", block.tag_name));
         cursor = block.end;
     }

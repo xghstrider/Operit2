@@ -111,8 +111,8 @@ class NetworkErrorSummary {
 
     if (statusCode == 400) {
       return NetworkErrorSummary(
-        title: '请求参数有误',
-        message: '服务端拒绝了这次模型列表请求，请检查服务地址和供应商是否匹配。',
+        title: 'Invalid Request Parameters',
+        message: 'The server rejected this model list request. Please check that the service address and the provider match.',
         detail: remoteMessage,
         icon: Icons.tune_rounded,
       );
@@ -120,8 +120,8 @@ class NetworkErrorSummary {
 
     if (statusCode == 401) {
       return NetworkErrorSummary(
-        title: '密钥验证失败',
-        message: '访问密钥没有通过供应商验证，请重新粘贴完整密钥后再拉取模型。',
+        title: 'API Key Verification Failed',
+        message: 'The access API key failed provider verification. Please paste the full key again and fetch the models.',
         detail: remoteMessage,
         icon: Icons.key_off_rounded,
       );
@@ -129,8 +129,8 @@ class NetworkErrorSummary {
 
     if (statusCode == 403) {
       return NetworkErrorSummary(
-        title: '没有访问权限',
-        message: '当前密钥无权访问该供应商接口，请确认账号权限和模型服务开通状态。',
+        title: 'No Access Permission',
+        message: 'The current API key is not allowed to access this provider API. Please confirm the account permissions and that the model service is enabled.',
         detail: remoteMessage,
         icon: Icons.lock_outline_rounded,
       );
@@ -138,8 +138,8 @@ class NetworkErrorSummary {
 
     if (statusCode == 404) {
       return NetworkErrorSummary(
-        title: '服务地址不可用',
-        message: '当前服务地址没有找到模型列表接口，请检查地址路径是否正确。',
+        title: 'Service Address Unavailable',
+        message: 'No model list endpoint was found at the current service address. Please check that the address path is correct.',
         detail: remoteMessage,
         icon: Icons.link_off_rounded,
       );
@@ -147,8 +147,8 @@ class NetworkErrorSummary {
 
     if (statusCode == 429) {
       return NetworkErrorSummary(
-        title: '请求过于频繁',
-        message: '供应商限制了当前请求频率，请稍后再拉取模型。',
+        title: 'Too Many Requests',
+        message: 'The provider has rate-limited the current requests. Please try fetching models again later.',
         detail: remoteMessage,
         icon: Icons.hourglass_top_rounded,
       );
@@ -156,8 +156,8 @@ class NetworkErrorSummary {
 
     if (statusCode != null && statusCode >= 500) {
       return NetworkErrorSummary(
-        title: '供应商服务异常',
-        message: '供应商暂时无法处理模型列表请求，请稍后再试。',
+        title: 'Provider Service Error',
+        message: 'The provider is temporarily unable to process the model list request. Please try again later.',
         detail: remoteMessage,
         icon: Icons.cloud_off_rounded,
       );
@@ -165,8 +165,8 @@ class NetworkErrorSummary {
 
     if (details?.variant == 'ModelListFetch') {
       return NetworkErrorSummary(
-        title: '模型列表拉取失败',
-        message: '没有拿到供应商返回的模型列表，请检查服务地址、访问密钥和网络连接。',
+        title: 'Failed to Fetch Model List',
+        message: 'The model list was not received from the provider. Please check the service address, access API key, and network connection.',
         detail: remoteMessage,
         icon: Icons.wifi_off_rounded,
       );
@@ -174,8 +174,8 @@ class NetworkErrorSummary {
 
     if (details?.kind == 'network') {
       return NetworkErrorSummary(
-        title: '网络连接失败',
-        message: '无法连接到模型供应商，请检查网络连接和服务地址。',
+        title: 'Network Connection Failed',
+        message: 'Unable to connect to the model provider. Please check the network connection and service address.',
         detail: remoteMessage,
         icon: Icons.wifi_off_rounded,
       );
@@ -186,15 +186,15 @@ class NetworkErrorSummary {
       final modelId = duplicateDetails.stringField('modelId')!;
       final providerName = duplicateDetails.stringField('providerName')!;
       return NetworkErrorSummary(
-        title: '模型已存在',
-        message: '模型“$modelId”已添加到供应商“$providerName”。',
+        title: 'Model Already Exists',
+        message: 'Model "$modelId" has already been added to provider "$providerName".',
         icon: Icons.info_outline_rounded,
       );
     }
 
     return NetworkErrorSummary(
-      title: '模型配置失败',
-      message: '拉取可用模型时出现异常，请检查供应商、服务地址和访问密钥。',
+      title: 'Model Configuration Failed',
+      message: 'An exception occurred while fetching available models. Please check the provider, service address, and access API key.',
       detail: remoteMessage,
       icon: Icons.error_outline_rounded,
     );

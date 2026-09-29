@@ -590,12 +590,12 @@ impl ModelConfigManager {
         jsonContent: &str,
     ) -> Result<ModelConfigImportResult, String> {
         if jsonContent.trim().is_empty() {
-            return Err("模型配置备份内容不能为空".to_string());
+            return Err("Model config backup content cannot be empty".to_string());
         }
         let providers = serde_json::from_str::<Vec<ProviderProfile>>(jsonContent)
-            .map_err(|error| format!("模型配置备份 JSON 格式错误：{error}"))?;
+            .map_err(|error| format!("Invalid model config backup JSON format: {error}"))?;
         if providers.is_empty() {
-            return Err("模型配置备份不包含任何配置".to_string());
+            return Err("The model config backup contains no configurations".to_string());
         }
 
         let mut importedProviderIds = HashSet::new();
@@ -603,23 +603,23 @@ impl ModelConfigManager {
         for provider in &providers {
             let providerId = provider.id.trim();
             if providerId.is_empty() {
-                return Err("模型配置备份包含缺少 ID 的配置".to_string());
+                return Err("The model config backup contains a configuration missing an ID".to_string());
             }
             if !importedProviderIds.insert(providerId) {
-                return Err(format!("模型配置备份包含重复 ID：{providerId}"));
+                return Err(format!("The model config backup contains a duplicate ID: {providerId}"));
             }
 
             let providerName = provider.name.trim();
             if providerName.is_empty() {
-                return Err(format!("模型配置备份中的配置「{providerId}」缺少名称"));
+                return Err(format!("Configuration \"{providerId}\" in the model config backup is missing a name"));
             }
             if !importedProviderNames.insert(providerName) {
-                return Err(format!("模型配置备份包含重复名称：{providerName}"));
+                return Err(format!("The model config backup contains a duplicate name: {providerName}"));
             }
 
             if provider.providerTypeId != provider.providerType.name() {
                 return Err(format!(
-                    "模型配置备份中的配置「{providerName}」类型不一致：{} 与 {}",
+                    "Configuration \"{providerName}\" in the model config backup has inconsistent types: {} and {}",
                     provider.providerTypeId,
                     provider.providerType.name(),
                 ));
@@ -630,12 +630,12 @@ impl ModelConfigManager {
                 let modelId = model.id.trim();
                 if modelId.is_empty() {
                     return Err(format!(
-                        "模型配置备份中的配置「{providerName}」包含缺少 ID 的模型"
+                        "Configuration \"{providerName}\" in the model config backup contains a model missing an ID"
                     ));
                 }
                 if !modelIds.insert(modelId) {
                     return Err(format!(
-                        "模型配置备份中的配置「{providerName}」包含重复模型 ID：{modelId}"
+                        "Configuration \"{providerName}\" in the model config backup contains a duplicate model ID: {modelId}"
                     ));
                 }
             }
@@ -679,7 +679,7 @@ impl ModelConfigManager {
                     total: newCount + updatedCount,
                 })
             })
-            .map_err(|error: ModelConfigError| format!("模型配置备份恢复失败：{error}"))
+            .map_err(|error: ModelConfigError| format!("Failed to restore the model config backup: {error}"))
     }
 
     /// Resolves a model profile against its owning provider profile.

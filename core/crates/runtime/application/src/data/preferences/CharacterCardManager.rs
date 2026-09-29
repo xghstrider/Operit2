@@ -409,7 +409,7 @@ impl CharacterCardManager {
             promptTags,
         };
         serde_json::to_string_pretty(&backup)
-            .map_err(|error| format!("导出角色卡备份失败：{error}"))
+            .map_err(|error| format!("Failed to export the character card backup: {error}"))
     }
 
     /// Imports character cards and prompt tags from backup JSON.
@@ -419,10 +419,10 @@ impl CharacterCardManager {
         jsonContent: &str,
     ) -> Result<CharacterCardImportResult, String> {
         if jsonContent.trim().is_empty() {
-            return Err("角色卡备份内容不能为空".to_string());
+            return Err("Character card backup content cannot be empty".to_string());
         }
         let backupInput = serde_json::from_str::<CharacterCardsBackupInput>(jsonContent)
-            .map_err(|error| format!("角色卡备份 JSON 格式错误：{error}"))?;
+            .map_err(|error| format!("Invalid character card backup JSON format: {error}"))?;
         let backup = match backupInput {
             CharacterCardsBackupInput::BackupFile(backup) => backup,
             CharacterCardsBackupInput::CharacterCards(characterCards) => CharacterCardsBackupFile {
@@ -490,9 +490,9 @@ impl CharacterCardManager {
     #[allow(non_snake_case)]
     pub fn createCharacterCardFromTavernJson(&self, jsonString: &str) -> Result<String, String> {
         let tavernCard = serde_json::from_str::<TavernCharacterCard>(jsonString)
-            .map_err(|error| format!("角色卡 JSON 格式错误：{error}"))?;
+            .map_err(|error| format!("Invalid character card JSON format: {error}"))?;
         if tavernCard.data.name.trim().is_empty() {
-            return Err("角色卡名称不能为空".to_string());
+            return Err("Character card name cannot be empty".to_string());
         }
 
         let mut worldBookTagId = None;
@@ -656,7 +656,7 @@ impl CharacterCardManager {
                 character_book: None,
             },
         };
-        serde_json::to_string(&tavernCard).map_err(|error| format!("导出角色卡失败：{error}"))
+        serde_json::to_string(&tavernCard).map_err(|error| format!("Failed to export the character card: {error}"))
     }
 
     #[allow(non_snake_case)]

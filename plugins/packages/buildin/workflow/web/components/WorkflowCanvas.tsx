@@ -18,15 +18,15 @@ import { STYLES, type WorkflowNode } from "../../src/model";
 
 export type GraphNode = Node<{ node: WorkflowNode; result?: string }>;
 export const statuses: Record<string, string> = {
-  RUNNING: "运行中",
-  SUCCESS: "成功",
-  FAILED: "失败",
-  CANCELLED: "已取消",
-  pending: "等待",
-  running: "运行中",
-  success: "成功",
-  failed: "失败",
-  skipped: "跳过",
+  RUNNING: "Running",
+  SUCCESS: "Success",
+  FAILED: "Failed",
+  CANCELLED: "Cancelled",
+  pending: "Pending",
+  running: "Running",
+  success: "Success",
+  failed: "Failed",
+  skipped: "Skipped",
 };
 
 /** Renders a compact node with standard graph handles and execution state. */
@@ -51,7 +51,7 @@ export function WorkflowCard({ data, selected }: NodeProps<GraphNode>) {
       </div>
       <strong>{data.node.name}</strong>
       <div className="node-description">
-        {data.node.description || "双击配置节点"}
+        {data.node.description || "Double-click to configure the node"}
       </div>
       <Handle type="source" position={Position.Right} />
     </div>

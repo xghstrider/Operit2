@@ -545,7 +545,7 @@ class ChatViewModel {
   Future<String> _requiredCurrentChatId() async {
     final chatId = await _chat.currentChatIdFlow().first;
     if (chatId == null || chatId.isEmpty) {
-      throw StateError('当前没有对话');
+      throw StateError('There is no current conversation');
     }
     return chatId;
   }

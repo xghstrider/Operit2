@@ -4,11 +4,11 @@
   "version": "1.0.0",
   "main": "dist/main.js",
   "display_name": {
-    "zh": "思考引导",
+    "zh": "Thinking Guidance",
     "en": "Thinking Guidance"
   },
   "description": {
-    "zh": "通过输入菜单开关，为非思考模型注入 <think> 思考过程引导。",
+    "zh": "Injects <think> reasoning guidance for non-thinking models via a toggle in the input menu.",
     "en": "Adds an input-menu toggle that injects <think> thinking guidance for non-reasoning models."
   },
   "enabled_by_default": true,

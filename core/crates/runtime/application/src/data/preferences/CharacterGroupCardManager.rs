@@ -287,7 +287,7 @@ impl CharacterGroupCardManager {
             characterGroups: groups,
         };
         serde_json::to_string_pretty(&backup)
-            .map_err(|error| format!("导出角色组备份失败：{error}"))
+            .map_err(|error| format!("Failed to export the character group backup: {error}"))
     }
 
     #[allow(non_snake_case)]
@@ -297,10 +297,10 @@ impl CharacterGroupCardManager {
         jsonContent: &str,
     ) -> Result<CharacterGroupImportResult, String> {
         if jsonContent.trim().is_empty() {
-            return Err("角色组备份内容不能为空".to_string());
+            return Err("Character group backup content cannot be empty".to_string());
         }
         let backup = serde_json::from_str::<CharacterGroupsBackupFile>(jsonContent)
-            .map_err(|error| format!("角色组备份 JSON 格式错误：{error}"))?;
+            .map_err(|error| format!("Invalid character group backup JSON format: {error}"))?;
         let existingIds = self
             .characterGroupCardListFlow()
             .first()

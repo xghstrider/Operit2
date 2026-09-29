@@ -38,10 +38,10 @@ function buildGoalPrompt(objective, useEnglish) {
         ].join("\n");
     }
     return [
-        "当前聊天附带一个进行中的任务目标。",
-        `目标：${objective}`,
-        "你必须跨回合持续推进该目标，在确认结果真正完成前不得宣称完成。",
-        "请直接在回复中给出实际工作结果。目标是否完成会在回复落库后由独立检查流程判断。",
+        "The current chat has an active task goal.",
+        `Goal: ${objective}`,
+        "You must keep advancing this goal across turns and must not claim completion until the result is confirmed to be truly done.",
+        "Provide the actual work results directly in your reply. Whether the goal is complete will be judged by an independent check after the reply is stored.",
     ].join("\n");
 }
 /** Builds the strict JSON request used to review one persisted assistant response. */
@@ -87,10 +87,10 @@ async function applyGoalReviewDecision(chatId, review) {
         return;
     }
     if (review.decision === "incomplete") {
-        sendGoalFollowup(chatId, `请继续完成当前 Goal。复核结果：${review.reason}\n仍缺少：${review.missing}`);
+        sendGoalFollowup(chatId, `Please continue completing the current Goal. Review result: ${review.reason}\nStill missing: ${review.missing}`);
         return;
     }
-    sendGoalFollowup(chatId, "请重新对照当前 Goal，逐项检查你刚才的结果是否真正完成目标。只补充实际缺失内容，并在最后明确说明仍未完成的部分。");
+    sendGoalFollowup(chatId, "Please re-check the current Goal and verify item by item whether your previous results truly complete it. Only add what is actually missing, and clearly state at the end which parts are still incomplete.");
 }
 /** Reviews one persisted assistant response and applies the resulting goal transition. */
 async function onChatMessagePersisted(event) {
@@ -275,7 +275,7 @@ async function onInputMenuToggle(event) {
     }
     if (payload.toggleId === GOAL_INPUT_SLOT_TOGGLE_ID) {
         if (!enabled && !(await (0, goal_mode_ipc_js_1.resolveGoalWorkspaceAsync)(chatId, runtime))) {
-            await Tools.System.toast("当前聊天未绑定工作区，不能开启目标模式。");
+            await Tools.System.toast("The current chat is not bound to a workspace, so goal mode cannot be enabled.");
             return null;
         }
         await (0, goal_mode_ipc_js_1.setGoalInputSlotEnabledAsync)(chatId, !enabled);
@@ -298,7 +298,7 @@ async function onChatInput(event) {
             return validation;
         }
         if (!(await (0, goal_mode_ipc_js_1.resolveGoalWorkspaceAsync)(chatId))) {
-            return { action: "Block", message: "当前聊天未绑定工作区，不能设置目标。" };
+            return { action: "Block", message: "The current chat is not bound to a workspace, so a goal cannot be set." };
         }
     }
     if (event.eventName === "submitted") {
@@ -338,8 +338,8 @@ function registerToolPkg() {
     ToolPkg.registerCoreCommand({
         id: GOAL_COMMAND_ID,
         name: GOAL_COMMAND_NAME,
-        title: { zh: "任务目标", en: "Task Goal" },
-        description: { zh: "设置、查看、暂停、恢复、编辑或清除当前聊天的任务目标。", en: "Set, view, pause, resume, edit, or clear the current chat task goal." },
+        title: { zh: "Task Goal", en: "Task Goal" },
+        description: { zh: "Set, view, pause, resume, edit, or clear the task goal of the current chat.", en: "Set, view, pause, resume, edit, or clear the current chat task goal." },
         usage: "/goal [objective|edit <objective>|pause|resume|clear]",
         function: onGoalCommand,
     });

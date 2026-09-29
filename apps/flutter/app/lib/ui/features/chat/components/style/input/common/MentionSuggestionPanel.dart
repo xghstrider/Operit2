@@ -220,7 +220,7 @@ class _WorkspaceSuggestionSection extends StatelessWidget {
       return _MentionSuggestionEmptyRow(
         text: _mentionText(
           l10n,
-          zh: '当前对话未绑定工作区',
+          zh: 'Current conversation is not bound to a workspace',
           en: 'Current chat not bound to workspace',
         ),
       );
@@ -244,12 +244,12 @@ class _WorkspaceSuggestionSection extends StatelessWidget {
             text: searchQuery.trim().isEmpty
                 ? _mentionText(
                     l10n,
-                    zh: '输入名称或路径搜索工作区项目',
+                    zh: 'Search workspace items by name or path',
                     en: 'Enter name or path to search workspace items',
                   )
                 : _mentionText(
                     l10n,
-                    zh: '没有匹配的文件或文件夹',
+                    zh: 'No matching files or folders',
                     en: 'No matching files or folders',
                   ),
           );

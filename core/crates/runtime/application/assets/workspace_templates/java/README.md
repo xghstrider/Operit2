@@ -1,76 +1,76 @@
-# Operit Java 项目
+# Operit Java Project
 
-这是一个使用标准 Gradle 构建的 Java 项目模板。
+This is a Java project template built with standard Gradle.
 
-## 项目结构
+## Project Structure
 
 ```
 operit-java-project/
-├── build.gradle.kts          # Gradle 构建配置
-├── settings.gradle.kts       # Gradle 项目配置
+├── build.gradle.kts          # Gradle build configuration
+├── settings.gradle.kts       # Gradle project settings
 ├── src/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── com/operit/app/
-│   │   │       ├── Main.java           # 主程序入口
-│   │   │       └── Calculator.java     # 示例类
+│   │   │       ├── Main.java           # Main program entry point
+│   │   │       └── Calculator.java     # Sample class
 │   │   └── resources/
-│   │       └── application.properties  # 配置文件
+│   │       └── application.properties  # Configuration file
 │   └── test/
 │       └── java/
 │           └── com/operit/app/
-│               └── CalculatorTest.java # 单元测试
-└── .gitignore                # Git 忽略文件
+│               └── CalculatorTest.java # Unit tests
+└── .gitignore                # Git ignore file
 ```
 
-## 快速开始
+## Quick Start
 
-### 1️⃣ 安装依赖（首次使用）
-前往 **终端 → 环境配置**，安装以下工具：
+### 1️⃣ Install dependencies (first use)
+Go to **Terminal → Environment Setup** and install the following tools:
 - ✅ OpenJDK 17
 - ✅ Gradle
 
-### 2️⃣ 初始化项目
-1. 点击 **"🔧 初始化 Gradle Wrapper"** 按钮
-   - 这会生成 `gradlew` 和 `gradle/` 目录
-   - 首次运行会自动下载 Gradle 8.5
+### 2️⃣ Initialize the project
+1. Click the **"🔧 Initialize Gradle Wrapper"** button
+   - This generates the `gradlew` and `gradle/` directories
+   - The first run automatically downloads Gradle 8.5
 
-### 3️⃣ 构建和运行
-- **构建项目**: 点击 "🔨 构建项目"
-- **运行程序**: 点击 "▶️ 运行程序"
-- **运行测试**: 点击 "🧪 运行测试"
-- **打包 JAR**: 点击 "📦 打包 JAR"
-- **清理构建**: 点击 "🧹 清理构建"
+### 3️⃣ Build and run
+- **Build the project**: Click "🔨 Build Project"
+- **Run the program**: Click "▶️ Run Program"
+- **Run the tests**: Click "🧪 Run Tests"
+- **Package the JAR**: Click "📦 Package JAR"
+- **Clean the build**: Click "🧹 Clean Build"
 
-### 手动命令
+### Manual commands
 ```bash
-# 使用 Gradle Wrapper（推荐）
+# Using the Gradle Wrapper (recommended)
 ./gradlew build
 ./gradlew run
 ./gradlew test
 
-# 或直接使用 gradle
+# Or use gradle directly
 gradle build
 gradle run
 ```
 
-### 生成可执行 JAR
+### Build an executable JAR
 ```bash
 ./gradlew jar
 java -jar build/libs/operit-java-project-1.0.0.jar
 ```
 
-## 功能特性
+## Features
 
-✅ **标准 Gradle 项目结构**  
-✅ **Java 17** 支持  
-✅ **JUnit 5** 单元测试框架  
-✅ **包管理** - Maven Central + 阿里云镜像  
-✅ **Fat JAR** - 包含所有依赖的可执行 JAR  
+✅ **Standard Gradle project structure**  
+✅ **Java 17** support  
+✅ **JUnit 5** unit testing framework  
+✅ **Package management** - Maven Central + Aliyun mirror  
+✅ **Fat JAR** - executable JAR including all dependencies
 
-## 添加依赖
+## Adding Dependencies
 
-在 `build.gradle.kts` 中添加依赖：
+Add dependencies in `build.gradle.kts`:
 
 ```kotlin
 dependencies {
@@ -79,11 +79,11 @@ dependencies {
 }
 ```
 
-## 自定义配置
+## Customization
 
-- 修改 `build.gradle.kts` 更改构建配置
-- 在 `src/main/java` 中添加新的 Java 类
-- 在 `src/test/java` 中添加单元测试
-- 编辑 `.operit/config.json` 自定义 Operit 命令
+- Edit `build.gradle.kts` to change the build configuration
+- Add new Java classes in `src/main/java`
+- Add unit tests in `src/test/java`
+- Edit `.operit/config.json` to customize Operit commands
 
 Happy Coding! ☕

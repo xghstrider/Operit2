@@ -1228,7 +1228,7 @@ class _MessageVariantSwitcher extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           IconButton(
-            tooltip: '上一条变体',
+            tooltip: 'Previous variant',
             visualDensity: VisualDensity.compact,
             onPressed: hasPrevious
                 ? () async {
@@ -1247,7 +1247,7 @@ class _MessageVariantSwitcher extends StatelessWidget {
             ),
           ),
           IconButton(
-            tooltip: '下一条变体',
+            tooltip: 'Next variant',
             visualDensity: VisualDensity.compact,
             onPressed: hasNext
                 ? () async {

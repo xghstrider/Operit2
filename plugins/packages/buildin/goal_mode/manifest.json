@@ -5,11 +5,11 @@
   "api_version": "2.0.0",
   "main": "dist/main.js",
   "display_name": {
-    "zh": "目标模式",
+    "zh": "Goal Mode",
     "en": "Goal Mode"
   },
   "description": {
-    "zh": "为当前聊天持续维护目标、监督任务完成，并在输入框上方显示目标状态。",
+    "zh": "Continuously maintains goals for the current chat, monitors task completion, and shows goal status above the input box.",
     "en": "Tracks a persistent chat goal, supervises task completion, and displays its status above the composer."
   },
   "enabled_by_default": true

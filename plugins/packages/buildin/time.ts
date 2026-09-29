@@ -3,11 +3,11 @@
   name: time
 
   display_name: {
-    zh: "时间"
+    zh: "Time"
     en: "Time"
   }
   description: {
-    zh: "提供时间相关功能。实际上，激活本包的同时已经能够获取时间了。"
+    zh: "Provides time-related features. In fact, the current time is already available once this package is activated."
     en: "Provides time-related utilities. In practice, current time is already available once this package is enabled."
   }
   enabledByDefault: true
@@ -16,7 +16,7 @@
     {
       name: get_time
       description: {
-        zh: "获取当前时间。当使用此包时，AI已经自动获取了当前的时间信息。"
+        zh: "Get the current time. When this package is used, the AI has already obtained the current time information automatically."
         en: "Get the current time. When using this package, the AI may already have the current time context."
       }
       parameters: []
@@ -24,7 +24,7 @@
     {
       name: format_time
       description: {
-        zh: "格式化时间。提供各种时间格式化选项。"
+        zh: "Format time. Provides various time formatting options."
         en: "Format time. Provides various time formatting options."
       }
       parameters: []
@@ -83,6 +83,6 @@ const timePackage = (function () {
   };
 })();
 
-// 逐个导出
+// Export one by one
 exports.get_time = timePackage.get_time;
 exports.format_time = timePackage.format_time;

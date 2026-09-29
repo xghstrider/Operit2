@@ -219,10 +219,10 @@ class _TtsProviderGroupTile extends StatelessWidget {
                         onPressed: onAddVoice,
                         style: SettingsControlStyles.sectionTextButton(),
                         icon: const Icon(Icons.playlist_add, size: 18),
-                        label: const Text('添加'),
+                        label: const Text('Add'),
                       ),
                       SettingsEntityIconButton(
-                        tooltip: '编辑供应商',
+                        tooltip: 'Edit provider',
                         icon: Icons.edit_outlined,
                         onPressed: onEditProvider,
                       ),
@@ -374,7 +374,7 @@ class _TtsVoiceTile extends StatelessWidget {
                 )
               else
                 SettingsEntityIconButton(
-                  tooltip: '试听',
+                  tooltip: 'Preview',
                   icon: Icons.volume_up_outlined,
                   onPressed: () {
                     onTest();
@@ -382,9 +382,9 @@ class _TtsVoiceTile extends StatelessWidget {
                 ),
               const SizedBox(width: 4),
               if (current)
-                const SettingsActivePill(label: '全局当前')
+                const SettingsActivePill(label: 'Global Current')
               else
-                SettingsSetActiveButton(label: '设为全局', onPressed: onSetCurrent),
+                SettingsSetActiveButton(label: 'Set as Global', onPressed: onSetCurrent),
             ],
           ),
         ),

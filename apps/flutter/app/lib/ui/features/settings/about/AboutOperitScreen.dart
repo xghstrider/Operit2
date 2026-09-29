@@ -37,7 +37,7 @@ class AboutOperitScreen extends StatelessWidget {
                   _AboutSection(
                     title: 'Operit2',
                     child: Text(
-                      '面向终端与桌面的 AI 工作台，提供聊天会话、工作区、工具、插件、MCP、远程连接和 Web 访问。',
+                      'An AI workbench for terminals and desktops, offering chat conversations, workspaces, tools, plugins, MCP, remote connections, and web access.',
                     ),
                   ),
                   SizedBox(height: 12),
@@ -84,7 +84,7 @@ class _AboutHeader extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          '版本 $_appVersion',
+          'Version $_appVersion',
           style: Theme.of(
             context,
           ).textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
@@ -101,27 +101,27 @@ class _ProjectLinksSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _AboutSection(
-      title: '项目',
+      title: 'Project',
       child: Column(
         children: <Widget>[
           _AboutActionRow(
             icon: Icons.code_outlined,
-            title: '项目源码',
+            title: 'Project Source Code',
             subtitle: 'github.com/AAswordman/Operit2',
             onTap: () => _launchExternalUri(_projectUri),
           ),
           const Divider(height: 1),
           _AboutActionRow(
             icon: Icons.menu_book_outlined,
-            title: '使用文档',
-            subtitle: 'README 与命令行说明',
+            title: 'Documentation',
+            subtitle: 'README and command-line instructions',
             onTap: () => _launchExternalUri(_documentationUri),
           ),
           const Divider(height: 1),
           _AboutActionRow(
             icon: Icons.description_outlined,
-            title: '开源许可证',
-            subtitle: 'Operit2 使用 AGPL-3.0',
+            title: 'Open-Source License',
+            subtitle: 'Operit2 uses AGPL-3.0',
             onTap: () => _showOpenSourceLicenses(context),
           ),
         ],
@@ -137,10 +137,10 @@ class _SupportSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _AboutSection(
-      title: '联系',
+      title: 'Contact',
       child: _AboutActionRow(
         icon: Icons.alternate_email_outlined,
-        title: '开发者 AAswordman',
+        title: 'Developer AAswordman',
         subtitle: 'aaswordsman@foxmail.com',
         onTap: () => _launchExternalUri(_contactUri),
       ),
@@ -155,7 +155,7 @@ class _CopyrightNotice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '© 2025 - 2026 Operit. 保留所有权利。',
+      '© 2025 - 2026 Operit. All rights reserved.',
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
         color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -288,7 +288,7 @@ Future<void> _showOpenSourceLicenses(BuildContext context) {
     context: context,
     builder: (dialogContext) {
       return AlertDialog(
-        title: const Text('开源许可证'),
+        title: const Text('Open-Source License'),
         content: SizedBox(
           width: 520,
           child: ListView.separated(
@@ -315,7 +315,7 @@ Future<void> _showOpenSourceLicenses(BuildContext context) {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('关闭'),
+            child: const Text('Close'),
           ),
         ],
       );

@@ -30,7 +30,7 @@ fn buildSnapshotFileCopyPlan(
         }
         let relative = entry
             .strip_prefix(ENTRY_FILES_PREFIX)
-            .ok_or_else(|| format!("快照资源路径前缀不匹配：{entry}"))?;
+            .ok_or_else(|| format!("Snapshot resource path prefix mismatch: {entry}"))?;
         validateRelativePath(relative)?;
         plan.items.push(SnapshotFileCopyItem {
             sourceEntry: entry.clone(),
@@ -47,7 +47,7 @@ fn buildSnapshotFileCopyPlan(
         }
         let relative = entry
             .strip_prefix(ENTRY_EXTERNAL_FILES_PREFIX)
-            .ok_or_else(|| format!("快照资源路径前缀不匹配：{entry}"))?;
+            .ok_or_else(|| format!("Snapshot resource path prefix mismatch: {entry}"))?;
         validateRelativePath(relative)?;
         plan.items.push(SnapshotFileCopyItem {
             sourceEntry: entry.clone(),
@@ -88,7 +88,7 @@ fn validateWorkspaceIdSegment(value: &str) -> Result<(), String> {
         || value.contains('\\')
         || value.contains(':')
     {
-        return Err(format!("Operit1 工作区 ID 无效：{value}"));
+        return Err(format!("Operit1 workspace ID is invalid: {value}"));
     }
     Ok(())
 }
@@ -177,7 +177,7 @@ fn buildMemoryExportDataFromOperit1ObjectBox(
     for (memoryId, tagId) in memoryTagPairs {
         let tag = tags
             .get(&tagId)
-            .ok_or_else(|| format!("Operit1 记忆标签关系引用不存在的标签：{tagId}"))?;
+            .ok_or_else(|| format!("Operit1 memory tag relation references a tag that does not exist: {tagId}"))?;
         tagNamesByMemoryId
             .entry(memoryId)
             .or_default()
@@ -215,10 +215,10 @@ fn buildMemoryExportDataFromOperit1ObjectBox(
     for link in links.values() {
         let sourceUuid = memoryUuidById
             .get(&link.sourceId)
-            .ok_or_else(|| format!("Operit1 记忆链接引用不存在的源记忆：{}", link.sourceId))?;
+            .ok_or_else(|| format!("Operit1 memory link references a source memory that does not exist: {}", link.sourceId))?;
         let targetUuid = memoryUuidById
             .get(&link.targetId)
-            .ok_or_else(|| format!("Operit1 记忆链接引用不存在的目标记忆：{}", link.targetId))?;
+            .ok_or_else(|| format!("Operit1 memory link references a target memory that does not exist: {}", link.targetId))?;
         let key = (
             sourceUuid.clone(),
             targetUuid.clone(),
@@ -296,11 +296,11 @@ struct FlatObjectBoxTable<'a> {
 impl<'a> FlatObjectBoxTable<'a> {
     fn new(bytes: &'a [u8]) -> Result<Self, String> {
         if bytes.len() < 8 {
-            return Err("Operit1 ObjectBox 表内容过短".to_string());
+            return Err("Operit1 ObjectBox table content is too short".to_string());
         }
         let tableStart = readLittleEndianU32(&bytes[0..4])? as usize;
         if tableStart + 4 > bytes.len() {
-            return Err("Operit1 ObjectBox 表根指针越界".to_string());
+            return Err("Operit1 ObjectBox table root pointer is out of bounds".to_string());
         }
         let vtableOffset = readLittleEndianI32(&bytes[tableStart..tableStart + 4])?;
         let vtableStart = if vtableOffset >= 0 {
@@ -308,13 +308,13 @@ impl<'a> FlatObjectBoxTable<'a> {
         } else {
             tableStart.checked_add((-vtableOffset) as usize)
         }
-        .ok_or_else(|| "Operit1 ObjectBox vtable 偏移无效".to_string())?;
+        .ok_or_else(|| "Operit1 ObjectBox vtable offset is invalid".to_string())?;
         if vtableStart + 4 > bytes.len() {
-            return Err("Operit1 ObjectBox vtable 越界".to_string());
+            return Err("Operit1 ObjectBox vtable is out of bounds".to_string());
         }
         let vtableLength = readLittleEndianU16(&bytes[vtableStart..vtableStart + 2])? as usize;
         if vtableLength < 4 || vtableLength % 2 != 0 || vtableStart + vtableLength > bytes.len() {
-            return Err("Operit1 ObjectBox vtable 长度无效".to_string());
+            return Err("Operit1 ObjectBox vtable length is invalid".to_string());
         }
         let fieldCount = (vtableLength - 4) / 2;
         let mut offsets = Vec::new();
@@ -344,7 +344,7 @@ impl<'a> FlatObjectBoxTable<'a> {
     fn requiredU32(&self, index: usize, label: &str) -> Result<u32, String> {
         let abs = self
             .fieldAbs(index)
-            .ok_or_else(|| format!("Operit1 ObjectBox 字段缺失：{label}"))?;
+            .ok_or_else(|| format!("Operit1 ObjectBox field is missing: {label}"))?;
         self.readU32Abs(abs, label)
     }
 
@@ -352,9 +352,9 @@ impl<'a> FlatObjectBoxTable<'a> {
     fn requiredI64(&self, index: usize, label: &str) -> Result<i64, String> {
         let abs = self
             .fieldAbs(index)
-            .ok_or_else(|| format!("Operit1 ObjectBox 字段缺失：{label}"))?;
+            .ok_or_else(|| format!("Operit1 ObjectBox field is missing: {label}"))?;
         if abs + 8 > self.bytes.len() {
-            return Err(format!("Operit1 ObjectBox 字段越界：{label}"));
+            return Err(format!("Operit1 ObjectBox field is out of bounds: {label}"));
         }
         readLittleEndianI64(&self.bytes[abs..abs + 8])
     }
@@ -363,21 +363,21 @@ impl<'a> FlatObjectBoxTable<'a> {
     fn requiredF32(&self, index: usize, label: &str) -> Result<f32, String> {
         let abs = self
             .fieldAbs(index)
-            .ok_or_else(|| format!("Operit1 ObjectBox 字段缺失：{label}"))?;
+            .ok_or_else(|| format!("Operit1 ObjectBox field is missing: {label}"))?;
         if abs + 4 > self.bytes.len() {
-            return Err(format!("Operit1 ObjectBox 字段越界：{label}"));
+            return Err(format!("Operit1 ObjectBox field is out of bounds: {label}"));
         }
         Ok(f32::from_le_bytes(
             self.bytes[abs..abs + 4]
                 .try_into()
-                .map_err(|_| format!("Operit1 ObjectBox 字段无效：{label}"))?,
+                .map_err(|_| format!("Operit1 ObjectBox field is invalid: {label}"))?,
         ))
     }
 
     #[allow(non_snake_case)]
     fn requiredString(&self, index: usize, label: &str) -> Result<String, String> {
         self.optionalString(index)?
-            .ok_or_else(|| format!("Operit1 ObjectBox 字段缺失：{label}"))
+            .ok_or_else(|| format!("Operit1 ObjectBox field is missing: {label}"))
     }
 
     #[allow(non_snake_case)]
@@ -386,25 +386,25 @@ impl<'a> FlatObjectBoxTable<'a> {
             return Ok(None);
         };
         if abs + 4 > self.bytes.len() {
-            return Err("Operit1 ObjectBox 字符串指针越界".to_string());
+            return Err("Operit1 ObjectBox string pointer is out of bounds".to_string());
         }
         let relative = readLittleEndianI32(&self.bytes[abs..abs + 4])?;
         if relative <= 0 {
-            return Err("Operit1 ObjectBox 字符串偏移无效".to_string());
+            return Err("Operit1 ObjectBox string offset is invalid".to_string());
         }
         let vectorStart = abs
             .checked_add(relative as usize)
-            .ok_or_else(|| "Operit1 ObjectBox 字符串偏移溢出".to_string())?;
+            .ok_or_else(|| "Operit1 ObjectBox string offset overflows".to_string())?;
         if vectorStart + 4 > self.bytes.len() {
-            return Err("Operit1 ObjectBox 字符串长度越界".to_string());
+            return Err("Operit1 ObjectBox string length is out of bounds".to_string());
         }
         let length = readLittleEndianU32(&self.bytes[vectorStart..vectorStart + 4])? as usize;
         let start = vectorStart + 4;
         let end = start
             .checked_add(length)
-            .ok_or_else(|| "Operit1 ObjectBox 字符串长度溢出".to_string())?;
+            .ok_or_else(|| "Operit1 ObjectBox string length overflows".to_string())?;
         if end > self.bytes.len() {
-            return Err("Operit1 ObjectBox 字符串内容越界".to_string());
+            return Err("Operit1 ObjectBox string content is out of bounds".to_string());
         }
         String::from_utf8(self.bytes[start..end].to_vec())
             .map(Some)
@@ -417,7 +417,7 @@ impl<'a> FlatObjectBoxTable<'a> {
             return Ok(None);
         };
         if abs >= self.bytes.len() {
-            return Err("Operit1 ObjectBox 布尔字段越界".to_string());
+            return Err("Operit1 ObjectBox boolean field is out of bounds".to_string());
         }
         Ok(Some(self.bytes[abs] != 0))
     }
@@ -425,7 +425,7 @@ impl<'a> FlatObjectBoxTable<'a> {
     #[allow(non_snake_case)]
     fn readU32Abs(&self, abs: usize, label: &str) -> Result<u32, String> {
         if abs + 4 > self.bytes.len() {
-            return Err(format!("Operit1 ObjectBox 字段越界：{label}"));
+            return Err(format!("Operit1 ObjectBox field is out of bounds: {label}"));
         }
         readLittleEndianU32(&self.bytes[abs..abs + 4])
     }
@@ -434,35 +434,35 @@ impl<'a> FlatObjectBoxTable<'a> {
 #[allow(non_snake_case)]
 fn readBigEndianU32(bytes: &[u8]) -> Result<u32, String> {
     Ok(u32::from_be_bytes(bytes.try_into().map_err(|_| {
-        "Operit1 ObjectBox u32 字节长度无效".to_string()
+        "Operit1 ObjectBox u32 byte length is invalid".to_string()
     })?))
 }
 
 #[allow(non_snake_case)]
 fn readLittleEndianU16(bytes: &[u8]) -> Result<u16, String> {
     Ok(u16::from_le_bytes(bytes.try_into().map_err(|_| {
-        "Operit1 ObjectBox u16 字节长度无效".to_string()
+        "Operit1 ObjectBox u16 byte length is invalid".to_string()
     })?))
 }
 
 #[allow(non_snake_case)]
 fn readLittleEndianU32(bytes: &[u8]) -> Result<u32, String> {
     Ok(u32::from_le_bytes(bytes.try_into().map_err(|_| {
-        "Operit1 ObjectBox u32 字节长度无效".to_string()
+        "Operit1 ObjectBox u32 byte length is invalid".to_string()
     })?))
 }
 
 #[allow(non_snake_case)]
 fn readLittleEndianI32(bytes: &[u8]) -> Result<i32, String> {
     Ok(i32::from_le_bytes(bytes.try_into().map_err(|_| {
-        "Operit1 ObjectBox i32 字节长度无效".to_string()
+        "Operit1 ObjectBox i32 byte length is invalid".to_string()
     })?))
 }
 
 #[allow(non_snake_case)]
 fn readLittleEndianI64(bytes: &[u8]) -> Result<i64, String> {
     Ok(i64::from_le_bytes(bytes.try_into().map_err(|_| {
-        "Operit1 ObjectBox i64 字节长度无效".to_string()
+        "Operit1 ObjectBox i64 byte length is invalid".to_string()
     })?))
 }
 

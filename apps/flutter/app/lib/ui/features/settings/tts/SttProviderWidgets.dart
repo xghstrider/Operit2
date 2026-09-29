@@ -25,7 +25,7 @@ class _SttProviderManager extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Center(
           child: Text(
-            '尚未配置语音识别供应商',
+            'No speech-to-text provider configured yet',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
@@ -132,20 +132,20 @@ class _SttProviderTile extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               if (current)
-                const SettingsActivePill(label: '全局当前')
+                const SettingsActivePill(label: 'Global Current')
               else
                 SettingsSetActiveButton(
-                  label: '设为全局',
+                  label: 'Set as Global',
                   onPressed: onSetCurrent,
                 ),
               const SizedBox(width: 4),
               SettingsEntityIconButton(
-                tooltip: '编辑',
+                tooltip: 'Edit',
                 icon: Icons.edit_outlined,
                 onPressed: onEdit,
               ),
               SettingsEntityIconButton(
-                tooltip: current ? '当前配置不能删除' : '删除',
+                tooltip: current ? 'The current configuration cannot be deleted' : 'Delete',
                 icon: Icons.delete_outline,
                 onPressed: current ? null : onDelete,
               ),

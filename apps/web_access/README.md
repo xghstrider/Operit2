@@ -78,3 +78,11 @@ honours `PORT`:
 ```bash
 PORT=8080 tools/dev_web_access_preview.sh
 ```
+
+## Static hosting
+
+For hosting the built bundle on Vercel, Netlify, Cloudflare Pages, GitHub
+Pages, or a Docker/Node platform - including the cross-origin isolation
+headers this frontend requires - see [`HOSTING.md`](../../HOSTING.md) at the
+repository root. The `Deploy Web Experience` GitHub Actions workflow produces
+the `gh-pages` branch and a deployable bundle artifact.

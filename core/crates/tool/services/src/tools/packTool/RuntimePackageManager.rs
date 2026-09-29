@@ -2291,7 +2291,7 @@ impl RuntimePackageManager {
             mergedSnapshot.toolPkgLoadIssues.push(newToolPkgLoadIssue(
                 self.storePaths.packages_dir().to_string_lossy().to_string(),
                 None,
-                "插件导入记录".to_string(),
+                "Plugin Import Records".to_string(),
                 "scan_failed",
                 format!("Bundled external package sync failed: {error}"),
                 "package_manager",
@@ -5091,7 +5091,7 @@ fn newToolPkgLoadIssue(
         sourcePath,
         packageName,
         displayName: if displayName.trim().is_empty() {
-            "插件加载失败".to_string()
+            "Failed to load plugin".to_string()
         } else {
             displayName
         },

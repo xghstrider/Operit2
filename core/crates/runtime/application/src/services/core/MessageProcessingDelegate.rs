@@ -214,7 +214,7 @@ fn sendCoreTextEvent(
 
 /// Builds the localized host notice for a timed-out ToolPkg pre-send hook.
 fn buildToolPkgHookTimeoutNotice(pluginIdentifier: String) -> String {
-    format!("前置插件「{pluginIdentifier}」响应超时，已跳过并继续发送")
+    format!("Pre-send plugin \"{pluginIdentifier}\" response timed out; skipped and continuing to send")
 }
 
 /// Per-chat runtime state for one active or recently active send turn.

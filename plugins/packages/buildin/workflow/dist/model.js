@@ -8,11 +8,11 @@ exports.newWorkflow = newWorkflow;
 exports.duplicate = duplicate;
 exports.values = values;
 exports.STYLES = {
-    trigger: { label: "触发", color: "#4CAF50", tint: "#E8F5E9", border: "#81C784" },
-    execute: { label: "执行", color: "#2196F3", tint: "#E3F2FD", border: "#64B5F6" },
-    condition: { label: "条件", color: "#FF9800", tint: "#FFF3E0", border: "#FFB74D" },
-    logic: { label: "逻辑", color: "#7E57C2", tint: "#F3E5F5", border: "#B39DDB" },
-    extract: { label: "运算", color: "#009688", tint: "#E0F2F1", border: "#4DB6AC" },
+    trigger: { label: "Trigger", color: "#4CAF50", tint: "#E8F5E9", border: "#81C784" },
+    execute: { label: "Execute", color: "#2196F3", tint: "#E3F2FD", border: "#64B5F6" },
+    condition: { label: "Condition", color: "#FF9800", tint: "#FFF3E0", border: "#FFB74D" },
+    logic: { label: "Logic", color: "#7E57C2", tint: "#F3E5F5", border: "#B39DDB" },
+    extract: { label: "Operation", color: "#009688", tint: "#E0F2F1", border: "#4DB6AC" },
 };
 /** Creates a collision-resistant identifier within a plugin runtime. */
 function id(prefix) {
@@ -49,7 +49,7 @@ function duplicate(workflow) {
             return value;
         const next = ids.get(value.nodeId);
         if (next === undefined)
-            throw new Error(`引用节点不存在：${value.nodeId}`);
+            throw new Error(`Referenced node does not exist: ${value.nodeId}`);
         return { nodeId: next };
     }
     for (const node of result.nodes) {

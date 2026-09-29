@@ -49,7 +49,7 @@ impl TuiLanguage {
     pub(super) fn display_name(self) -> &'static str {
         match self {
             Self::English => "English",
-            Self::Chinese => "中文",
+            Self::Chinese => "Chinese",
         }
     }
 

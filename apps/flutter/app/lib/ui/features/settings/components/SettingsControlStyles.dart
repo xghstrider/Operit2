@@ -226,7 +226,7 @@ class SettingsSectionAddButton extends StatelessWidget {
     super.key,
     required this.tooltip,
     required this.onPressed,
-    this.label = '添加',
+    this.label = 'Add',
     this.icon = Icons.add,
   });
 

@@ -116,13 +116,13 @@ class _MessageEditorDialogState extends State<MessageEditorDialog> {
   @override
   Widget build(BuildContext context) {
     return OperitDialogScaffold(
-      title: widget.showResendButton ? '编辑消息' : '修改记忆',
+      title: widget.showResendButton ? 'Edit Message' : 'Edit Memory',
       maxWidth: 520,
       contentPadding: EdgeInsets.zero,
       titleActions: <Widget>[
         TextButton(
           onPressed: _submitting ? null : () => _setRawMode(!_rawEditMode),
-          child: Text(_rawEditMode ? '可视' : '纯文本'),
+          child: Text(_rawEditMode ? 'Visual' : 'Plain text'),
         ),
       ],
       showCloseButton: true,
@@ -131,22 +131,22 @@ class _MessageEditorDialogState extends State<MessageEditorDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: _submitting ? null : () => Navigator.of(context).pop(),
-          child: const Text('取消'),
+          child: const Text('Cancel'),
         ),
         if (widget.showResendButton) ...<Widget>[
           OutlinedButton(
             onPressed: _submitting ? null : () => _submit(widget.onSave),
-            child: const Text('保存'),
+            child: const Text('Save'),
           ),
           FilledButton.icon(
             onPressed: _submitting ? null : () => _submit(widget.onResend),
             icon: const Icon(Icons.send, size: 14),
-            label: const Text('保存并重发'),
+            label: const Text('Save and Resend'),
           ),
         ] else
           FilledButton(
             onPressed: _submitting ? null : () => _submit(widget.onSave),
-            child: const Text('更新记忆'),
+            child: const Text('Update Memory'),
           ),
       ],
       child: ConstrainedBox(
@@ -217,7 +217,7 @@ class _RawEditorState extends State<_RawEditor> {
           context,
         ).textTheme.bodyMedium?.copyWith(fontFamily: 'monospace'),
         decoration: InputDecoration(
-          labelText: '纯文本内容',
+          labelText: 'Plain text content',
           alignLabelWithHint: true,
           filled: true,
           fillColor: Theme.of(
@@ -252,7 +252,7 @@ class _VisualEditor extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 4, 4, 8),
           child: Text(
-            '内容片段',
+            'Content segments',
             style: Theme.of(
               context,
             ).textTheme.labelMedium?.copyWith(color: colorScheme.primary),
@@ -293,7 +293,7 @@ class _VisualEditor extends StatelessWidget {
                     ])
                   : null,
               icon: const Icon(Icons.add, size: 16),
-              label: const Text('添加文本'),
+              label: const Text('Add Text'),
             ),
             const SizedBox(width: 8),
             OutlinedButton.icon(
@@ -310,7 +310,7 @@ class _VisualEditor extends StatelessWidget {
                     )
                   : null,
               icon: const Icon(Icons.tag_outlined, size: 16),
-              label: const Text('添加标签'),
+              label: const Text('Add Tag'),
             ),
           ],
         ),
@@ -397,8 +397,8 @@ class _TextPartEditorState extends State<_TextPartEditor> {
       maxLines: 12,
       style: theme.textTheme.bodyMedium,
       decoration: InputDecoration(
-        labelText: '文本',
-        hintText: '输入文本内容',
+        labelText: 'Text',
+        hintText: 'Enter text content',
         filled: true,
         fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -409,7 +409,7 @@ class _TextPartEditorState extends State<_TextPartEditor> {
         suffixIcon: IconButton(
           onPressed: widget.enabled ? widget.onDelete : null,
           icon: const Icon(Icons.delete, size: 16),
-          tooltip: '删除',
+          tooltip: 'Delete',
           visualDensity: VisualDensity.compact,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints.tightFor(width: 32, height: 32),
@@ -487,12 +487,12 @@ class _XmlTagItemState extends State<_XmlTagItem> {
                   IconButton(
                     onPressed: widget.enabled ? widget.onEdit : null,
                     icon: const Icon(Icons.edit, size: 16),
-                    tooltip: '编辑',
+                    tooltip: 'Edit',
                   ),
                   IconButton(
                     onPressed: widget.enabled ? widget.onDelete : null,
                     icon: const Icon(Icons.delete, size: 16),
-                    tooltip: '删除',
+                    tooltip: 'Delete',
                   ),
                   Icon(
                     _expanded
@@ -557,13 +557,13 @@ class _TagEditorDialogState extends State<_TagEditorDialog> {
   @override
   Widget build(BuildContext context) {
     return OperitDialogScaffold(
-      title: '编辑标签',
+      title: 'Edit Tag',
       icon: const Icon(Icons.tag_outlined, size: 20),
       maxWidth: 520,
       actions: <Widget>[
         OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('取消'),
+          child: const Text('Cancel'),
         ),
         FilledButton(
           onPressed: _tagController.text.trim().isEmpty
@@ -578,7 +578,7 @@ class _TagEditorDialogState extends State<_TagEditorDialog> {
                     ),
                   );
                 },
-          child: const Text('保存'),
+          child: const Text('Save'),
         ),
       ],
       child: Column(
@@ -587,8 +587,8 @@ class _TagEditorDialogState extends State<_TagEditorDialog> {
           TextField(
             controller: _tagController,
             decoration: const InputDecoration(
-              labelText: '标签名',
-              hintText: '例如 memory',
+              labelText: 'Tag name',
+              hintText: 'e.g. type="note"',
             ),
             onChanged: (_) => setState(() {}),
           ),
@@ -596,8 +596,8 @@ class _TagEditorDialogState extends State<_TagEditorDialog> {
           TextField(
             controller: _attributesController,
             decoration: const InputDecoration(
-              labelText: '属性（可选）',
-              hintText: '例如 type="note"',
+              labelText: 'Attributes (optional)',
+              hintText: 'e.g. type="note"',
             ),
           ),
           const SizedBox(height: 12),
@@ -606,7 +606,7 @@ class _TagEditorDialogState extends State<_TagEditorDialog> {
             minLines: 4,
             maxLines: 6,
             decoration: const InputDecoration(
-              labelText: '内容',
+              labelText: 'Content',
               alignLabelWithHint: true,
             ),
           ),

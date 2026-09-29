@@ -224,7 +224,7 @@ class _WorkspaceWebVisitContentState extends State<WorkspaceWebVisitContent> {
   if (!body) return false;
   const text = String(body.innerText || "");
   const html = String(body.innerHTML || "");
-  return text.includes("人机验证") || /captcha/i.test(html);
+  return text.includes("human verification") || /captcha/i.test(html);
 })()
 ''')
         .timeout(_scriptTimeout);

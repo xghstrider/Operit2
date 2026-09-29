@@ -101,7 +101,7 @@ class _MemorySettingsPanelState extends State<MemorySettingsPanel> {
   Future<void> _createSharedMemoryStore() async {
     final edited = await _SharedMemoryStoreEditorDialog.show(
       context: context,
-      title: '新建共享记忆库',
+      title: 'New Shared Memory Library',
     );
     if (edited == null) {
       return;
@@ -116,7 +116,7 @@ class _MemorySettingsPanelState extends State<MemorySettingsPanel> {
   ) async {
     final edited = await _SharedMemoryStoreEditorDialog.show(
       context: context,
-      title: '编辑共享记忆库',
+      title: 'Edit Shared Memory Library',
       store: store,
     );
     if (edited == null) {
@@ -194,7 +194,7 @@ class _MemorySettingsPanelState extends State<MemorySettingsPanel> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
           children: <Widget>[
             _MemorySectionCard(
-              title: '全局记忆设置',
+              title: 'Global Memory Settings',
               icon: Icons.tune_outlined,
               children: <Widget>[
                 _MemorySwitchRow(
@@ -215,7 +215,7 @@ class _MemorySettingsPanelState extends State<MemorySettingsPanel> {
               ],
             ),
             _MemorySectionCard(
-              title: '共享记忆库',
+              title: 'Shared Memory Library',
               icon: Icons.hub_outlined,
               action: SettingsSectionAddButton(
                 tooltip: l10n.create,
@@ -227,7 +227,7 @@ class _MemorySettingsPanelState extends State<MemorySettingsPanel> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Text(
-                      '当前还没有共享记忆库，创建后可被多个角色卡挂载共享。',
+                      'There are no shared memory libraries yet. Once created, one library can be mounted and shared by multiple character cards.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -261,7 +261,7 @@ class _MemorySettingsPanelState extends State<MemorySettingsPanel> {
               ],
             ),
             _MemorySectionCard(
-              title: '角色记忆库',
+              title: 'Character Memory Library',
               icon: Icons.badge_outlined,
               children: <Widget>[
                 for (final card in data.cards)
@@ -463,7 +463,7 @@ class _SharedMemoryStoreTile extends StatelessWidget {
       badges: <Widget>[
         SettingsInfoBadge(label: _sharedOwnerKey(store.id)),
         if (mountedCardCount > 0)
-          SettingsInfoBadge(label: '$mountedCardCount 个角色已挂载'),
+          SettingsInfoBadge(label: '$mountedCardCount characters mounted'),
       ],
       onTap: onEdit,
       actions: <Widget>[
@@ -506,15 +506,15 @@ class _CharacterMemoryTile extends StatelessWidget {
     if (card.memoryBindingMode.trim().toUpperCase() == _memoryBindingShared) {
       final resolvedName = sharedStoreName?.trim();
       if (resolvedName != null && resolvedName.isNotEmpty) {
-        return '共享记忆：$resolvedName';
+        return 'Shared memory: $resolvedName';
       }
       final sharedId = card.sharedMemoryId?.trim();
       if (sharedId != null && sharedId.isNotEmpty) {
-        return '共享记忆：$sharedId';
+        return 'Shared memory: $sharedId';
       }
-      return '共享记忆';
+      return 'Shared memory';
     }
-    return '角色独立记忆';
+    return 'Character-specific memory';
   }
 
   @override
@@ -818,7 +818,7 @@ class _SharedMemoryStoreEditorDialogState
         child: TextFormField(
           controller: _nameController,
           autofocus: true,
-          decoration: const InputDecoration(labelText: '名称'),
+          decoration: const InputDecoration(labelText: 'Name'),
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return l10n.required;

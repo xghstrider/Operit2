@@ -1,25 +1,25 @@
-# Operit Go 项目
+# Operit Go Project
 
-这是一个使用 Operit 创建的 Go 项目。
+This is a Go project created with Operit.
 
-## 快速开始
+## Quick Start
 
-1. 点击 "go mod tidy" 整理依赖
-2. 点击 "go run main.go" 运行程序
-3. 点击 "go build" 构建可执行文件
-4. 点击"浏览器预览"查看运行效果
+1. Click "go mod tidy" to tidy up dependencies
+2. Click "go run main.go" to run the program
+3. Click "go build" to build an executable
+4. Click "Browser Preview" to see the running result
 
-## 项目结构
+## Project Structure
 
-- `main.go` - 主程序入口
-- `go.mod` - Go 模块定义
-- `.operit/config.json` - Operit 工作区配置
+- `main.go` - Main program entry point
+- `go.mod` - Go module definition
+- `.operit/config.json` - Operit workspace configuration
 
-## 自定义
+## Customization
 
-您可以：
-- 添加更多 Go 源文件和包
-- 在 `go.mod` 中管理依赖
-- 在 `.operit/config.json` 中自定义命令
+You can:
+- Add more Go source files and packages
+- Manage dependencies in `go.mod`
+- Customize commands in `.operit/config.json`
 
 Happy Gophering! 🐹

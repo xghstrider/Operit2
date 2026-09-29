@@ -421,6 +421,6 @@ String _tabTitle(AppLocalizations l10n, WorkspaceTab tab) {
     case WorkspaceTabKind.filePreview:
       return l10n.filePreview;
     case WorkspaceTabKind.plugin:
-      return '插件';
+      return 'Plugins';
   }
 }

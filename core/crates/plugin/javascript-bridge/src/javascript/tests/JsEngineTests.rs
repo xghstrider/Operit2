@@ -1951,7 +1951,7 @@ fn message_insert_compose_master_switch_updates_before_async_persistence() {
         "message_insert compose render",
     );
     let rendered = serde_json::from_str::<Value>(&renderedRaw).expect("rendered JSON");
-    let actionId = find_switch_action_for_text(&rendered["tree"], "额外信息注入")
+    let actionId = find_switch_action_for_text(&rendered["tree"], "Extra info injection")
         .expect("master switch action id");
     let mut actionParams = params.clone();
     actionParams.insert("state".to_string(), rendered["state"].clone());

@@ -2,11 +2,11 @@
 {
     "name": "operit_editor",
     "display_name": {
-        "zh": "Operit 平台编辑器",
+        "zh": "Operit Platform Editor",
         "en": "Operit Platform Editor"
     },
     "description": {
-        "zh": "Operit2 平台编辑与排查手册。面向当前版本 core command，不复刻旧版 soft setting 工具面。",
+        "zh": "Operit2 platform editing and troubleshooting manual. Targets the current-version core command; does not replicate the legacy soft setting tool surface.",
         "en": "Operit2 platform editing and troubleshooting guide for the current core command surface."
     },
     "enabledByDefault": false,
@@ -15,14 +15,14 @@
         {
             "name": "operit_editor",
             "description": {
-                "zh": "读取 Operit2 平台编辑手册。真正的配置、包、Skill、MCP、模型、聊天、工作区操作请直接调用系统工具 execute_cli_command。",
+                "zh": "Read the Operit2 platform editing manual. For actual config, package, Skill, MCP, model, chat, and workspace operations, call the system tool execute_cli_command directly.",
                 "en": "Read the Operit2 platform editing guide. Use the system execute_cli_command tool for package, skill, MCP, model, chat, and workspace operations."
             },
             "parameters": [
                 {
                     "name": "query",
                     "description": {
-                        "zh": "可选，说明本次要编辑或排查的目标。",
+                        "zh": "Optional. Describes the target of this editing or troubleshooting task.",
                         "en": "Optional editing or troubleshooting target."
                     },
                     "type": "string",
@@ -38,42 +38,42 @@ type OperitEditorParams = {
 };
 
 const OPERIT_EDITOR_GUIDE = `
-# Operit2 平台编辑器
+# Operit2 Platform Editor
 
-这个包只提供当前 Operit2 平台编辑手册。执行动作使用系统工具 execute_cli_command，参数是 CLI 字符串数组。
+This package only provides the current Operit2 platform editing manual. For executing actions, use the system tool execute_cli_command; its parameter is an array of CLI strings.
 
-常用入口：
+Common entry points:
 
-- 查看总帮助：["package", "help"] 之外的总入口可用空数组或具体一级命令查看。
-- 包管理：["package", "list"]、["package", "more"]、["package", "load", "<name>"]、["package", "show", "<name>"]、["package", "enable", "<name>"]、["package", "disable", "<name>"]、["package", "use", "<name>"]、["package", "exec", "<package:tool>", "<params-json>"]。
+- General help: besides ["package", "help"], the top-level entry can be queried with an empty array or a specific top-level command.
+- Package manager: ["package", "list"], ["package", "more"], ["package", "load", "<name>"], ["package", "show", "<name>"], ["package", "enable", "<name>"], ["package", "disable", "<name>"], ["package", "use", "<name>"], ["package", "exec", "<package:tool>", "<params-json>"].
 - Skill：["skill", "list"]、["skill", "show", "<name>"]、["skill", "visible", "<name>", "true"]、["skill", "visible", "<name>", "false"]、["skill", "errors"]。
 - MCP：["mcp", "dir"]、["mcp", "list"]、["mcp", "show", "<name>"]、["mcp", "enable", "<name>"]、["mcp", "disable", "<name>"]、["mcp", "start", "<name>"]、["mcp", "tools", "<name>"]。
-- 模型：["model", "list"]、["model", "show", "<id>"]、["model", "function-list"]、["model", "function-show", "<type>"]、["model", "function-set", "<type>", "<provider-id>", "<model-id>"]。
-- 偏好设置：["prefs", "show"]、["prefs", "thinking"]、["prefs", "stream"]、["prefs", "media-history"]、["prefs", "mcp-timeout"]。
-- 日志：["log", "show"]、["log", "package"]、["log", "path"]、["log", "clear"]。
-- 工具：["tool", "list"]、["tool", "show", "<name>"]、["tool", "exec", "<name>", "<params-json>"]。
-- 工作区：["workspace", "commands"]、["workspace", "run", "<command-id>"]、["workspace", "list"]、["workspace", "bind-default"]。
+- Models: ["model", "list"], ["model", "show", "<id>"], ["model", "function-list"], ["model", "function-show", "<type>"], ["model", "function-set", "<type>", "<provider-id>", "<model-id>"].
+- Preferences: ["prefs", "show"], ["prefs", "thinking"], ["prefs", "stream"], ["prefs", "media-history"], ["prefs", "mcp-timeout"].
+- Logs: ["log", "show"], ["log", "package"], ["log", "path"], ["log", "clear"].
+- Tools: ["tool", "list"], ["tool", "show", "<name>"], ["tool", "exec", "<name>", "<params-json>"].
+- Workspaces: ["workspace", "commands"], ["workspace", "run", "<command-id>"], ["workspace", "list"], ["workspace", "bind-default"].
 
-插件创作约定：
+Plugin authoring conventions:
 
-- 使用 PackageBuilder skill 中随包携带的当前版本类型定义。
-- 开发目录固定在手机下载/Operit/dev_package/<package-id>。
-- 包 id 在首次确定后保持不变。
-- 使用终端完成 TypeScript/JavaScript 开发、编译、安装和测试。
-- 安装与调试走当前版本 package core command 和系统工具，不使用旧版 SoftwareSettings 的包开关、脚本直跑、模型设置枚举接口。
+- Use the current-version type definitions bundled with the package in the PackageBuilder skill.
+- The development directory is fixed at Download/Operit/dev_package/<package-id> on the phone.
+- The package id stays unchanged once it is first decided.
+- Use the terminal for TypeScript/JavaScript development, compilation, installation, and testing.
+- Install and debug through the current-version package core command and system tools; do not use the legacy SoftwareSettings package switches, direct script running, or model settings enum interfaces.
 
-包系统说明：
+Package system notes:
 
-- 内置包来自应用内置资源。
-- 准内置包来自应用内资源中的 external 候选，查看用 ["package", "more"]，加入加载列表用 ["package", "load", "<name>"]。
-- 当前会话调用某个包前，用 ["package", "use", "<name>"] 让 runtime 激活它。
-- ToolPkg 子包由包系统解析和展示，不手写另一套识别逻辑。
+- Built-in packages come from the resources bundled with the app.
+- Semi built-in packages come from external candidates in the app resources; view them with ["package", "more"], and add them to the load list with ["package", "load", "<name>"].
+- Before calling a package in the current conversation, use ["package", "use", "<name>"] to have the runtime activate it.
+- ToolPkg subpackages are parsed and displayed by the package system; do not hand-write separate recognition logic.
 
-执行原则：
+Execution principles:
 
-- 先用对应 core command 查看真实状态，再执行修改命令。
-- 需要变更用户配置、启停包、启停 MCP、删除资源时，先向用户确认。
-- 不从云端拉取 PackageBuilder 类型；使用当前软件随包携带的类型。
+- Check the real state with the corresponding core command first, then run modification commands.
+- Confirm with the user before changing user config, enabling/disabling packages, enabling/disabling MCP, or deleting resources.
+- Do not pull PackageBuilder types from the cloud; use the types bundled with the current software.
 `.trim();
 
 async function operit_editor(params: OperitEditorParams = {}) {
@@ -81,7 +81,7 @@ async function operit_editor(params: OperitEditorParams = {}) {
     if (!query) {
         return OPERIT_EDITOR_GUIDE;
     }
-    return `目标：${query}\n\n${OPERIT_EDITOR_GUIDE}`;
+    return `Goal: ${query}\n\n${OPERIT_EDITOR_GUIDE}`;
 }
 
 exports.operit_editor = operit_editor;

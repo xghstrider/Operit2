@@ -889,7 +889,7 @@ class _DeviceDirectory {
       occurrences[base] = occurrence;
       _labels[device.deviceId] = counts[base] == 1
           ? base
-          : '$base · 设备 $occurrence';
+          : '$base · Device $occurrence';
       _ids[device.deviceId] = device.deviceId;
     }
   }

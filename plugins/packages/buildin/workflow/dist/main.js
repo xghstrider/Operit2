@@ -19,9 +19,9 @@ ToolPkg.ipc.on("workflow.service", service_1.receive);
 ToolPkg.ipc.on("workflow.web", (request, meta) => (0, service_1.receive)(request, meta));
 /** Registers the plugin UI, public service and host-owned trigger sources. */
 function registerToolPkg() {
-    ToolPkg.registerUiRoute({ id: "workflow", route: exports.ROUTE, screen: web_1.default, runtime: "compose_dsl", keepAlive: true, title: { zh: "工作流", en: "Workflow" } });
-    ToolPkg.registerNavigationEntry({ id: "workflow_sidebar", route: exports.ROUTE, surface: "main_sidebar_plugins", title: { zh: "工作流", en: "Workflow" }, icon: "AccountTree", order: 140 });
-    ToolPkg.registerNavigationEntry({ id: "workflow_toolbox", route: exports.ROUTE, surface: "toolbox", title: { zh: "工作流", en: "Workflow" }, icon: "AccountTree", order: 140 });
+    ToolPkg.registerUiRoute({ id: "workflow", route: exports.ROUTE, screen: web_1.default, runtime: "compose_dsl", keepAlive: true, title: { zh: "Workflow", en: "Workflow" } });
+    ToolPkg.registerNavigationEntry({ id: "workflow_sidebar", route: exports.ROUTE, surface: "main_sidebar_plugins", title: { zh: "Workflow", en: "Workflow" }, icon: "AccountTree", order: 140 });
+    ToolPkg.registerNavigationEntry({ id: "workflow_toolbox", route: exports.ROUTE, surface: "toolbox", title: { zh: "Workflow", en: "Workflow" }, icon: "AccountTree", order: 140 });
     ToolPkg.registerHostEventHook({ id: "workflow_clock", source: "interval", trigger: { kind: "interval", intervalMs: 60000 }, function: onClock });
     ToolPkg.registerAppLifecycleHook({ id: "workflow_open", event: "application_on_create", function: onOpen });
     ToolPkg.registerManifestExtension({ key: "workflow_templates", function: onManifestExtension });
@@ -32,15 +32,15 @@ function registerToolPkg() {
 /** Imports workflow template declarations from dependent ToolPkg manifests. */
 async function onManifestExtension(event) {
     if (event.eventPayload.extensionKey !== "workflow_templates")
-        throw new Error(`不支持的 manifest 扩展：${event.eventPayload.extensionKey}`);
+        throw new Error(`Unsupported manifest extension: ${event.eventPayload.extensionKey}`);
     const entries = event.eventPayload.extension;
     if (!Array.isArray(entries))
-        throw new Error("workflow_templates 必须是数组");
+        throw new Error("workflow_templates must be an array");
     const useEnglish = getLang().toLowerCase().startsWith("en");
     const templates = [];
     for (const item of entries) {
         if (item === null || typeof item !== "object" || Array.isArray(item))
-            throw new Error("workflow_templates 项必须是对象");
+            throw new Error("workflow_templates item must be an object");
         const record = item;
         const templateId = requireManifestString(record.id, "id");
         const resourceKey = requireManifestString(record.resource_key, "resource_key");
@@ -56,13 +56,13 @@ async function onManifestExtension(event) {
 /** Reads a required string field from a manifest extension object. */
 function requireManifestString(value, field) {
     if (typeof value !== "string" || value.trim() === "")
-        throw new Error(`workflow_templates.${field} 必须是非空字符串`);
+        throw new Error(`workflow_templates.${field} must be a non-empty string`);
     return value.trim();
 }
 /** Resolves one localized manifest value for the active language. */
 function localizedManifestString(value, useEnglish, field) {
     if (value === null || typeof value !== "object" || Array.isArray(value))
-        throw new Error(`workflow_templates.${field} 必须是本地化对象`);
+        throw new Error(`workflow_templates.${field} must be a localized object`);
     const selected = value[useEnglish ? "en" : "zh"];
     return requireManifestString(selected, `${field}.${useEnglish ? "en" : "zh"}`);
 }

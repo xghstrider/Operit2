@@ -272,7 +272,7 @@ impl SystemToolPrompts {
             false,
             false,
             buildSafBookmarksSectionCn(saf_bookmark_names),
-            "读取文件内容。对于媒体文件，你也可以提供 intent 参数，使用后端识别模型进行分析。",
+            "Read file content. For media files, you can also provide the intent argument to analyze it with the backend recognition model.",
         );
         file_system = Self::applyHostEnvironmentToCategory(file_system, host_environment, false);
         vec![
@@ -507,7 +507,7 @@ impl SystemToolPrompts {
             host_environment,
         );
         if !include_memory_tools {
-            categories.retain(|category| category.category_name != "记忆与记忆库工具");
+            categories.retain(|category| category.category_name != "Memory and Memory Library Tools");
         }
         compose_tool_prompt(
             chat_id,
@@ -558,7 +558,7 @@ fn hostPromptHeader(host_environment: &HostEnvironmentDescriptor, use_english: b
         )
     } else {
         format!(
-            "当前文件 VFS Host：{}（`{}`）。\n- 只使用 VFS 路径：{pathList}。\n- 当 `/mnt` 出现在根目录时，其中只包含当前 Host 已挂载入口。\n- Android 隐藏别名 `/sdcard` 和 `/data` 可在 Android Host 上直接访问，但不会在根目录列表展示。",
+            "Current file VFS Host: {} (`{}`).\n- Use VFS paths only: {pathList}.\n- When `/mnt` appears in the root list, it only contains entries currently mounted by this Host.\n- The Android hidden aliases `/sdcard` and `/data` are directly accessible on an Android Host but are not shown in the root list.",
             host_environment.displayName,
             host_environment.id
         )
@@ -591,7 +591,7 @@ fn applyHostEnvironmentToTool(
         tool.description = if use_english {
             "Copy a file or directory through VFS paths.".to_string()
         } else {
-            "通过 VFS 路径复制文件或目录。".to_string()
+            "Copy files or directories by VFS path.".to_string()
         };
     }
 }
@@ -607,7 +607,7 @@ fn hostPathParameterDescription(
         format!("VFS path, e.g. {vfsExamples}. Host examples: {examples}")
     } else {
         let vfsExamplesCn = hostToolPathExamples(host_environment).join("、");
-        format!("VFS 路径，例如 {vfsExamplesCn}。Host 示例：{examples}")
+        format!("VFS path, e.g. {vfsExamplesCn}. Host examples: {examples}")
     }
 }
 
@@ -917,33 +917,33 @@ fn basic_tools_en() -> SystemToolPromptCategory {
 
 fn basic_tools_cn() -> SystemToolPromptCategory {
     category(
-        "可用工具",
+        "Available Tools",
         vec![
             tool(
                 "sleep",
-                "演示工具，短暂暂停。",
+                "Demo tool, pauses briefly.",
                 vec![param(
                     "duration_ms",
                     "integer",
-                    "毫秒，默认1000，>= 0",
+                    "Milliseconds, default 1000, >= 0",
                     false,
                     Some("1000"),
                 )],
             ),
             tool(
                 "use_package",
-                "在当前会话中激活包。",
-                vec![param("package_name", "string", "要激活的包名", true, None)],
+                "Activate a package in the current conversation.",
+                vec![param("package_name", "string", "Name of the package to activate", true, None)],
             ),
             tool(
                 "list_core_nodes",
-                "列出当前设备和当前设备空间内的全部设备，包括每台设备的名称、平台、型号、ID 和当前是否可达。",
+                "Lists all devices in the current device space, including the current device, showing the name, platform, model, ID, and current reachability of each device.",
                 vec![],
             ),
             tool(
                 "switch_core",
-                "为当前设备空间内另一台当前可达的设备输出目标标记；此工具本身不会切换运行时。",
-                vec![param("node_id", "string", "目标设备的精确 ID", true, None)],
+                "Outputs a target marker for another currently reachable device in the current device space; this tool itself does not switch the runtime.",
+                vec![param("node_id", "string", "Exact ID of the target device", true, None)],
             ),
         ],
     )
@@ -972,24 +972,24 @@ fn file_system_tools_en() -> SystemToolPromptCategory {
 }
 
 fn file_system_tools_cn() -> SystemToolPromptCategory {
-    category("文件系统工具", vec![
-        tool("list_files", "列出目录中的文件。", vec![param("path", "string", "VFS 目录路径，例如 \"/app/workspaces/<workspace-id>\" 或 \"/mnt/android/sdcard/Download\"", true, None)]),
-        tool("read_file", "读取文件内容。对于图片文件(jpg, jpeg, png, gif, bmp)，自动使用OCR提取文本。", vec![
-            param("path", "string", "VFS 文件路径", true, None),
-            param("intent", "string", "可选，用户对媒体/文件的问题（用于后端识别模型）", false, None),
-            param("direct_image", "boolean", "可选，为true时：返回<link type=\"image\">标签供支持识图的模型直接查看", false, None),
-            param("direct_audio", "boolean", "可选，为true时：返回<link type=\"audio\">标签供支持音频的模型直接处理", false, None),
-            param("direct_video", "boolean", "可选，为true时：返回<link type=\"video\">标签供支持视频的模型直接处理", false, None),
+    category("File System Tools", vec![
+        tool("list_files", "List files in a directory.", vec![param("path", "string", "VFS directory path, e.g. \"/app/workspaces/<workspace-id>\" or \"/mnt/android/sdcard/Download\"", true, None)]),
+        tool("read_file", "Read file content. For image files (jpg, jpeg, png, gif, bmp), OCR is used automatically to extract text.", vec![
+            param("path", "string", "VFS file path", true, None),
+            param("intent", "string", "Optional. The question about the media/file from the user (for the backend recognition model)", false, None),
+            param("direct_image", "boolean", "Optional. When true, returns a <link type=\"image\"> tag for models with vision support to view directly", false, None),
+            param("direct_audio", "boolean", "Optional. When true, returns a <link type=\"audio\"> tag for models with audio support to process directly", false, None),
+            param("direct_video", "boolean", "Optional. When true, returns a <link type=\"video\"> tag for models with video support to process directly", false, None),
         ]),
-        tool("read_file_part", "按行号范围读取文件内容。", vec![param("path", "string", "VFS 文件路径", true, None), param("start_line", "integer", "起始行号，从1开始", false, Some("1")), param("end_line", "integer", "结束行号，从1开始，包括该行，可选", false, Some("start_line + 99"))]),
-        tool("create_file", "通过委托给 apply_file 且 type=create 来创建新文件。", vec![param("path", "string", "VFS 文件路径", true, None), param("new", "string", "新文件的完整内容", true, None)]),
-        tool("edit_file", "通过委托给 apply_file 且 type=replace 来编辑已存在文件。", vec![param("path", "string", "VFS 文件路径", true, None), param("old", "string", "用于匹配并替换的原始内容", true, None), param("new", "string", "要插入的新内容", true, None)]),
-        tool("delete_file", "删除文件或目录。", vec![param("path", "string", "目标 VFS 路径", true, None), param("recursive", "boolean", "布尔值", false, Some("false"))]),
-        tool("make_directory", "创建目录。", vec![param("path", "string", "VFS 目录路径", true, None), param("create_parents", "boolean", "布尔值", false, Some("false"))]),
-        tool("find_files", "搜索匹配模式的文件。", vec![param("path", "string", "VFS 搜索路径", true, None), param("pattern", "string", "搜索模式，例如\"*.jpg\"", true, None), param("max_depth", "integer", "可选，控制子目录搜索深度，-1=无限", false, None), param("use_path_pattern", "boolean", "布尔值", false, Some("false")), param("case_insensitive", "boolean", "布尔值", false, Some("false"))]),
-        tool("grep_code", "在文件中搜索匹配正则表达式的代码内容，返回带上下文的匹配结果。", vec![param("path", "string", "VFS 搜索路径", true, None), param("pattern", "string", "正则表达式模式", true, None), param("file_pattern", "string", "文件过滤", false, Some("\"*\"")), param("case_insensitive", "boolean", "布尔值", false, Some("false")), param("context_lines", "integer", "匹配行前后的上下文行数", false, Some("3")), param("max_results", "integer", "最大匹配数", false, Some("100"))]),
-        tool("grep_context", "基于意图/上下文理解搜索相关内容。支持目录模式和文件模式，使用语义相关性评分。", vec![param("path", "string", "VFS 目录或文件路径", true, None), param("intent", "string", "意图或上下文描述字符串", true, None), param("file_pattern", "string", "目录模式下的文件过滤", false, Some("\"*\"")), param("max_results", "integer", "返回的最大项数", false, Some("10"))]),
-        tool("download_file", "从互联网下载文件。有两种用法：1）提供 `url` + `destination` 直接下载。2）提供 `visit_key` +（`link_number` 或 `image_number`）+ `destination`，从上一次 `visit_web` 的 Results/Images 编号中按序号下载。", vec![param("url", "string", "可选, 文件URL。不传时可使用 visit_key + link_number/image_number 从上一次 visit_web 结果按编号下载", false, None), param("visit_key", "string", "可选, 上一次 visit_web 返回的 visitKey", false, None), param("link_number", "integer", "可选, 整数, Results 中的链接编号（从1开始，需要配合 visit_key）", false, None), param("image_number", "integer", "可选, 整数, Images 中的图片编号（从1开始，需要配合 visit_key）", false, None), param("destination", "string", "保存到的 VFS 路径", true, None), param("headers", "string", "可选：HTTP请求头，JSON对象字符串，例如{\"Referer\":\"...\"}", false, None)]),
+        tool("read_file_part", "Read file content by line number range.", vec![param("path", "string", "VFS file path", true, None), param("start_line", "integer", "Start line number, starting from 1", false, Some("1")), param("end_line", "integer", "End line number, starting from 1 and inclusive, optional", false, Some("start_line + 99"))]),
+        tool("create_file", "Create a new file by delegating to apply_file with type=create.", vec![param("path", "string", "VFS file path", true, None), param("new", "string", "Full content of the new file", true, None)]),
+        tool("edit_file", "Edit an existing file by delegating to apply_file with type=replace.", vec![param("path", "string", "VFS file path", true, None), param("old", "string", "Original content to match and replace", true, None), param("new", "string", "New content to insert", true, None)]),
+        tool("delete_file", "Delete a file or directory.", vec![param("path", "string", "Target VFS path", true, None), param("recursive", "boolean", "Boolean value", false, Some("false"))]),
+        tool("make_directory", "Create a directory.", vec![param("path", "string", "VFS directory path", true, None), param("create_parents", "boolean", "Boolean value", false, Some("false"))]),
+        tool("find_files", "Search for files matching a pattern.", vec![param("path", "string", "VFS search path", true, None), param("pattern", "string", "Search pattern, e.g. \"*.jpg\"", true, None), param("max_depth", "integer", "Optional. Controls the subdirectory search depth, -1 = unlimited", false, None), param("use_path_pattern", "boolean", "Boolean value", false, Some("false")), param("case_insensitive", "boolean", "Boolean value", false, Some("false"))]),
+        tool("grep_code", "Search file content for regular expression matches, returning results with context.", vec![param("path", "string", "VFS search path", true, None), param("pattern", "string", "Regular expression pattern", true, None), param("file_pattern", "string", "File filter", false, Some("\"*\"")), param("case_insensitive", "boolean", "Boolean value", false, Some("false")), param("context_lines", "integer", "Number of context lines before and after each match", false, Some("3")), param("max_results", "integer", "Maximum number of matches", false, Some("100"))]),
+        tool("grep_context", "Search for related content based on intent/context understanding. Supports directory mode and file mode, using semantic relevance scoring.", vec![param("path", "string", "VFS directory or file path", true, None), param("intent", "string", "Intent or context description string", true, None), param("file_pattern", "string", "File filter in directory mode", false, Some("\"*\"")), param("max_results", "integer", "Maximum number of items to return", false, Some("10"))]),
+        tool("download_file", "Download a file from the internet. Two usages: 1) Provide `url` + `destination` to download directly. 2) Provide `visit_key` + (`link_number` or `image_number`) + `destination` to download by index from the Results/Images of the last `visit_web`.", vec![param("url", "string", "Optional. File URL. When omitted, visit_key + link_number/image_number can be used to download by index from the last visit_web results", false, None), param("visit_key", "string", "Optional. visitKey returned by the last visit_web", false, None), param("link_number", "integer", "Optional. Integer. Link index in Results (starting from 1, requires visit_key)", false, None), param("image_number", "integer", "Optional. Integer. Image index in Images (starting from 1, requires visit_key)", false, None), param("destination", "string", "VFS path to save to", true, None), param("headers", "string", "Optional: HTTP request headers, a JSON object string, e.g. {\"Referer\":\"...\"}", false, None)]),
     ])
 }
 
@@ -998,7 +998,7 @@ fn http_tools_en() -> SystemToolPromptCategory {
 }
 
 fn http_tools_cn() -> SystemToolPromptCategory {
-    category("HTTP工具", vec![tool("visit_web", "访问网页并提取信息（可选包含图片链接）。有两种用法：1）提供 `url` 访问新页面。2）提供上一次 visit_web 返回的 `visit_key` + `link_number`，用来继续访问结果里的某个链接。返回文本通常会包含 `Results:` 段落，形如 `[1] ...`、`[2] ...` -- 中括号里的数字是从 1 开始的编号，请把该编号原样作为 `link_number`（范围：1..links.length），不要按 0 起始。若需要图片，请设置 `include_image_links=true`，工具会额外返回 `Images:` 段落以及从 1 开始的图片编号。重要：下载图片不要用 `link_number` 乱点页面链接；请使用 `download_file` 的 `visit_key` + `image_number` 按图片编号下载。重要：这个工具用于网页浏览/提取，不能替代原始 HTTP GET/POST 请求；如果你实际需要的是接口返回体或精确响应内容，用它时可能会得到空结果或不完整内容。注意：该工具仅支持浏览/读取操作，不执行登录、点击、填写、提交等交互自动化。", vec![param("url", "string", "可选, 网页URL", false, None), param("visit_key", "string", "可选, 字符串, 上一次 visit_web 返回的 visitKey", false, None), param("link_number", "integer", "可选, 整数, 要继续访问的链接编号（从1开始，对应 Results 里的 `[n]`；范围 1..links.length）", false, None), param("include_image_links", "boolean", "可选, boolean, 为 true 时在结果中额外包含提取到的图片链接列表（imageLinks）", false, None), param("headers", "string", "可选：HTTP请求头，JSON对象字符串，例如{\"Referer\":\"...\"}", false, None), param("user_agent_preset", "string", "可选：UA预设，快速选择：desktop/android", false, None), param("user_agent", "string", "可选：完整自定义UA（优先级高于预设）", false, None)])])
+    category("HTTP Tools", vec![tool("visit_web", "Visit a web page and extract information (optionally including image links). Two usages: 1) Provide `url` to visit a new page. 2) Provide the `visit_key` + `link_number` returned by the last visit_web to continue visiting one of the links in the results. The returned text usually contains a `Results:` section like `[1] ...`, `[2] ...` -- the number in brackets is a 1-based index; pass that number as-is as `link_number` (range: 1..links.length), never 0-based. If images are needed, set `include_image_links=true`; the tool will additionally return an `Images:` section with 1-based image indexes. Important: do not use `link_number` to randomly click page links to download images; use `download_file` with `visit_key` + `image_number` to download by image index. Important: this tool is for web browsing/extraction and cannot replace raw HTTP GET/POST requests; if you actually need an API response body or exact response content, using it may yield empty or incomplete results. Note: this tool only supports browsing/reading operations and does not perform interactive automation such as login, clicking, filling forms, or submitting.", vec![param("url", "string", "Optional. Page URL", false, None), param("visit_key", "string", "Optional. String. visitKey returned by the last visit_web", false, None), param("link_number", "integer", "Optional. Integer. Index of the link to continue visiting (starting from 1, corresponding to `[n]` in Results; range 1..links.length)", false, None), param("include_image_links", "boolean", "Optional. Boolean. When true, the result additionally includes the extracted image link list (imageLinks)", false, None), param("headers", "string", "Optional: HTTP request headers, a JSON object string, e.g. {\"Referer\":\"...\"}", false, None), param("user_agent_preset", "string", "Optional: UA preset, quick choices: desktop/android", false, None), param("user_agent", "string", "Optional: full custom UA (takes priority over the preset)", false, None)])])
 }
 
 fn memory_tools_en() -> SystemToolPromptCategory {
@@ -1117,47 +1117,47 @@ fn memory_tools_en() -> SystemToolPromptCategory {
 
 fn memory_tools_cn() -> SystemToolPromptCategory {
     let mut category = category(
-        "记忆与记忆库工具",
+        "Memory and Memory Library Tools",
         vec![
             tool(
                 "query_memory",
-                "从记忆库中搜索相关记忆和文档分块。",
+                "Search the memory library for related memories and document chunks.",
                 vec![
-                    param("query", "string", "搜索查询", true, None),
+                    param("query", "string", "Search query", true, None),
                     param(
                         "target_owner_key",
                         "string",
-                        "可选，记忆 owner key，例如 character:<character-id> 或 shared:<shared-id>",
+                        "Optional. Memory owner key, e.g. character:<character-id> or shared:<shared-id>",
                         false,
                         None,
                     ),
                     param(
                         "folder_path",
                         "string",
-                        "可选, 要搜索的特定文件夹路径",
+                        "Optional. Specific folder path to search",
                         false,
                         None,
                     ),
                     param(
                         "start_time",
                         "string",
-                        "可选, 本地时间字符串，格式支持 YYYY-MM-DD 或 YYYY-MM-DD HH:mm",
+                        "Optional. Local time string; formats supported: YYYY-MM-DD or YYYY-MM-DD HH:mm",
                         false,
                         None,
                     ),
                     param(
                         "end_time",
                         "string",
-                        "可选, 本地时间字符串，格式支持 YYYY-MM-DD 或 YYYY-MM-DD HH:mm",
+                        "Optional. Local time string; formats supported: YYYY-MM-DD or YYYY-MM-DD HH:mm",
                         false,
                         None,
                     ),
-                    param("snapshot_id", "string", "可选, 可复用快照 id", false, None),
-                    param("threshold", "number", "可选, number >= 0", false, Some("0")),
+                    param("snapshot_id", "string", "Optional. Reusable snapshot id", false, None),
+                    param("threshold", "number", "Optional. number >= 0", false, Some("0")),
                     param(
                         "limit",
                         "integer",
-                        "可选, 返回结果的最大数量",
+                        "Optional. Maximum number of results to return",
                         false,
                         Some("20"),
                     ),
@@ -1165,37 +1165,37 @@ fn memory_tools_cn() -> SystemToolPromptCategory {
             ),
             tool(
                 "get_memory_by_title",
-                "通过精确标题检索记忆，可读取完整内容或文档分块。",
+                "Retrieve a memory by exact title; can read the full content or document chunks.",
                 vec![
                     param(
                         "target_owner_key",
                         "string",
-                        "必需，记忆 owner key，例如 character:<character-id> 或 shared:<shared-id>",
+                        "Required. Memory owner key, e.g. character:<character-id> or shared:<shared-id>",
                         true,
                         None,
                     ),
-                    param("title", "string", "必需, 记忆的精确标题", true, None),
+                    param("title", "string", "Required. Exact title of the memory", true, None),
                     param(
                         "chunk_index",
                         "integer",
-                        "可选, 读取特定编号的分块",
+                        "Optional. Read a specific chunk by number",
                         false,
                         None,
                     ),
                     param(
                         "chunk_range",
                         "string",
-                        "可选, 读取分块范围，格式为 起始-结束",
+                        "Optional. Read a chunk range, in the format start-end",
                         false,
                         None,
                     ),
-                    param("query", "string", "可选, 在文档内搜索", false, None),
-                    param("limit", "integer", "可选, 最大分块数量", false, Some("20")),
+                    param("query", "string", "Optional. Search within the document", false, None),
+                    param("limit", "integer", "Optional. Maximum number of chunks", false, Some("20")),
                 ],
             ),
         ],
     );
-    category.category_footer = "\n注意：图记忆库和 USER.md 可能会在当前回复完成后自动更新。若需要立即管理记忆或更新 USER.md，请直接使用对应工具。".to_string();
+    category.category_footer = "\nNote: The image memory library and USER.md may be updated automatically after the current reply completes. If you need to manage memories or update USER.md immediately, use the corresponding tools directly.".to_string();
     category
 }
 

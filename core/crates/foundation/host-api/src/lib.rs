@@ -104,14 +104,14 @@ impl HostEnvironmentDescriptor {
             privilege: HostPrivilege::Normal,
             isolation: HostIsolation::OsAppSandbox,
             pathStyleDescriptionEn: "Use Android absolute paths such as /sdcard/Download or an attached repository path.".to_string(),
-            pathStyleDescriptionCn: "使用 Android 绝对路径，例如 /sdcard/Download，或使用已附加的仓库路径。".to_string(),
+            pathStyleDescriptionCn: "Use an Android absolute path, e.g. /sdcard/Download, or use an attached repository path.".to_string(),
             examplePaths: vec![
                 "/sdcard/Download".to_string(),
                 "/sdcard/Documents".to_string(),
             ],
             usesEnvironmentParameter: true,
             environmentParameterDescriptionEn: "optional, execution environment. Values: \"android\" (Android file system) | \"linux\" (local terminal environment) | \"repo:<repositoryName>\" (attached local storage repository)".to_string(),
-            environmentParameterDescriptionCn: "可选，执行环境。取值：\"android\"（Android 文件系统）| \"linux\"（本地终端环境）| \"repo:<仓库名>\"（附加本地储存仓库）".to_string(),
+            environmentParameterDescriptionCn: "Optional execution environment. Values: \"android\" (Android file system) | \"linux\" (local terminal environment) | \"repo:<repository name>\" (attach a local storage repository)".to_string(),
             capabilities: vec![
                 "fs.read".to_string(),
                 "fs.write".to_string(),
@@ -175,7 +175,7 @@ impl HostEnvironmentDescriptor {
             isolation: HostIsolation::OsAppSandbox,
             pathStyleDescriptionEn:
                 "Use absolute OpenHarmony application paths supplied by the host.".to_string(),
-            pathStyleDescriptionCn: "使用鸿蒙 Host 提供的绝对应用路径。".to_string(),
+            pathStyleDescriptionCn: "Use the absolute application path provided by the HarmonyOS Host.".to_string(),
             examplePaths: Vec::new(),
             usesEnvironmentParameter: false,
             environmentParameterDescriptionEn: String::new(),
@@ -251,7 +251,7 @@ impl HostEnvironmentDescriptor {
                 "Use absolute Windows paths such as C:/Users/Name/Documents or D:/Code/project."
                     .to_string(),
             pathStyleDescriptionCn:
-                "使用 Windows 绝对路径，例如 C:/Users/Name/Documents 或 D:/Code/project。"
+                "Use a Windows absolute path, e.g. C:/Users/Name/Documents or D:/Code/project."
                     .to_string(),
             examplePaths: vec![
                 "C:/Users/Name/Documents".to_string(),
@@ -318,7 +318,7 @@ impl HostEnvironmentDescriptor {
             isolation: HostIsolation::None,
             pathStyleDescriptionEn:
                 "Use absolute Linux paths such as /home/user/project or /tmp/work.".to_string(),
-            pathStyleDescriptionCn: "使用 Linux 绝对路径，例如 /home/user/project 或 /tmp/work。"
+            pathStyleDescriptionCn: "Use a Linux absolute path, e.g. /home/user/project or /tmp/work."
                 .to_string(),
             examplePaths: vec!["/home/user/project".to_string(), "/tmp/work".to_string()],
             usesEnvironmentParameter: false,
@@ -329,7 +329,7 @@ impl HostEnvironmentDescriptor {
             onboardingRequirements: vec![HostOnboardingRequirement {
                 id: "linux.root".to_string(),
                 title: "root / service account".to_string(),
-                description: "显示当前 Host 的系统账号权限；提权必须由系统或部署器完成。"
+                description: "Shows the system account permissions of the current Host; privilege escalation must be completed by the system or the deployer."
                     .to_string(),
                 capabilityIds: vec!["host.privilege".to_string()],
                 isRequired: true,
@@ -349,7 +349,7 @@ impl HostEnvironmentDescriptor {
             privilege: HostPrivilege::Normal,
             isolation: HostIsolation::OsAppSandbox,
             pathStyleDescriptionEn: "Use paths exposed by the browser host bridge.".to_string(),
-            pathStyleDescriptionCn: "使用浏览器 host bridge 暴露的路径。".to_string(),
+            pathStyleDescriptionCn: "Use paths exposed by the browser host bridge.".to_string(),
             examplePaths: vec![
                 "operit.db".to_string(),
                 "preferences/models.json".to_string(),
@@ -421,7 +421,7 @@ impl HostEnvironmentDescriptor {
             isolation: HostIsolation::None,
             pathStyleDescriptionEn:
                 "Use paths mounted by the ESP-IDF VFS, such as /data/config.json.".to_string(),
-            pathStyleDescriptionCn: "使用 ESP-IDF VFS 挂载的路径，例如 /data/config.json。"
+            pathStyleDescriptionCn: "Use paths mounted via the ESP-IDF VFS, e.g. /data/config.json."
                 .to_string(),
             examplePaths: vec!["/data".to_string(), "/data/config.json".to_string()],
             usesEnvironmentParameter: false,
@@ -536,31 +536,31 @@ fn defaultHostCapabilities() -> Vec<HostCapability> {
     vec![
         HostCapability {
             id: "fs.read".to_string(),
-            displayName: "文件读取".to_string(),
+            displayName: "File Read".to_string(),
             scope: CapabilityScope::FileSystem,
             operations: vec![CapabilityOperation::Read],
         },
         HostCapability {
             id: "fs.write".to_string(),
-            displayName: "文件写入".to_string(),
+            displayName: "File Write".to_string(),
             scope: CapabilityScope::FileSystem,
             operations: vec![CapabilityOperation::Write],
         },
         HostCapability {
             id: "fs.search".to_string(),
-            displayName: "文件搜索".to_string(),
+            displayName: "File Search".to_string(),
             scope: CapabilityScope::FileSystem,
             operations: vec![CapabilityOperation::Read],
         },
         HostCapability {
             id: "fs.archive".to_string(),
-            displayName: "归档文件处理".to_string(),
+            displayName: "Archive File Handling".to_string(),
             scope: CapabilityScope::FileSystem,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Write],
         },
         HostCapability {
             id: "http.request".to_string(),
-            displayName: "HTTP 请求".to_string(),
+            displayName: "HTTP Request".to_string(),
             scope: CapabilityScope::Network,
             operations: vec![
                 CapabilityOperation::Read,
@@ -570,127 +570,127 @@ fn defaultHostCapabilities() -> Vec<HostCapability> {
         },
         HostCapability {
             id: "web.visit".to_string(),
-            displayName: "网页访问".to_string(),
+            displayName: "Web Access".to_string(),
             scope: CapabilityScope::Network,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Connect],
         },
         HostCapability {
             id: "os.open".to_string(),
-            displayName: "打开文件".to_string(),
+            displayName: "Open File".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Execute],
         },
         HostCapability {
             id: "os.share".to_string(),
-            displayName: "系统分享".to_string(),
+            displayName: "System Share".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Execute],
         },
         HostCapability {
             id: "terminal.pty".to_string(),
-            displayName: "交互终端".to_string(),
+            displayName: "Interactive Terminal".to_string(),
             scope: CapabilityScope::Runtime,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Write],
         },
         HostCapability {
             id: "runtime.process".to_string(),
-            displayName: "进程执行".to_string(),
+            displayName: "Process Execution".to_string(),
             scope: CapabilityScope::Runtime,
             operations: vec![CapabilityOperation::Execute],
         },
         HostCapability {
             id: "runtime.storage".to_string(),
-            displayName: "运行时存储".to_string(),
+            displayName: "Runtime Storage".to_string(),
             scope: CapabilityScope::Runtime,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Write],
         },
         HostCapability {
             id: "runtime.sqlite".to_string(),
-            displayName: "SQLite 存储".to_string(),
+            displayName: "SQLite Storage".to_string(),
             scope: CapabilityScope::Runtime,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Write],
         },
         HostCapability {
             id: "audio.playback".to_string(),
-            displayName: "音频播放".to_string(),
+            displayName: "Audio Playback".to_string(),
             scope: CapabilityScope::Media,
             operations: vec![CapabilityOperation::Execute],
         },
         HostCapability {
             id: "music.playback".to_string(),
-            displayName: "音乐播放控制".to_string(),
+            displayName: "Music Playback Control".to_string(),
             scope: CapabilityScope::Media,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Execute],
         },
         HostCapability {
             id: "tts.synthesis".to_string(),
-            displayName: "语音合成".to_string(),
+            displayName: "Text-to-Speech".to_string(),
             scope: CapabilityScope::Media,
             operations: vec![CapabilityOperation::Execute],
         },
         HostCapability {
             id: "tts.playback".to_string(),
-            displayName: "语音播放".to_string(),
+            displayName: "Speech Playback".to_string(),
             scope: CapabilityScope::Media,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Execute],
         },
         HostCapability {
             id: "system.location".to_string(),
-            displayName: "定位".to_string(),
+            displayName: "Location".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Read],
         },
         HostCapability {
             id: "system.notifications.read".to_string(),
-            displayName: "通知读取".to_string(),
+            displayName: "Notification Reading".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Read],
         },
         HostCapability {
             id: "system.notifications.send".to_string(),
-            displayName: "发送系统通知".to_string(),
+            displayName: "Send System Notification".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Execute],
         },
         HostCapability {
             id: "system.app_usage".to_string(),
-            displayName: "应用使用统计".to_string(),
+            displayName: "App Usage Stats".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Read],
         },
         HostCapability {
             id: "system.app.install".to_string(),
-            displayName: "应用安装".to_string(),
+            displayName: "App Install".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Execute],
         },
         HostCapability {
             id: "system.app.uninstall".to_string(),
-            displayName: "应用卸载".to_string(),
+            displayName: "App Uninstall".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Execute],
         },
         HostCapability {
             id: "system.settings".to_string(),
-            displayName: "系统设置".to_string(),
+            displayName: "System Settings".to_string(),
             scope: CapabilityScope::System,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Write],
         },
         HostCapability {
             id: "bluetooth.classic".to_string(),
-            displayName: "经典蓝牙".to_string(),
+            displayName: "Classic Bluetooth".to_string(),
             scope: CapabilityScope::Device,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Connect],
         },
         HostCapability {
             id: "bluetooth.ble".to_string(),
-            displayName: "低功耗蓝牙".to_string(),
+            displayName: "Bluetooth Low Energy".to_string(),
             scope: CapabilityScope::Device,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Connect],
         },
         HostCapability {
             id: "device.gpio".to_string(),
-            displayName: "GPIO 控制".to_string(),
+            displayName: "GPIO Control".to_string(),
             scope: CapabilityScope::Device,
             operations: vec![CapabilityOperation::Read, CapabilityOperation::Write],
         },
@@ -748,8 +748,8 @@ fn hostCapabilities(ids: &[&str]) -> Vec<HostCapability> {
 fn windowsOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
     vec![HostOnboardingRequirement {
         id: "windows.admin".to_string(),
-        title: "管理员权限".to_string(),
-        description: "显示当前 Host 是否以管理员身份运行；提升权限必须由系统启动边界决定。"
+        title: "Admin Privileges".to_string(),
+        description: "Shows whether the current Host is running as administrator; privilege elevation is decided by the system startup boundary."
             .to_string(),
         capabilityIds: vec!["host.privilege".to_string()],
         isRequired: true,
@@ -763,8 +763,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
     vec![
         HostOnboardingRequirement {
             id: "android.fileManagement".to_string(),
-            title: "文件管理".to_string(),
-            description: "Host 需要文件管理授权来读取和写入用户选择的 Android 共享存储目录。"
+            title: "File Management".to_string(),
+            description: "The Host needs file management authorization to read and write the Android shared storage directories chosen by the user."
                 .to_string(),
             capabilityIds: vec![
                 "fs.read".to_string(),
@@ -778,8 +778,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "android.notifications".to_string(),
-            title: "通知".to_string(),
-            description: "Host 需要通知授权来显示前台服务、任务进度和工具执行结果。".to_string(),
+            title: "Notifications".to_string(),
+            description: "The Host needs notification authorization to show foreground services, task progress, and tool execution results.".to_string(),
             capabilityIds: vec!["system.notifications.send".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,
@@ -787,8 +787,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "android.appList".to_string(),
-            title: "应用列表".to_string(),
-            description: "Host 需要包可见性声明来列出、启动和停止 Android 应用。".to_string(),
+            title: "App List".to_string(),
+            description: "The Host needs a package visibility declaration to list, launch, and stop Android apps.".to_string(),
             capabilityIds: vec!["system.app.list".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,
@@ -796,8 +796,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "android.usageStats".to_string(),
-            title: "应用使用统计".to_string(),
-            description: "Host 需要使用情况访问权限来读取应用前台使用时长。".to_string(),
+            title: "App Usage Stats".to_string(),
+            description: "The Host needs usage access permission to read app foreground usage time.".to_string(),
             capabilityIds: vec!["system.app_usage".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,
@@ -805,8 +805,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "android.writeSettings".to_string(),
-            title: "系统设置修改".to_string(),
-            description: "Host 需要修改系统设置权限来写入允许的 Android 系统设置项。".to_string(),
+            title: "Modify System Settings".to_string(),
+            description: "The Host needs modify system settings permission to write the allowed Android system settings.".to_string(),
             capabilityIds: vec!["system.settings".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,
@@ -814,8 +814,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "android.location".to_string(),
-            title: "附近设备定位".to_string(),
-            description: "Host 需要系统定位授权来完成部分附近设备发现能力。".to_string(),
+            title: "Nearby Device Location".to_string(),
+            description: "The Host needs system location authorization to complete some nearby device discovery capabilities.".to_string(),
             capabilityIds: vec!["system.location".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,
@@ -823,8 +823,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "android.bluetooth".to_string(),
-            title: "蓝牙连接".to_string(),
-            description: "Host 需要蓝牙扫描与连接授权来发现和连接设备。".to_string(),
+            title: "Bluetooth Connection".to_string(),
+            description: "The Host needs Bluetooth scan and connect authorization to discover and connect to devices.".to_string(),
             capabilityIds: vec!["bluetooth.classic".to_string(), "bluetooth.ble".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,
@@ -832,8 +832,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "android.overlay".to_string(),
-            title: "悬浮入口".to_string(),
-            description: "Host 需要系统悬浮窗授权来在其他应用中显示入口。".to_string(),
+            title: "Floating Entry".to_string(),
+            description: "The Host needs system overlay authorization to show the entry over other apps.".to_string(),
             capabilityIds: vec!["android.overlay".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,
@@ -841,8 +841,8 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "android.batteryOptimization".to_string(),
-            title: "持续任务".to_string(),
-            description: "Host 需要电池优化例外来保持同步、协作和长任务连续。".to_string(),
+            title: "Continuous Task".to_string(),
+            description: "The Host needs a battery optimization exemption to keep sync, collaboration, and long tasks running continuously.".to_string(),
             capabilityIds: vec!["runtime.background".to_string()],
             isRequired: true,
             status: HostRequirementStatus::Missing,
@@ -851,7 +851,7 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         HostOnboardingRequirement {
             id: "android.shizuku".to_string(),
             title: "Shizuku".to_string(),
-            description: "可选。需先启动 Shizuku 或 Sui；授权后 Operit 可以使用支持 Shizuku 的 Android 系统能力。"
+            description: "Optional. Shizuku or Sui must be started first; once authorized, Operit can use the Android system capabilities supported by Shizuku."
                 .to_string(),
             capabilityIds: vec!["host.privilege".to_string()],
             isRequired: false,
@@ -861,7 +861,7 @@ fn androidOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         HostOnboardingRequirement {
             id: "android.root".to_string(),
             title: "Root".to_string(),
-            description: "可选。授权后 Operit 可以使用需要 Root 的 Android 系统能力。".to_string(),
+            description: "Optional. Once authorized, Operit can use Android system capabilities that require Root.".to_string(),
             capabilityIds: vec!["host.privilege".to_string()],
             isRequired: false,
             status: HostRequirementStatus::Missing,
@@ -876,8 +876,8 @@ fn ohosOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
     vec![
         HostOnboardingRequirement {
             id: "ohos.location".to_string(),
-            title: "定位授权".to_string(),
-            description: "Host 需要系统定位授权来读取设备位置，并支持依赖位置权限的附近设备发现。"
+            title: "Location Permission".to_string(),
+            description: "The Host needs system location authorization to read the device location and to support nearby device discovery that depends on location permission."
                 .to_string(),
             capabilityIds: vec!["system.location".to_string()],
             isRequired: true,
@@ -886,8 +886,8 @@ fn ohosOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
         },
         HostOnboardingRequirement {
             id: "ohos.bluetooth".to_string(),
-            title: "蓝牙授权".to_string(),
-            description: "Host 需要蓝牙使用与发现授权来扫描、连接和读写经典蓝牙或 BLE 设备。"
+            title: "Bluetooth Permission".to_string(),
+            description: "The Host needs Bluetooth usage and discovery authorization to scan, connect to, and read/write classic Bluetooth or BLE devices."
                 .to_string(),
             capabilityIds: vec!["bluetooth.classic".to_string(), "bluetooth.ble".to_string()],
             isRequired: true,

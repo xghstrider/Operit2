@@ -51,8 +51,8 @@ class _NewChatIntroOverlayState extends State<NewChatIntroOverlay>
   // wordmark and the greeting never share the stage.
   static const int _typeStartMs = 3100;
   static const int _typeStepMs = 110;
-  static const String _greeting = '有什么可以帮你？';
-  static const String _subtitle = '新对话已就绪，随时开始';
+  static const String _greeting = 'How can I help you?';
+  static const String _subtitle = 'New conversation is ready, start anytime';
 
   // Constructed eagerly in initState: a `late final` field would first
   // initialize inside dispose() when the overlay never played, and creating

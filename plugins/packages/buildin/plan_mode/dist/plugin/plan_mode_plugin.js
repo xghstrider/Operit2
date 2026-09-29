@@ -531,8 +531,8 @@ function registerToolPkg() {
     ToolPkg.registerCoreCommand({
         id: PLAN_MODE_COMMAND_ID,
         name: PLAN_MODE_COMMAND_NAME,
-        title: { zh: "计划模式", en: "Plan Mode" },
-        description: { zh: "查询或切换当前聊天的计划模式。", en: "Show or toggle plan mode for the active chat." },
+        title: { zh: "Plan Mode", en: "Plan Mode" },
+        description: { zh: "Show or toggle plan mode for the current chat.", en: "Show or toggle plan mode for the active chat." },
         usage: "/plan [message]",
         function: onPlanModeCommand,
     });

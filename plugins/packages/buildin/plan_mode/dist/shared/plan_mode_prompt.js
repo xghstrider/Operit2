@@ -30,9 +30,9 @@ function buildExistingPlanPrompt(useEnglish) {
         lines.push(`- When and only when every planned item is truly complete, call \`${completePlanTool}\` exactly once.`);
     }
     else {
-        lines.push(`- 在开始工作前，先调用 \`${getPlanTool}\`。`);
-        lines.push("- 根据返回的计划内容执行实施。");
-        lines.push(`- 只有当所有计划项都真正完成后，才调用一次 \`${completePlanTool}\`。`);
+        lines.push(`- Before starting work, first call \`${getPlanTool}\`.`);
+        lines.push("- Carry out the implementation based on the returned plan content.");
+        lines.push(`- Only call \`${completePlanTool}\` once, after all plan items are truly complete.`);
     }
     return lines.join("\n");
 }

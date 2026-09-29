@@ -292,7 +292,7 @@ class NewConversationButton extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        '新建对话',
+                        'New Conversation',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -321,7 +321,7 @@ class NewConversationButton extends StatelessWidget {
                 size: 24,
                 color: appearance.titleColor,
               ),
-              tooltip: '新建分组',
+              tooltip: 'New Group',
               style: IconButton.styleFrom(
                 shape: const CircleBorder(),
                 backgroundColor: Colors.transparent,
@@ -360,7 +360,7 @@ class ConversationSearchField extends StatelessWidget {
       ).textTheme.bodyMedium?.copyWith(color: appearance.titleColor),
       decoration: InputDecoration(
         isDense: true,
-        hintText: '搜索对话',
+        hintText: 'Search conversations',
         hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
           color: appearance.itemColor.withValues(alpha: 0.62),
         ),
@@ -531,13 +531,13 @@ class ConversationDrawerItem extends StatelessWidget {
                       alignment: AlignmentDirectional.centerStart,
                       color: Theme.of(context).colorScheme.primary,
                       icon: Icons.edit,
-                      label: '重命名',
+                      label: 'Rename',
                     ),
                     secondaryBackground: _SwipeActionBackground(
                       alignment: AlignmentDirectional.centerEnd,
                       color: Theme.of(context).colorScheme.error,
                       icon: Icons.delete,
-                      label: '删除',
+                      label: 'Delete',
                     ),
                     child: Material(
                       color: selected
@@ -619,7 +619,7 @@ class ConversationDrawerItem extends StatelessWidget {
                               if (isRunning) ...<Widget>[
                                 const SizedBox(width: 6),
                                 Tooltip(
-                                  message: '正在运行',
+                                  message: 'Running',
                                   child: SizedBox(
                                     key: const ValueKey<String>(
                                       'conversation-running-indicator',
@@ -935,7 +935,7 @@ class _HistoryDragHandle extends StatelessWidget {
       width: side,
       height: side,
       child: Tooltip(
-        message: '拖动对话',
+        message: 'Drag conversation',
         child: Material(
           color: Colors.transparent,
           shape: const CircleBorder(),

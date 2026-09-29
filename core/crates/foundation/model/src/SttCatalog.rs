@@ -1,8 +1,8 @@
 use crate::SttConfig::{AvailableSttModel, SttHttpHeader, SttProviderCatalogEntry};
 
 const STT_PROVIDER_ROWS: &str = r#"
-LOCAL_MODEL|本地模型||||||$.text|[]
-OPENAI_COMPATIBLE|OpenAI 兼容|https://api.openai.com/v1/audio/transcriptions|whisper-1|file|model|language|$.text|[{"name":"Authorization","value":"Bearer {apiKey}"}]
+LOCAL_MODEL|Local model||||||$.text|[]
+OPENAI_COMPATIBLE|OpenAI compatible|https://api.openai.com/v1/audio/transcriptions|whisper-1|file|model|language|$.text|[{"name":"Authorization","value":"Bearer {apiKey}"}]
 HTTP_STT|HTTP STT|||file|model|language|$.text|[]
 GROQ_STT|Groq|https://api.groq.com/openai/v1/audio/transcriptions|whisper-large-v3-turbo|file|model|language|$.text|[{"name":"Authorization","value":"Bearer {apiKey}"}]
 "#;

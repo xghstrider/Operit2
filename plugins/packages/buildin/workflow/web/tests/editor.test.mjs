@@ -108,16 +108,16 @@ test(
       });
       await page.addInitScript((theme) => { window.workflowTheme = theme; }, hostTheme);
       await page.goto(`http://127.0.0.1:${server.address().port}`);
-      await page.getByRole("button", { name: "模板", exact: true }).click();
+      await page.getByRole("button", { name: "Templates", exact: true }).click();
       assert.equal(await page.locator(".template-option").count(), 6);
       await page
-        .getByText("AI 主动发消息（定时）", { exact: true })
+        .getByText("AI Proactive Message (Scheduled)", { exact: true })
         .waitFor();
-      await page.getByRole("button", { name: "关闭", exact: true }).click();
+      await page.getByRole("button", { name: "Close", exact: true }).click();
       await page
-        .getByRole("button", { name: "新建工作流", exact: true })
+        .getByRole("button", { name: "New Workflow", exact: true })
         .click();
-      await page.getByLabel("名称", { exact: true }).fill("浏览器验证");
+      await page.getByLabel("Name", { exact: true }).fill("Browser Verification");
       const documentId = await page.evaluate(() => {
         window.themeTestDocument = "same-document";
         const previous = window.workflowTheme;
@@ -129,17 +129,17 @@ test(
       });
       await page.waitForFunction(() => getComputedStyle(document.documentElement)
         .getPropertyValue("--operit-primary").trim() === "#008800");
-      assert.equal(await page.getByLabel("名称", { exact: true }).inputValue(), "浏览器验证");
+      assert.equal(await page.getByLabel("Name", { exact: true }).inputValue(), "Browser Verification");
       assert.equal(await page.evaluate(() => window.themeTestDocument), documentId);
-      await verifyDialogExit(page, "关闭");
-      await page.getByRole("button", { name: "新建工作流", exact: true }).click();
-      await page.getByLabel("名称", { exact: true }).fill("浏览器验证");
-      await page.getByRole("button", { name: "确定", exact: true }).click();
-      await page.getByRole("button", { name: "添加节点", exact: true }).click();
-      await page.getByRole("button", { name: "触发", exact: true }).click();
-      await page.getByRole("button", { name: "应用", exact: true }).click();
-      await page.getByRole("button", { name: "保存", exact: true }).click();
-      await page.getByText("已保存", { exact: true }).waitFor();
+      await verifyDialogExit(page, "Close");
+      await page.getByRole("button", { name: "New Workflow", exact: true }).click();
+      await page.getByLabel("Name", { exact: true }).fill("Browser Verification");
+      await page.getByRole("button", { name: "OK", exact: true }).click();
+      await page.getByRole("button", { name: "Add Node", exact: true }).click();
+      await page.getByRole("button", { name: "Trigger", exact: true }).click();
+      await page.getByRole("button", { name: "Apply", exact: true }).click();
+      await page.getByRole("button", { name: "Save", exact: true }).click();
+      await page.getByText("Saved", { exact: true }).waitFor();
       const node = page.locator(".graph-node");
       const bounds = await node.boundingBox();
       assert.ok(bounds.width <= 185, "Canvas nodes must remain compact");
@@ -156,9 +156,9 @@ test(
         callsBeforeDrag,
         "Dragging stays within the browser",
       );
-      await page.getByRole("button", { name: "返回列表", exact: true }).click();
+      await page.getByRole("button", { name: "Back to List", exact: true }).click();
       await page
-        .getByRole("button", { name: "保存并返回", exact: true })
+        .getByRole("button", { name: "Save and Return", exact: true })
         .click();
       assert.notDeepEqual(
         (await dispatch({ action: "list" })).workflows[0].nodes[0].position,
@@ -174,12 +174,12 @@ test(
         "Desktop workflow cards must remain compact",
       );
       await page
-        .getByRole("button", { name: "打开工作流", exact: true })
+        .getByRole("button", { name: "Open Workflow", exact: true })
         .click();
-      await page.getByRole("button", { name: "运行", exact: true }).click();
-      await page.getByRole("button", { name: "返回列表", exact: true }).waitFor();
+      await page.getByRole("button", { name: "Run", exact: true }).click();
+      await page.getByRole("button", { name: "Back to List", exact: true }).waitFor();
       assert.equal(
-        await page.getByRole("button", { name: "返回列表", exact: true }).isDisabled(),
+        await page.getByRole("button", { name: "Back to List", exact: true }).isDisabled(),
         false,
       );
       const runningNode = page.locator(".react-flow__node").first();
@@ -192,7 +192,7 @@ test(
         window.receiveWorkflowProgress({
           id: "browser-progress",
           workflowId: id,
-          workflowName: "浏览器验证",
+          workflowName: "Browser Verification",
           triggerId: null,
           status: "RUNNING",
           startedAt: Date.now(),
@@ -207,17 +207,17 @@ test(
         });
       }, { id: workflowId, nodeId: runningNodeId });
       await page.locator(".graph-node.is-running").waitFor();
-      await page.getByRole("button", { name: "返回列表", exact: true }).click();
-      await page.getByText("最近 运行中", { exact: true }).waitFor();
+      await page.getByRole("button", { name: "Back to List", exact: true }).click();
+      await page.getByText("Recent Running", { exact: true }).waitFor();
       await page
-        .getByRole("button", { name: "打开工作流", exact: true })
+        .getByRole("button", { name: "Open Workflow", exact: true })
         .click();
       await page.locator(".graph-node.is-running").waitFor();
       await page.evaluate(({ id, nodeId }) => {
         window.receiveWorkflowProgress({
           id: "browser-progress",
           workflowId: id,
-          workflowName: "浏览器验证",
+          workflowName: "Browser Verification",
           triggerId: null,
           status: "SUCCESS",
           startedAt: Date.now(),
@@ -234,43 +234,43 @@ test(
         });
       }, { id: workflowId, nodeId: runningNodeId });
       await page.locator(".graph-node.is-success").waitFor();
-      await page.getByRole("button", { name: "添加节点", exact: true }).click();
-      await page.getByRole("button", { name: "条件", exact: true }).click();
-      await page.getByRole("button", { name: "应用", exact: true }).click();
+      await page.getByRole("button", { name: "Add Node", exact: true }).click();
+      await page.getByRole("button", { name: "Condition", exact: true }).click();
+      await page.getByRole("button", { name: "Apply", exact: true }).click();
       await page.locator(".react-flow__controls-fitview").click();
       await page
         .locator(".react-flow__handle.source")
         .first()
         .dragTo(page.locator(".react-flow__handle.target"));
       await page.locator(".react-flow__edge").waitFor();
-      await page.getByRole("button", { name: "保存", exact: true }).click();
-      await page.getByText("已保存", { exact: true }).waitFor();
+      await page.getByRole("button", { name: "Save", exact: true }).click();
+      await page.getByText("Saved", { exact: true }).waitFor();
       assert.equal(
         (await dispatch({ action: "list" })).workflows[0].connections.length,
         1,
       );
       await page.locator(".graph-node").first().click();
-      await page.getByRole("button", { name: "编辑选中节点", exact: true }).click();
-      await page.getByRole("button", { name: "取消", exact: true }).click();
-      await page.getByRole("button", { name: "添加节点", exact: true }).click();
-      await page.getByRole("button", { name: "执行", exact: true }).click();
-      await page.getByRole("button", { name: "应用", exact: true }).click();
+      await page.getByRole("button", { name: "Edit Selected Node", exact: true }).click();
+      await page.getByRole("button", { name: "Cancel", exact: true }).click();
+      await page.getByRole("button", { name: "Add Node", exact: true }).click();
+      await page.getByRole("button", { name: "Execute", exact: true }).click();
+      await page.getByRole("button", { name: "Apply", exact: true }).click();
       await page.locator(".graph-node").last().click();
-      await page.getByRole("button", { name: "编辑选中节点", exact: true }).click();
-      await page.getByLabel("执行工具", { exact: true }).click();
+      await page.getByRole("button", { name: "Edit Selected Node", exact: true }).click();
+      await page.getByLabel("Execute Tool", { exact: true }).click();
       await page.getByRole("option", { name: "demo:send", exact: true }).click();
-      await page.getByLabel("title", { exact: true }).fill("来自工作流");
-      await page.getByRole("combobox", { name: "值来源" }).first().click();
-      await page.getByRole("option", { name: "节点输出", exact: true }).click();
-      assert.equal(await page.getByLabel("来源节点", { exact: true }).count(), 1);
-      assert.equal(await page.getByText("enabled · 可选", { exact: true }).count(), 1);
-      await page.getByRole("button", { name: "应用", exact: true }).click();
-      await page.getByRole("button", { name: "保存", exact: true }).click();
-      await page.getByText("已保存", { exact: true }).waitFor();
+      await page.getByLabel("title", { exact: true }).fill("From Workflow");
+      await page.getByRole("combobox", { name: "Value Source" }).first().click();
+      await page.getByRole("option", { name: "Node Output", exact: true }).click();
+      assert.equal(await page.getByLabel("Source Node", { exact: true }).count(), 1);
+      assert.equal(await page.getByText("enabled · optional", { exact: true }).count(), 1);
+      await page.getByRole("button", { name: "Apply", exact: true }).click();
+      await page.getByRole("button", { name: "Save", exact: true }).click();
+      await page.getByText("Saved", { exact: true }).waitFor();
       await mkdir("web/test-results", { recursive: true });
       await page.screenshot({ path: "web/test-results/desktop.png" });
       await page.setViewportSize({ width: 390, height: 844 });
-      await page.getByRole("button", { name: "返回列表", exact: true }).click();
+      await page.getByRole("button", { name: "Back to List", exact: true }).click();
       const workflowCard = await page
         .locator(".workflow-card")
         .first()
@@ -280,7 +280,7 @@ test(
         "Phone workflow cards must remain compact",
       );
       await page
-        .getByRole("button", { name: "打开工作流", exact: true })
+        .getByRole("button", { name: "Open Workflow", exact: true })
         .click();
       assert.equal(
         await page.evaluate(
@@ -291,19 +291,19 @@ test(
       assert.ok((await page.locator(".toolbar").boundingBox()).height <= 66);
       assert.equal(await page.locator(".palette").count(), 0);
       assert.equal(await page.locator(".react-flow__attribution").count(), 0);
-      await page.getByRole("button", { name: "添加节点", exact: true }).click();
+      await page.getByRole("button", { name: "Add Node", exact: true }).click();
       await page
-        .getByText("选择要放入画布的节点类型", { exact: true })
+        .getByText("Select the node type to place on the canvas", { exact: true })
         .waitFor();
       await page.screenshot({ path: "web/test-results/phone-node-picker.png" });
-      await page.getByRole("button", { name: "关闭", exact: true }).click();
+      await page.getByRole("button", { name: "Close", exact: true }).click();
       await page.locator(".MuiDrawer-paper").waitFor({ state: "hidden" });
       await page.screenshot({ path: "web/test-results/phone.png" });
       const controls = await page
         .locator(".react-flow__controls")
         .boundingBox();
       const addNode = await page
-        .getByRole("button", { name: "添加节点", exact: true })
+        .getByRole("button", { name: "Add Node", exact: true })
         .boundingBox();
       assert.ok(controls.x + controls.width < addNode.x);
       await page.setViewportSize({ width: 554, height: 1196 });
@@ -317,27 +317,27 @@ test(
       await page.screenshot({ path: "web/test-results/phone-wide.png" });
       await page.setViewportSize({ width: 390, height: 844 });
       await page.locator(".graph-node").first().click();
-      await page.getByRole("button", { name: "编辑节点", exact: true }).click();
-      await page.getByLabel("节点名称", { exact: true }).fill("触屏编辑");
-      await verifyDialogExit(page, "取消");
-      await page.getByRole("button", { name: "编辑节点", exact: true }).click();
-      await page.getByLabel("节点名称", { exact: true }).fill("触屏编辑");
-      await page.getByRole("button", { name: "应用", exact: true }).click();
-      await page.getByRole("button", { name: "返回列表", exact: true }).click();
+      await page.getByRole("button", { name: "Edit Node", exact: true }).click();
+      await page.getByLabel("Node Name", { exact: true }).fill("Touchscreen Editing");
+      await verifyDialogExit(page, "Cancel");
+      await page.getByRole("button", { name: "Edit Node", exact: true }).click();
+      await page.getByLabel("Node Name", { exact: true }).fill("Touchscreen Editing");
+      await page.getByRole("button", { name: "Apply", exact: true }).click();
+      await page.getByRole("button", { name: "Back to List", exact: true }).click();
       await page
-        .getByRole("button", { name: "保存并返回", exact: true })
+        .getByRole("button", { name: "Save and Return", exact: true })
         .click();
-      await page.getByRole("button", { name: "新建", exact: true }).click();
-      await page.getByLabel("名称", { exact: true }).fill("空工作流");
-      await page.getByRole("button", { name: "确定", exact: true }).click();
-      await page.getByRole("button", { name: "运行", exact: true }).click();
+      await page.getByRole("button", { name: "New", exact: true }).click();
+      await page.getByLabel("Name", { exact: true }).fill("Empty Workflow");
+      await page.getByRole("button", { name: "OK", exact: true }).click();
+      await page.getByRole("button", { name: "Run", exact: true }).click();
       const emptyWorkflowId = (await dispatch({ action: "list" })).workflows
-        .find((item) => item.name === "空工作流").id;
+        .find((item) => item.name === "Empty Workflow").id;
       await page.evaluate((id) => {
         window.receiveWorkflowProgress({
           id: "browser-failed-progress",
           workflowId: id,
-          workflowName: "空工作流",
+          workflowName: "Empty Workflow",
           triggerId: null,
           status: "FAILED",
           startedAt: Date.now(),
@@ -347,16 +347,16 @@ test(
             time: Date.now(),
             nodeId: "",
             level: "error",
-            message: "工作流至少需要一个触发节点",
+            message: "A workflow requires at least one trigger node",
           }],
         });
       }, emptyWorkflowId);
-      await page.getByRole("button", { name: "设置", exact: true }).click();
+      await page.getByRole("button", { name: "Settings", exact: true }).click();
       await page
-        .getByRole("button", { name: "删除工作流", exact: true })
+        .getByRole("button", { name: "Delete Workflow", exact: true })
         .click();
-      await page.getByRole("button", { name: "确定", exact: true }).click();
-      await page.getByText("我的工作流", { exact: true }).waitFor();
+      await page.getByRole("button", { name: "OK", exact: true }).click();
+      await page.getByText("My Workflows", { exact: true }).waitFor();
       assert.equal((await dispatch({ action: "list" })).workflows.length, 1);
       assert.deepEqual(errors, []);
     } finally {

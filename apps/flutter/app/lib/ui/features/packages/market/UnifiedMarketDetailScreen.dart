@@ -515,12 +515,12 @@ class UnifiedMarketDetailTabs extends StatelessWidget {
           children: <Widget>[
             _UnifiedMarketDetailTabItem(
               selected: selectedIndex == 0,
-              text: '关于',
+              text: 'About',
               onTap: () => onSelected(0),
             ),
             _UnifiedMarketDetailTabItem(
               selected: selectedIndex == 1,
-              text: '评论 $commentCount',
+              text: 'Comments $commentCount',
               onTap: () => onSelected(1),
             ),
           ],
@@ -630,7 +630,7 @@ class UnifiedMarketDetailCommentsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ArtifactDetailSectionCard(
-      title: '社区反馈',
+      title: 'Community Feedback',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -677,7 +677,7 @@ class UnifiedMarketDetailCommentsSection extends StatelessWidget {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.add_comment_outlined),
-                  label: const Text('发表评论'),
+                  label: const Text('Post Comment'),
                 ),
               ],
             ),
@@ -694,7 +694,7 @@ class UnifiedMarketDetailCommentsSection extends StatelessWidget {
             const SizedBox(height: 12),
             if (state.comments.isEmpty)
               Text(
-                '暂无评论',
+                'No comments yet',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
@@ -936,7 +936,7 @@ class ArtifactCommentTile extends StatelessWidget {
                         width: 36,
                         height: 32,
                         child: PopupMenuButton<String>(
-                          tooltip: '评论操作',
+                          tooltip: 'Comment actions',
                           padding: EdgeInsets.zero,
                           onSelected: (value) {
                             if (value == 'edit') {
@@ -949,12 +949,12 @@ class ArtifactCommentTile extends StatelessWidget {
                             if (canEdit && onRequestEdit != null)
                               const PopupMenuItem<String>(
                                 value: 'edit',
-                                child: Text('编辑评论'),
+                                child: Text('Edit Comment'),
                               ),
                             if (canDelete && onRequestDelete != null)
                               const PopupMenuItem<String>(
                                 value: 'delete',
-                                child: Text('删除评论'),
+                                child: Text('Delete Comment'),
                               ),
                           ],
                         ),
@@ -981,7 +981,7 @@ class ArtifactCommentTile extends StatelessWidget {
             if (canEdit && onRequestEdit != null)
               ListTile(
                 leading: const Icon(Icons.edit_outlined),
-                title: const Text('编辑评论'),
+                title: const Text('Edit Comment'),
                 onTap: () {
                   Navigator.of(sheetContext).pop();
                   onRequestEdit?.call();
@@ -990,7 +990,7 @@ class ArtifactCommentTile extends StatelessWidget {
             if (canDelete && onRequestDelete != null)
               ListTile(
                 leading: const Icon(Icons.delete_outline),
-                title: const Text('删除评论'),
+                title: const Text('Delete Comment'),
                 onTap: () {
                   Navigator.of(sheetContext).pop();
                   onRequestDelete?.call();

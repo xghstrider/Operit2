@@ -9,14 +9,14 @@ const validation_1 = require("./validation");
 /* METADATA
 {
   "name": "workflow",
-  "display_name": {"zh":"工作流","en":"Workflow"},
-  "description": {"zh":"管理和执行可视化工作流。工作流保存在当前插件中。","en":"Manage and execute plugin-owned visual workflows."},
+  "display_name": {"zh":"Workflow","en":"Workflow"},
+  "description": {"zh":"Manage and execute visual workflows. Workflows are saved in the current plugin.","en":"Manage and execute plugin-owned visual workflows."},
   "tools": [
-    {"name":"list","description":"列出工作流和最近执行记录","parameters":[]},
-    {"name":"import_workflow","description":"导入工作流 JSON；生成新 ID，初始停用，返回导入结果。","parameters":[{"name":"json","type":"string","required":true,"description":"Workflow JSON"}]},
-    {"name":"run","description":"运行已启用的工作流；工具调用使用宿主权限。","parameters":[{"name":"id","type":"string","required":true,"description":"工作流 ID"},{"name":"triggerId","type":"string","required":false,"description":"指定触发节点 ID"}]},
-    {"name":"save","description":"更新工作流；必须保留 list 返回的 revision，用于防止覆盖其他编辑。","parameters":[{"name":"json","type":"string","required":true,"description":"包含 revision 的完整 Workflow JSON"}]},
-    {"name":"cancel","description":"请求在当前节点结束后取消后续执行","parameters":[{"name":"id","type":"string","required":true,"description":"工作流 ID"}]}
+    {"name":"list","description":"List workflows and recent run records","parameters":[]},
+    {"name":"import_workflow","description":"Import workflow JSON; generates a new ID, starts disabled, and returns the import result.","parameters":[{"name":"json","type":"string","required":true,"description":"Workflow JSON"}]},
+    {"name":"run","description":"Run an enabled workflow; tool calls run with host permissions.","parameters":[{"name":"id","type":"string","required":true,"description":"Workflow ID"},{"name":"triggerId","type":"string","required":false,"description":"Specified trigger node ID"}]},
+    {"name":"save","description":"Update a workflow; the revision returned by list must be preserved to prevent overwriting other edits.","parameters":[{"name":"json","type":"string","required":true,"description":"Full Workflow JSON including the revision"}]},
+    {"name":"cancel","description":"Request cancellation of subsequent execution after the current node finishes","parameters":[{"name":"id","type":"string","required":true,"description":"Workflow ID"}]}
   ]
 }
 */
@@ -33,10 +33,10 @@ async function run(params) {
 }
 /** Updates an existing graph using the caller's exact saved revision. */
 async function save(params) {
-    const raw = (0, validation_1.object)(JSON.parse(params.json), "工作流");
+    const raw = (0, validation_1.object)(JSON.parse(params.json), "workflow");
     const workflow = (0, validation_1.parseWorkflow)(raw);
     if (typeof raw.revision !== "number" || !Number.isSafeInteger(raw.revision))
-        throw new Error("revision 必须是整数");
+        throw new Error("revision must be an integer");
     workflow.revision = raw.revision;
     return call({ action: "save", workflow });
 }

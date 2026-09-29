@@ -73,7 +73,7 @@ test("dragging measures page and card renders without host traffic", async () =>
       content: result.outputFiles.find((file) => file.path.endsWith(".js"))
         .text,
     });
-    await page.getByRole("button", { name: "打开工作流", exact: true }).click();
+    await page.getByRole("button", { name: "Open Workflow", exact: true }).click();
     const target = page.locator(".graph-node").first();
     await target.waitFor();
     await page.evaluate(
@@ -117,7 +117,7 @@ test("dragging measures page and card renders without host traffic", async () =>
       "Unchanged cards must not rerender for every pointer step",
     );
     await page.mouse.up();
-    await page.getByText("有未保存的修改", { exact: true }).waitFor();
+    await page.getByText("Unsaved changes", { exact: true }).waitFor();
   } finally {
     await browser.close();
   }

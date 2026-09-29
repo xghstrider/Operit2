@@ -20,7 +20,7 @@ part 'TtsSettingsModels.dart';
 part 'SttProviderWidgets.dart';
 part 'SttProviderDialogs.dart';
 
-const String _ttsTestText = '你好，我是 Operit 的语音试听。';
+const String _ttsTestText = 'Hello, this is the Operit voice preview.';
 
 
 /// Section widget that manages TTS providers and voices.
@@ -92,7 +92,7 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
     if (configId.isEmpty) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('TTS 配置 ID 为空，不能试听')));
+      ).showSnackBar(const SnackBar(content: Text('TTS configuration ID is empty; preview unavailable')));
       return;
     }
     setState(() {
@@ -103,7 +103,7 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
         bridge: widget.clients.bridge,
         ttsConfigId: configId,
         text: _ttsTestText,
-        title: '试听 · ${_ttsConfigModelVoiceText(config)}',
+        title: 'Preview · ${_ttsConfigModelVoiceText(config)}',
         interrupt: true,
       );
       if (!mounted) {
@@ -111,14 +111,14 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
       }
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('已开始播放 TTS 试听')));
+      ).showSnackBar(const SnackBar(content: Text('TTS preview started playing')));
     } catch (error) {
       if (!mounted) {
         return;
       }
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('TTS 试听失败：$error')));
+      ).showSnackBar(SnackBar(content: Text('TTS preview failed: $error')));
     } finally {
       if (mounted && _testingTtsConfigId == configId) {
         setState(() {
@@ -170,7 +170,7 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
       }
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('删除 TTS 配置失败：$error')));
+      ).showSnackBar(SnackBar(content: Text('Failed to delete TTS configuration: $error')));
     }
   }
 
@@ -459,17 +459,17 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
           return const Center(child: M3LoadingIndicator());
         }
         if (snapshot.hasError) {
-          return Center(child: Text('语音配置加载失败：${snapshot.error}'));
+          return Center(child: Text('Failed to load speech configurations: ${snapshot.error}'));
         }
         final data = snapshot.data!;
         final groups = _ttsProviderGroups(data.configs);
         _initializeProviderExpansion(groups, data.currentConfigId);
         return _SectionCard(
-          title: 'TTS 供应商',
+          title: 'TTS Providers',
           icon: Icons.record_voice_over_outlined,
           initiallyExpanded: widget.initiallyExpanded,
           action: SettingsSectionAddButton(
-            tooltip: '添加 TTS 供应商',
+            tooltip: 'Add TTS provider',
             onPressed: () =>
                 _createProviderConfig(data.providerCatalogEntries),
           ),
@@ -614,23 +614,23 @@ class _SttProviderSectionState extends State<SttProviderSection> {
     if (config.id == currentConfigId) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('当前正在使用的 STT 配置不能删除')));
+      ).showSnackBar(const SnackBar(content: Text('The STT configuration currently in use cannot be deleted')));
       return;
     }
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('删除 STT 供应商'),
-        content: Text('删除“${config.name}”及其识别配置？'),
+        title: const Text('Delete STT Provider'),
+        content: Text('Delete "${config.name}" and its recognition configuration?'),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('取消'),
+            child: const Text('Cancel'),
           ),
           FilledButton.tonalIcon(
             onPressed: () => Navigator.of(context).pop(true),
             icon: const Icon(Icons.delete_outline),
-            label: const Text('删除'),
+            label: const Text('Delete'),
           ),
         ],
       ),
@@ -656,7 +656,7 @@ class _SttProviderSectionState extends State<SttProviderSection> {
       }
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('STT 操作失败：$error')));
+      ).showSnackBar(SnackBar(content: Text('STT operation failed: $error')));
     }
   }
   @override
@@ -668,15 +668,15 @@ class _SttProviderSectionState extends State<SttProviderSection> {
           return const Center(child: M3LoadingIndicator());
         }
         if (snapshot.hasError) {
-          return Center(child: Text('语音配置加载失败：${snapshot.error}'));
+          return Center(child: Text('Failed to load speech configurations: ${snapshot.error}'));
         }
         final data = snapshot.data!;
         return _SectionCard(
-          title: 'STT 供应商',
+          title: 'STT Providers',
           icon: Icons.mic_outlined,
           initiallyExpanded: widget.initiallyExpanded,
           action: SettingsSectionAddButton(
-            tooltip: '添加 STT 供应商',
+            tooltip: 'Add STT provider',
             onPressed: () =>
                 _createSttProviderConfig(data.sttProviderCatalogEntries),
           ),

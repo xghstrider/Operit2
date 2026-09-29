@@ -5,7 +5,7 @@ export function registerToolPkg(): boolean {
   ToolPkg.registerChatMessageMenuItem({
     id: "translate_message",
     title: {
-      zh: "翻译",
+      zh: "Translate",
       en: "Translate",
     },
     icon: "translate",
@@ -14,7 +14,7 @@ export function registerToolPkg(): boolean {
     dialog: {
       screen: TRANSLATE_DIALOG_SCREEN,
       title: {
-        zh: "翻译消息",
+        zh: "Translate Message",
         en: "Translate Message",
       },
     },

@@ -73,7 +73,7 @@ class _OperitThemeState extends State<OperitTheme> {
   bool _preserveUnconfiguredChild = false;
   int _runtimeGeneration = 0;
   Timer? _runtimeStartupStatusTimer;
-  String _runtimeStartupMessage = '正在准备本地运行时';
+  String _runtimeStartupMessage = 'Preparing local runtime';
 
   static const MethodChannel _runtimeChannel = MethodChannel('operit/runtime');
 
@@ -115,7 +115,7 @@ class _OperitThemeState extends State<OperitTheme> {
         _runtimeStartupError = null;
         _runtimeStartFuture = null;
         _preserveUnconfiguredChild = widget.unconfiguredChildEnabled;
-        _runtimeStartupMessage = '正在准备本地运行时';
+        _runtimeStartupMessage = 'Preparing local runtime';
       });
       return;
     }
@@ -232,7 +232,7 @@ class _OperitThemeState extends State<OperitTheme> {
     } else if (!runtimeConfigured) {
       appChild = widget.unconfiguredChildEnabled
           ? widget.child
-          : const RuntimeBootstrapScreen(message: '请先在主窗口配置运行时目录和工作区目录');
+          : const RuntimeBootstrapScreen(message: 'Please configure the runtime directory and workspace directory in the main window first');
     } else if (!runtimeReady) {
       appChild = RuntimeBootstrapScreen(
         message: _runtimeStartupMessage,
@@ -283,6 +283,9 @@ class _OperitMaterialApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      // Force English UI regardless of the system locale. Remove this line to
+      // follow the device language (English first, then Chinese).
+      locale: const Locale('en'),
       theme: _themeData(lightColorScheme, themePreferenceSnapshot),
       darkTheme: _themeData(darkColorScheme, themePreferenceSnapshot),
       themeMode: themeMode,

@@ -2,11 +2,11 @@
 {
     "name": "crossref",
     "display_name": {
-        "zh": "Crossref 学术文献查询",
+        "zh": "Crossref Scholarly Literature Search",
         "en": "Crossref Academic Literature Search"
     },
     "description": {
-        "zh": "Crossref 学术文献查询工具，提供 DOI 查询、关键词搜索、作者搜索等功能，帮助用户查找和获取学术文章元数据。",
+        "zh": "Crossref scholarly literature search tool, providing DOI lookup, keyword search, author search, and other functions to help users find and retrieve scholarly article metadata.",
         "en": "Crossref scholarly literature search tools: query by DOI, keyword, author, title, ISSN, and retrieve publication metadata."
     },
     "category": "Search",
@@ -14,11 +14,11 @@
     "tools": [
         {
             "name": "search_by_doi",
-            "description": { "zh": "通过 DOI (Digital Object Identifier) 查询文章的详细信息", "en": "Query article details by DOI (Digital Object Identifier)." },
+            "description": { "zh": "Query article details by DOI (Digital Object Identifier).", "en": "Query article details by DOI (Digital Object Identifier)." },
             "parameters": [
                 {
                     "name": "doi",
-                    "description": { "zh": "文章的 DOI 标识符，例如 '10.1038/nature12373'", "en": "DOI identifier, e.g. '10.1038/nature12373'" },
+                    "description": { "zh": "DOI identifier, e.g. '10.1038/nature12373'", "en": "DOI identifier, e.g. '10.1038/nature12373'" },
                     "type": "string",
                     "required": true
                 }
@@ -26,29 +26,29 @@
         },
         {
             "name": "search_by_keyword",
-            "description": { "zh": "通过关键词搜索学术文章", "en": "Search scholarly articles by keyword." },
+            "description": { "zh": "Search scholarly articles by keyword.", "en": "Search scholarly articles by keyword." },
             "parameters": [
                 {
                     "name": "query",
-                    "description": { "zh": "搜索关键词", "en": "Search query keyword(s)" },
+                    "description": { "zh": "Search query keyword(s)", "en": "Search query keyword(s)" },
                     "type": "string",
                     "required": true
                 },
                 {
                     "name": "rows",
-                    "description": { "zh": "返回结果数量，默认 10，最大 100", "en": "Number of results to return (default: 10, max: 100)" },
+                    "description": { "zh": "Number of results to return (default: 10, max: 100)", "en": "Number of results to return (default: 10, max: 100)" },
                     "type": "number",
                     "required": false
                 },
                 {
                     "name": "sort",
-                    "description": { "zh": "排序方式，可选值：'relevance'(相关性), 'score'(评分), 'updated'(更新时间), 'deposited'(提交时间), 'indexed'(索引时间), 'published'(发布时间)", "en": "Sort mode. Options: 'relevance', 'score', 'updated', 'deposited', 'indexed', 'published'." },
+                    "description": { "zh": "Sort mode. Options: 'relevance', 'score', 'updated', 'deposited', 'indexed', 'published'.", "en": "Sort mode. Options: 'relevance', 'score', 'updated', 'deposited', 'indexed', 'published'." },
                     "type": "string",
                     "required": false
                 },
                 {
                     "name": "order",
-                    "description": { "zh": "排序顺序，可选值：'asc'(升序), 'desc'(降序)，默认 'desc'", "en": "Sort order: 'asc' or 'desc' (default: 'desc')." },
+                    "description": { "zh": "Sort order: 'asc' or 'desc' (default: 'desc').", "en": "Sort order: 'asc' or 'desc' (default: 'desc')." },
                     "type": "string",
                     "required": false
                 }
@@ -56,17 +56,17 @@
         },
         {
             "name": "search_by_author",
-            "description": { "zh": "通过作者名字搜索文章", "en": "Search articles by author name." },
+            "description": { "zh": "Search articles by author name.", "en": "Search articles by author name." },
             "parameters": [
                 {
                     "name": "author",
-                    "description": { "zh": "作者名字", "en": "Author name" },
+                    "description": { "zh": "Author name", "en": "Author name" },
                     "type": "string",
                     "required": true
                 },
                 {
                     "name": "rows",
-                    "description": { "zh": "返回结果数量，默认 10，最大 100", "en": "Number of results to return (default: 10, max: 100)" },
+                    "description": { "zh": "Number of results to return (default: 10, max: 100)", "en": "Number of results to return (default: 10, max: 100)" },
                     "type": "number",
                     "required": false
                 }
@@ -74,17 +74,17 @@
         },
         {
             "name": "search_by_title",
-            "description": { "zh": "通过文章标题搜索", "en": "Search articles by title." },
+            "description": { "zh": "Search articles by title.", "en": "Search articles by title." },
             "parameters": [
                 {
                     "name": "title",
-                    "description": { "zh": "文章标题或标题关键词", "en": "Article title or title keyword(s)" },
+                    "description": { "zh": "Article title or title keyword(s)", "en": "Article title or title keyword(s)" },
                     "type": "string",
                     "required": true
                 },
                 {
                     "name": "rows",
-                    "description": { "zh": "返回结果数量，默认 10，最大 100", "en": "Number of results to return (default: 10, max: 100)" },
+                    "description": { "zh": "Number of results to return (default: 10, max: 100)", "en": "Number of results to return (default: 10, max: 100)" },
                     "type": "number",
                     "required": false
                 }
@@ -92,17 +92,17 @@
         },
         {
             "name": "search_by_issn",
-            "description": { "zh": "通过期刊 ISSN 查询该期刊发表的文章", "en": "Search articles published in a journal by ISSN." },
+            "description": { "zh": "Search articles published in a journal by ISSN.", "en": "Search articles published in a journal by ISSN." },
             "parameters": [
                 {
                     "name": "issn",
-                    "description": { "zh": "期刊的 ISSN 标识符，例如 '1476-4687'", "en": "Journal ISSN identifier, e.g. '1476-4687'" },
+                    "description": { "zh": "Journal ISSN identifier, e.g. '1476-4687'", "en": "Journal ISSN identifier, e.g. '1476-4687'" },
                     "type": "string",
                     "required": true
                 },
                 {
                     "name": "rows",
-                    "description": { "zh": "返回结果数量，默认 10，最大 100", "en": "Number of results to return (default: 10, max: 100)" },
+                    "description": { "zh": "Number of results to return (default: 10, max: 100)", "en": "Number of results to return (default: 10, max: 100)" },
                     "type": "number",
                     "required": false
                 }
@@ -148,12 +148,12 @@ const CrossrefSearch = (function () {
     };
 
     /**
-     * 格式化作者信息
+     * Format author information
      */
     function formatAuthors(authors: any[]): string {
         if (!authors || authors.length === 0) return "N/A";
         return authors
-            .slice(0, 5) // 只显示前5个作者
+            .slice(0, 5) // show only the first 5 authors
             .map((author: any) => {
                 const given = author.given || "";
                 const family = author.family || "";
@@ -164,7 +164,7 @@ const CrossrefSearch = (function () {
     }
 
     /**
-     * 格式化日期
+     * Format a date
      */
     function formatDate(dateParts: number[][]): string {
         if (!dateParts || dateParts.length === 0 || !dateParts[0]) return "N/A";
@@ -176,7 +176,7 @@ const CrossrefSearch = (function () {
     }
 
     /**
-     * 格式化单篇文章信息
+     * Format the information of a single article
      */
     function formatArticle(item: any, index?: number): string {
         const lines: string[] = [];
@@ -185,7 +185,7 @@ const CrossrefSearch = (function () {
             lines.push(`\n=== Article ${index + 1} ===`);
         }
 
-        // 标题
+        // Title
         const title = item.title && item.title.length > 0 ? item.title[0] : "No Title";
         lines.push(`Title: ${title}`);
 
@@ -195,15 +195,15 @@ const CrossrefSearch = (function () {
             lines.push(`URL: https://doi.org/${item.DOI}`);
         }
 
-        // 作者
+        // Authors
         const authors = formatAuthors(item.author);
         lines.push(`Authors: ${authors}`);
 
-        // 发表日期
+        // Publication date
         const publishedDate = formatDate(item.published?.['date-parts'] || item['published-print']?.['date-parts'] || item['published-online']?.['date-parts']);
         lines.push(`Published: ${publishedDate}`);
 
-        // 期刊/会议
+        // Journal/conference
         if (item['container-title'] && item['container-title'].length > 0) {
             lines.push(`Journal/Conference: ${item['container-title'][0]}`);
         }
@@ -213,24 +213,24 @@ const CrossrefSearch = (function () {
             lines.push(`ISSN: ${item.ISSN.join(', ')}`);
         }
 
-        // 出版商
+        // Publisher
         if (item.publisher) {
             lines.push(`Publisher: ${item.publisher}`);
         }
 
-        // 类型
+        // Type
         if (item.type) {
             lines.push(`Type: ${item.type}`);
         }
 
-        // 引用次数
+        // Citation count
         if (item['is-referenced-by-count'] !== undefined) {
             lines.push(`Citations: ${item['is-referenced-by-count']}`);
         }
 
-        // 摘要（如果有）
+        // Abstract (if available)
         if (item.abstract) {
-            // 移除 HTML 标签
+            // Remove HTML tags
             const abstractText = item.abstract.replace(/<[^>]*>/g, '');
             lines.push(`Abstract: ${abstractText.substring(0, 500)}${abstractText.length > 500 ? '...' : ''}`);
         }
@@ -239,7 +239,7 @@ const CrossrefSearch = (function () {
     }
 
     /**
-     * 通过 DOI 查询文章
+     * Query an article by DOI
      */
     async function searchByDoi(params: SearchByDoiParams): Promise<any> {
         const { doi } = params;
@@ -247,7 +247,7 @@ const CrossrefSearch = (function () {
         if (!doi || doi.trim() === "") {
             return {
                 success: false,
-                message: "请提供有效的 DOI"
+                message: "Please provide a valid DOI"
             };
         }
 
@@ -261,7 +261,7 @@ const CrossrefSearch = (function () {
             if (!response.isSuccessful()) {
                 return {
                     success: false,
-                    message: `查询失败: HTTP ${response.statusCode} - ${response.statusMessage}`
+                    message: `Query failed: HTTP ${response.statusCode} - ${response.statusMessage}`
                 };
             }
 
@@ -271,25 +271,25 @@ const CrossrefSearch = (function () {
                 const article = formatArticle(data.message);
                 return {
                     success: true,
-                    message: "查询成功",
+                    message: "Query succeeded",
                     data: article
                 };
             } else {
                 return {
                     success: false,
-                    message: "未找到该 DOI 对应的文章"
+                    message: "No article found for this DOI"
                 };
             }
         } catch (error: any) {
             return {
                 success: false,
-                message: `查询失败: ${error.message}`
+                message: `Query failed: ${error.message}`
             };
         }
     }
 
     /**
-     * 通过关键词搜索文章
+     * Search articles by keyword
      */
     async function searchByKeyword(params: SearchByKeywordParams): Promise<any> {
         const { query, rows = DEFAULT_ROWS, sort = "relevance", order = "desc" } = params;
@@ -297,7 +297,7 @@ const CrossrefSearch = (function () {
         if (!query || query.trim() === "") {
             return {
                 success: false,
-                message: "请提供有效的搜索关键词"
+                message: "Please provide valid search keywords"
             };
         }
 
@@ -320,7 +320,7 @@ const CrossrefSearch = (function () {
             if (!response.isSuccessful()) {
                 return {
                     success: false,
-                    message: `搜索失败: HTTP ${response.statusCode} - ${response.statusMessage}`
+                    message: `Search failed: HTTP ${response.statusCode} - ${response.statusMessage}`
                 };
             }
 
@@ -336,7 +336,7 @@ const CrossrefSearch = (function () {
 
                 return {
                     success: true,
-                    message: "搜索成功",
+                    message: "Search succeeded",
                     data: summary,
                     total: totalResults,
                     count: items.length
@@ -344,19 +344,19 @@ const CrossrefSearch = (function () {
             } else {
                 return {
                     success: false,
-                    message: "未找到相关文章"
+                    message: "No matching articles found"
                 };
             }
         } catch (error: any) {
             return {
                 success: false,
-                message: `搜索失败: ${error.message}`
+                message: `Search failed: ${error.message}`
             };
         }
     }
 
     /**
-     * 通过作者搜索文章
+     * Search articles by author
      */
     async function searchByAuthor(params: SearchByAuthorParams): Promise<any> {
         const { author, rows = DEFAULT_ROWS } = params;
@@ -364,7 +364,7 @@ const CrossrefSearch = (function () {
         if (!author || author.trim() === "") {
             return {
                 success: false,
-                message: "请提供有效的作者名字"
+                message: "Please provide a valid author name"
             };
         }
 
@@ -385,7 +385,7 @@ const CrossrefSearch = (function () {
             if (!response.isSuccessful()) {
                 return {
                     success: false,
-                    message: `搜索失败: HTTP ${response.statusCode} - ${response.statusMessage}`
+                    message: `Search failed: HTTP ${response.statusCode} - ${response.statusMessage}`
                 };
             }
 
@@ -401,7 +401,7 @@ const CrossrefSearch = (function () {
 
                 return {
                     success: true,
-                    message: "搜索成功",
+                    message: "Search succeeded",
                     data: summary,
                     total: totalResults,
                     count: items.length
@@ -409,19 +409,19 @@ const CrossrefSearch = (function () {
             } else {
                 return {
                     success: false,
-                    message: `未找到该作者 "${author}" 的文章`
+                    message: `No articles found for author "${author}"`
                 };
             }
         } catch (error: any) {
             return {
                 success: false,
-                message: `搜索失败: ${error.message}`
+                message: `Search failed: ${error.message}`
             };
         }
     }
 
     /**
-     * 通过标题搜索文章
+     * Search articles by title
      */
     async function searchByTitle(params: SearchByTitleParams): Promise<any> {
         const { title, rows = DEFAULT_ROWS } = params;
@@ -429,7 +429,7 @@ const CrossrefSearch = (function () {
         if (!title || title.trim() === "") {
             return {
                 success: false,
-                message: "请提供有效的文章标题"
+                message: "Please provide a valid article title"
             };
         }
 
@@ -460,7 +460,7 @@ const CrossrefSearch = (function () {
 
                 return {
                     success: true,
-                    message: "搜索成功",
+                    message: "Search succeeded",
                     data: summary,
                     total: totalResults,
                     count: items.length
@@ -468,19 +468,19 @@ const CrossrefSearch = (function () {
             } else {
                 return {
                     success: false,
-                    message: `未找到标题包含 "${title}" 的文章`
+                    message: `No articles found with title containing "${title}"`
                 };
             }
         } catch (error: any) {
             return {
                 success: false,
-                message: `搜索失败: ${error.message}`
+                message: `Search failed: ${error.message}`
             };
         }
     }
 
     /**
-     * 通过 ISSN 查询期刊文章
+     * Query journal articles by ISSN
      */
     async function searchByISSN(params: SearchByISSNParams): Promise<any> {
         const { issn, rows = DEFAULT_ROWS } = params;
@@ -488,7 +488,7 @@ const CrossrefSearch = (function () {
         if (!issn || issn.trim() === "") {
             return {
                 success: false,
-                message: "请提供有效的 ISSN"
+                message: "Please provide a valid ISSN"
             };
         }
 
@@ -504,7 +504,7 @@ const CrossrefSearch = (function () {
             if (!response.isSuccessful()) {
                 return {
                     success: false,
-                    message: `查询失败: HTTP ${response.statusCode} - ${response.statusMessage}`
+                    message: `Query failed: HTTP ${response.statusCode} - ${response.statusMessage}`
                 };
             }
 
@@ -520,7 +520,7 @@ const CrossrefSearch = (function () {
 
                 return {
                     success: true,
-                    message: "查询成功",
+                    message: "Query succeeded",
                     data: summary,
                     total: totalResults,
                     count: items.length
@@ -528,64 +528,64 @@ const CrossrefSearch = (function () {
             } else {
                 return {
                     success: false,
-                    message: `未找到 ISSN "${issn}" 对应期刊的文章`
+                    message: `No articles found for the journal with ISSN "${issn}"`
                 };
             }
         } catch (error: any) {
             return {
                 success: false,
-                message: `查询失败: ${error.message}`
+                message: `Query failed: ${error.message}`
             };
         }
     }
 
     /**
-     * 包装函数，统一处理错误
+     * Wrapper function for unified error handling
      */
     async function wrapToolExecution(func: (params: any) => Promise<any>, params: any) {
         try {
             const result = await func(params);
             complete(result);
         } catch (error: any) {
-            console.error(`工具执行失败`, error);
+            console.error(`Tool execution failed`, error);
             complete({
                 success: false,
-                message: `工具执行时发生意外错误: ${error.message}`,
+                message: `Unexpected error while executing tool: ${error.message}`,
             });
         }
     }
 
     /**
-     * 测试函数
+     * Test function
      */
     async function main() {
-        console.log("=== Crossref API 测试 ===\n");
+        console.log("=== Crossref API Test ===\n");
 
-        // 测试 1: 通过 DOI 查询
-        console.log("1. 测试通过 DOI 查询...");
+        // Test 1: query by DOI
+        console.log("1. Testing query by DOI...");
         const doiResult = await searchByDoi({ doi: "10.1038/nature12373" });
         console.log(JSON.stringify(doiResult, null, 2));
         console.log("\n");
 
-        // 测试 2: 通过关键词搜索
-        console.log("2. 测试通过关键词搜索...");
+        // Test 2: search by keyword
+        console.log("2. Testing search by keyword...");
         const keywordResult = await searchByKeyword({ query: "machine learning", rows: 3 });
         console.log(JSON.stringify(keywordResult, null, 2));
         console.log("\n");
 
-        // 测试 3: 通过作者搜索
-        console.log("3. 测试通过作者搜索...");
+        // Test 3: search by author
+        console.log("3. Testing search by author...");
         const authorResult = await searchByAuthor({ author: "John Smith", rows: 3 });
         console.log(JSON.stringify(authorResult, null, 2));
         console.log("\n");
 
-        // 测试 4: 通过标题搜索
-        console.log("4. 测试通过标题搜索...");
+        // Test 4: search by title
+        console.log("4. Testing search by title...");
         const titleResult = await searchByTitle({ title: "neural networks", rows: 3 });
         console.log(JSON.stringify(titleResult, null, 2));
         console.log("\n");
 
-        console.log("=== 测试完成 ===");
+        console.log("=== Tests completed ===");
     }
 
     return {
@@ -598,7 +598,7 @@ const CrossrefSearch = (function () {
     };
 })();
 
-// 导出工具函数
+// Export tool functions
 exports.search_by_doi = CrossrefSearch.search_by_doi;
 exports.search_by_keyword = CrossrefSearch.search_by_keyword;
 exports.search_by_author = CrossrefSearch.search_by_author;

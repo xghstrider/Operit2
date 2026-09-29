@@ -64,7 +64,7 @@ class _AgentModelSelectorPopupState extends State<AgentModelSelectorPopup> {
     if (_isDisallowedChatModel(model.id)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('禁止使用autoglm作为对话主模型。对话模型和ui控制模型是分离的，请选择任意一个别的聪明的大模型。'),
+          content: Text('Using autoglm as the main conversation model is not allowed. The conversation model and the UI control model are separate, so please choose any other capable large model.'),
         ),
       );
       return;
@@ -187,11 +187,11 @@ class _AgentModelSelectorPopupState extends State<AgentModelSelectorPopup> {
               }
               final levels = _hasThinkingLevels(data);
               final stops = <String>[
-                '关',
+                'Off',
                 if (levels)
                   ...data.thinkingSettings.options.map((option) => option.label)
                 else
-                  '开',
+                  'On',
               ];
               return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(vertical: 4),
@@ -288,7 +288,7 @@ class _AgentModelMenuSectionState extends State<AgentModelMenuSection> {
     if (_isDisallowedChatModel(model.id)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('禁止使用autoglm作为对话主模型。对话模型和ui控制模型是分离的，请选择任意一个别的聪明的大模型。'),
+          content: Text('Using autoglm as the main conversation model is not allowed. The conversation model and the UI control model are separate, so please choose any other capable large model.'),
         ),
       );
       return;
@@ -357,8 +357,8 @@ class _AgentModelMenuSectionState extends State<AgentModelMenuSection> {
         if (data == null) {
           return _SettingsHeaderRow(
             icon: Icons.data_object_outlined,
-            title: '模型',
-            value: '加载中...',
+            title: 'Model',
+            value: 'Loading...',
             expanded: _modelSectionExpanded,
             onTap: () {
               setState(() {
@@ -378,7 +378,7 @@ class _AgentModelMenuSectionState extends State<AgentModelMenuSection> {
           children: <Widget>[
             _SettingsHeaderRow(
               icon: Icons.data_object_outlined,
-              title: '模型',
+              title: 'Model',
               value: data.currentBinding.modelId,
               expanded: _modelSectionExpanded,
               onTap: () {
@@ -406,7 +406,7 @@ class _AgentModelMenuSectionState extends State<AgentModelMenuSection> {
                         _ModelSelectorItem(
                           popupContainerColor: embeddedPanelColor,
                           headerIcon: Icons.tune_outlined,
-                          headerTitle: '选择模型',
+                          headerTitle: 'Select Model',
                           providers: data.providers,
                           currentBinding: data.currentBinding,
                           expanded: _modelDropdownExpanded,
@@ -556,7 +556,7 @@ class _AgentThinkingSliderRowState extends State<AgentThinkingSliderRow> {
                   : colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
             ),
             const SizedBox(width: 4),
-            Text('思考程度:', style: textTheme.bodySmall),
+            Text('Thinking effort:', style: textTheme.bodySmall),
             const SizedBox(width: 6),
             AnimatedDefaultTextStyle(
               duration: _morphDuration,
@@ -841,7 +841,7 @@ class _ThinkingSettingsItemState extends State<_ThinkingSettingsItem> {
       children: <Widget>[
         _SettingsHeaderRow(
           icon: Icons.psychology,
-          title: '思考:',
+          title: 'Thinking:',
           value: thinkingTypeText,
           expanded: _expanded,
           onTap: () => setState(() => _expanded = !_expanded),
@@ -859,7 +859,7 @@ class _ThinkingSettingsItemState extends State<_ThinkingSettingsItem> {
                     icon: widget.data.enableThinkingMode
                         ? Icons.psychology
                         : Icons.psychology_outlined,
-                    title: '思考模式',
+                    title: 'Thinking Mode',
                     checked: enabled,
                     highlightWhenChecked: true,
                     onToggle: required ? null : widget.onToggleThinkingMode,
@@ -934,7 +934,7 @@ class _ThinkingQualitySettingRow extends StatelessWidget {
                 if (showInfoButton) _InfoIconButton(onPressed: onInfoClick),
                 const SizedBox(width: 12),
                 Text(
-                  '思考程度',
+                  'Thinking effort',
                   style: textTheme.bodySmall,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -1022,7 +1022,7 @@ class _ModelSelectorItem extends StatelessWidget {
   const _ModelSelectorItem({
     required this.popupContainerColor,
     this.headerIcon = Icons.data_object_outlined,
-    this.headerTitle = '模型:',
+    this.headerTitle = 'Model:',
     required this.providers,
     required this.currentBinding,
     required this.expanded,
@@ -1103,7 +1103,7 @@ class _ModelSelectorItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: Text(
-                      '没有可用的模型',
+                      'No models available',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
@@ -1144,7 +1144,7 @@ class _ModelSelectorItem extends StatelessWidget {
                           vertical: 4,
                         ),
                         child: Text(
-                          '管理配置',
+                          'Manage Configurations',
                           style: textTheme.bodySmall?.copyWith(
                             color: colorScheme.primary,
                             fontWeight: FontWeight.w600,
@@ -1438,7 +1438,7 @@ List<(String, List<core_proxy.ModelProfile>)> _modelFamilies(
 ) {
   final families = <String, List<core_proxy.ModelProfile>>{};
   for (final model in models) {
-    final family = _modelFamilyOf(model.id) ?? '其他';
+    final family = _modelFamilyOf(model.id) ?? 'Other';
     families.putIfAbsent(family, () => <core_proxy.ModelProfile>[]).add(model);
   }
   return families.entries.map((entry) => (entry.key, entry.value)).toList();
@@ -1468,7 +1468,7 @@ class _CurrentModelLine extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Text(
-              '模型',
+              'Model',
               style: textTheme.labelSmall!.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -1528,7 +1528,7 @@ class _CurrentModelLine extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  '配置管理',
+                  'Configuration Management',
                   style: textTheme.labelSmall!.copyWith(
                     color: colorScheme.primary,
                     fontWeight: FontWeight.w600,
@@ -1644,7 +1644,7 @@ List<Widget> _modelMetaChips(
   );
   final chips = <Widget>[
     if (model.capabilitiesOverride?.directImage == true)
-      const _ModelMetaChip(label: '视觉', outlined: true),
+      const _ModelMetaChip(label: 'Vision', outlined: true),
     if (contextLabel != null) _ModelMetaChip(label: contextLabel),
   ];
   if (chips.isEmpty) {
@@ -1832,7 +1832,7 @@ class _ManageIconButton extends StatelessWidget {
         onPressed: onPressed,
         padding: EdgeInsets.zero,
         iconSize: 14,
-        tooltip: '管理配置',
+        tooltip: 'Manage Configurations',
         visualDensity: VisualDensity.compact,
         icon: Icon(
           Icons.settings_outlined,

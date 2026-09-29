@@ -48,16 +48,16 @@ class _DesktopWidgetWindowAppState extends State<DesktopWidgetWindowApp> {
       items: [
         PopupMenuItem(
           value: 'refresh',
-          child: Text(english ? 'Refresh' : '刷新'),
+          child: Text(english ? 'Refresh' : 'Refresh'),
         ),
-        PopupMenuItem(value: 'larger', child: Text(english ? 'Larger' : '放大')),
+        PopupMenuItem(value: 'larger', child: Text(english ? 'Larger' : 'Larger')),
         PopupMenuItem(
           value: 'smaller',
-          child: Text(english ? 'Smaller' : '缩小'),
+          child: Text(english ? 'Smaller' : 'Smaller'),
         ),
         PopupMenuItem(
           value: 'close',
-          child: Text(english ? 'Close widget' : '关闭小部件'),
+          child: Text(english ? 'Close widget' : 'Close widget'),
         ),
       ],
     );

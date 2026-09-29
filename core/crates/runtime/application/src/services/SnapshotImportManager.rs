@@ -114,8 +114,8 @@ impl SnapshotImportManager {
     ) -> Result<Operit1SnapshotImportResult, String> {
         publishOperit1SnapshotImportProgress(Operit1SnapshotImportProgress {
             stage: "parse".to_string(),
-            title: "解析快照".to_string(),
-            detail: "正在读取 Operit1 快照内容。".to_string(),
+            title: "Parsing snapshot".to_string(),
+            detail: "Reading the Operit1 snapshot content.".to_string(),
             progress: 0.04,
             active: true,
         });

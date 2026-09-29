@@ -72,9 +72,9 @@ impl SnapshotFileImportPlan {
             return Ok(value.to_string());
         }
         let mut json: Value = serde_json::from_str(value)
-            .map_err(|error| format!("Operit1 工作区状态不是合法 JSON：{error}"))?;
+            .map_err(|error| format!("Operit1 workspace state is not valid JSON: {error}"))?;
         let Some(items) = json.as_array_mut() else {
-            return Err("Operit1 工作区状态不是数组".to_string());
+            return Err("Operit1 workspace state is not an array".to_string());
         };
         for item in items {
             let Some(path) = item
@@ -159,7 +159,7 @@ impl SnapshotFileImportPlan {
         validateRelativePath(relative)?;
         let workspaceRelative = relative
             .strip_prefix("workspace/")
-            .ok_or_else(|| format!("Operit1 工作区路径不是 workspace 子目录：{relative}"))?;
+            .ok_or_else(|| format!("Operit1 workspace path is not a workspace subdirectory: {relative}"))?;
         let (workspaceId, rest) = splitWorkspaceRelativePath(workspaceRelative)?;
         Ok(workspaceVfsPath(workspaceId, rest))
     }

@@ -3,11 +3,11 @@
 {
     "name": "plan_mode_tools",
     "display_name": {
-        "zh": "计划模式工具",
+        "zh": "Plan Mode Tools",
         "en": "Plan Mode Tools"
     },
     "description": {
-        "zh": "读取和完成当前计划内容。",
+        "zh": "Read and complete the current plan.",
         "en": "Read and complete the current plan content."
     },
     "enabledByDefault": true,
@@ -15,7 +15,7 @@
         {
             "name": "get_plan",
             "description": {
-                "zh": "读取当前计划内容。",
+                "zh": "Read the current plan content.",
                 "en": "Read the current plan content."
             },
             "parameters": []
@@ -23,7 +23,7 @@
         {
             "name": "complete_plan",
             "description": {
-                "zh": "在所有计划项都真正完成后，完成当前计划。",
+                "zh": "Complete the current plan after all plan items are truly done.",
                 "en": "Complete the current plan after every planned item is truly done."
             },
             "parameters": []

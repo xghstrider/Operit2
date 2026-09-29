@@ -2,30 +2,30 @@
 {
   "name": "daily_life",
   "display_name": {
-    "zh": "日常生活工具包",
+    "zh": "Daily Life Toolkit",
     "en": "Daily Life Toolkit"
   },
   "description": {
-    "zh": "日常生活工具集合：日期时间、设备状态、天气、提醒、闹钟、短信、电话、社交应用操作、手电筒、音量、Wi-Fi、截图、拍照和深色模式。设备交互通过 Host UI 自动化执行。",
+    "zh": "A collection of daily life tools: date and time, device status, weather, reminders, alarms, SMS, phone calls, social app actions, flashlight, volume, Wi-Fi, screenshots, photo capture, and dark mode. Device interactions are performed through Host UI automation.",
     "en": "Daily utilities for date/time, device status, weather, reminders, alarms, messaging, calls, social-app actions, flashlight, volume, Wi-Fi, screenshots, photos, and dark mode. Device interactions run through Host UI automation."
   },
   "enabledByDefault": true,
   "category": "Life",
   "tools": [
-    { "name": "get_current_date", "description": { "zh": "获取当前日期和时间。", "en": "Get the current date and time." }, "parameters": [] },
-    { "name": "device_status", "description": { "zh": "获取设备、电量、内存、存储和网络状态。", "en": "Get device, battery, memory, storage, and network status." }, "parameters": [] },
-    { "name": "search_weather", "description": { "zh": "查询指定地点的当前天气。", "en": "Look up current weather for a location." }, "parameters": [{ "name": "location", "description": { "zh": "城市或地点名称。", "en": "City or place name." }, "type": "string", "required": true }] },
-    { "name": "set_reminder", "description": { "zh": "在设备提醒应用中创建提醒。", "en": "Create a reminder in the device reminder app." }, "parameters": [{ "name": "title", "description": { "zh": "提醒标题。", "en": "Reminder title." }, "type": "string", "required": true }, { "name": "description", "description": { "zh": "提醒详情。", "en": "Reminder details." }, "type": "string", "required": true }, { "name": "due_date", "description": { "zh": "到期时间，使用 ISO 8601 格式。", "en": "Due time in ISO 8601 format." }, "type": "string", "required": true }] },
-    { "name": "set_alarm", "description": { "zh": "在设备时钟应用中设置闹钟。", "en": "Set an alarm in the device clock app." }, "parameters": [{ "name": "hour", "description": { "zh": "小时，0-23。", "en": "Hour, from 0 to 23." }, "type": "number", "required": true }, { "name": "minute", "description": { "zh": "分钟，0-59。", "en": "Minute, from 0 to 59." }, "type": "number", "required": true }, { "name": "message", "description": { "zh": "闹钟标签。", "en": "Alarm label." }, "type": "string", "required": true }] },
-    { "name": "send_message", "description": { "zh": "在设备短信应用中编写短信。", "en": "Compose an SMS in the device messaging app." }, "parameters": [{ "name": "phone_number", "description": { "zh": "收件人号码。", "en": "Recipient phone number." }, "type": "string", "required": true }, { "name": "message", "description": { "zh": "短信内容。", "en": "SMS body." }, "type": "string", "required": true }] },
-    { "name": "wechat_post_moments", "description": { "zh": "在微信朋友圈编辑文本动态。", "en": "Compose a text post for WeChat Moments." }, "parameters": [{ "name": "message", "description": { "zh": "动态内容。", "en": "Post body." }, "type": "string", "required": true }] },
-    { "name": "make_phone_call", "description": { "zh": "在电话应用中拨打号码。", "en": "Place a call through the device phone app." }, "parameters": [{ "name": "phone_number", "description": { "zh": "电话号码。", "en": "Phone number." }, "type": "string", "required": true }] },
-    { "name": "toggle_flashlight", "description": { "zh": "打开或关闭手电筒。", "en": "Turn the flashlight on or off." }, "parameters": [{ "name": "state", "description": { "zh": "on 或 off。", "en": "on or off." }, "type": "string", "required": true }] },
-    { "name": "adjust_volume", "description": { "zh": "调节设备音量。", "en": "Adjust device volume." }, "parameters": [{ "name": "action", "description": { "zh": "up、down 或 mute。", "en": "up, down, or mute." }, "type": "string", "required": true }, { "name": "count", "description": { "zh": "调节次数。", "en": "Number of adjustments." }, "type": "number", "required": true }] },
-    { "name": "toggle_wifi", "description": { "zh": "打开或关闭 Wi-Fi。", "en": "Turn Wi-Fi on or off." }, "parameters": [{ "name": "state", "description": { "zh": "on 或 off。", "en": "on or off." }, "type": "string", "required": true }] },
-    { "name": "take_screenshot", "description": { "zh": "截取当前屏幕。", "en": "Capture the current screen." }, "parameters": [] },
-    { "name": "take_photo", "description": { "zh": "打开相机并拍照。", "en": "Open the camera and take a photo." }, "parameters": [] },
-    { "name": "toggle_dark_mode", "description": { "zh": "设置设备深色模式。", "en": "Set device dark mode." }, "parameters": [{ "name": "state", "description": { "zh": "on、off 或 auto。", "en": "on, off, or auto." }, "type": "string", "required": true }] }
+    { "name": "get_current_date", "description": { "zh": "Get the current date and time.", "en": "Get the current date and time." }, "parameters": [] },
+    { "name": "device_status", "description": { "zh": "Get device, battery, memory, storage, and network status.", "en": "Get device, battery, memory, storage, and network status." }, "parameters": [] },
+    { "name": "search_weather", "description": { "zh": "Look up current weather for a location.", "en": "Look up current weather for a location." }, "parameters": [{ "name": "location", "description": { "zh": "City or place name.", "en": "City or place name." }, "type": "string", "required": true }] },
+    { "name": "set_reminder", "description": { "zh": "Create a reminder in the device reminder app.", "en": "Create a reminder in the device reminder app." }, "parameters": [{ "name": "title", "description": { "zh": "Reminder title.", "en": "Reminder title." }, "type": "string", "required": true }, { "name": "description", "description": { "zh": "Reminder details.", "en": "Reminder details." }, "type": "string", "required": true }, { "name": "due_date", "description": { "zh": "Due time in ISO 8601 format.", "en": "Due time in ISO 8601 format." }, "type": "string", "required": true }] },
+    { "name": "set_alarm", "description": { "zh": "Set an alarm in the device clock app.", "en": "Set an alarm in the device clock app." }, "parameters": [{ "name": "hour", "description": { "zh": "Hour, from 0 to 23.", "en": "Hour, from 0 to 23." }, "type": "number", "required": true }, { "name": "minute", "description": { "zh": "Minute, from 0 to 59.", "en": "Minute, from 0 to 59." }, "type": "number", "required": true }, { "name": "message", "description": { "zh": "Alarm label.", "en": "Alarm label." }, "type": "string", "required": true }] },
+    { "name": "send_message", "description": { "zh": "Compose an SMS in the device messaging app.", "en": "Compose an SMS in the device messaging app." }, "parameters": [{ "name": "phone_number", "description": { "zh": "Recipient phone number.", "en": "Recipient phone number." }, "type": "string", "required": true }, { "name": "message", "description": { "zh": "SMS body.", "en": "SMS body." }, "type": "string", "required": true }] },
+    { "name": "wechat_post_moments", "description": { "zh": "Compose a text post for WeChat Moments.", "en": "Compose a text post for WeChat Moments." }, "parameters": [{ "name": "message", "description": { "zh": "Post body.", "en": "Post body." }, "type": "string", "required": true }] },
+    { "name": "make_phone_call", "description": { "zh": "Place a call through the device phone app.", "en": "Place a call through the device phone app." }, "parameters": [{ "name": "phone_number", "description": { "zh": "Phone number.", "en": "Phone number." }, "type": "string", "required": true }] },
+    { "name": "toggle_flashlight", "description": { "zh": "Turn the flashlight on or off.", "en": "Turn the flashlight on or off." }, "parameters": [{ "name": "state", "description": { "zh": "on or off.", "en": "on or off." }, "type": "string", "required": true }] },
+    { "name": "adjust_volume", "description": { "zh": "Adjust device volume.", "en": "Adjust device volume." }, "parameters": [{ "name": "action", "description": { "zh": "up, down, or mute.", "en": "up, down, or mute." }, "type": "string", "required": true }, { "name": "count", "description": { "zh": "Number of adjustments.", "en": "Number of adjustments." }, "type": "number", "required": true }] },
+    { "name": "toggle_wifi", "description": { "zh": "Turn Wi-Fi on or off.", "en": "Turn Wi-Fi on or off." }, "parameters": [{ "name": "state", "description": { "zh": "on or off.", "en": "on or off." }, "type": "string", "required": true }] },
+    { "name": "take_screenshot", "description": { "zh": "Capture the current screen.", "en": "Capture the current screen." }, "parameters": [] },
+    { "name": "take_photo", "description": { "zh": "Open the camera and take a photo.", "en": "Open the camera and take a photo." }, "parameters": [] },
+    { "name": "toggle_dark_mode", "description": { "zh": "Set device dark mode.", "en": "Set device dark mode." }, "parameters": [{ "name": "state", "description": { "zh": "on, off, or auto.", "en": "on, off, or auto." }, "type": "string", "required": true }] }
   ]
 } */
 

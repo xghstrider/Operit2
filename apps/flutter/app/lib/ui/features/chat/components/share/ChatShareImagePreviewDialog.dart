@@ -24,7 +24,7 @@ class ChatShareImagePreviewDialog extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     return OperitDialogScaffold(
-      title: '长图预览',
+      title: 'Long Screenshot Preview',
       maxWidth: 560,
       maxHeight: 760,
       showCloseButton: true,
@@ -33,7 +33,7 @@ class ChatShareImagePreviewDialog extends StatelessWidget {
         IconButton(
           onPressed: () => _saveImage(context),
           icon: const Icon(Icons.save_alt),
-          tooltip: '保存',
+          tooltip: 'Save',
         ),
       ],
       child: Column(
@@ -85,6 +85,6 @@ class ChatShareImagePreviewDialog extends StatelessWidget {
     }
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text('已保存：$storagePath')));
+    ).showSnackBar(SnackBar(content: Text('Saved: $storagePath')));
   }
 }

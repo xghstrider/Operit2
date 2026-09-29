@@ -18,7 +18,7 @@ function resolve(value, results) {
         return value.value;
     const source = results[value.nodeId];
     if (source === undefined || source.status !== "success")
-        throw new Error(`引用节点未成功完成：${value.nodeId}`);
+        throw new Error(`Referenced node did not complete successfully: ${value.nodeId}`);
     return source.output;
 }
 /** Decodes boolean output using the original executor's explicit vocabulary. */
@@ -34,7 +34,7 @@ function boolean(value) {
         case "no":
         case "n":
         case "off": return false;
-        default: throw new Error(`输出不是布尔值：${value}`);
+        default: throw new Error(`Output is not a boolean: ${value}`);
     }
 }
 /** Compares typed numeric or textual operands with explicit membership syntax. */
@@ -47,13 +47,13 @@ function compare(node, results) {
     if (node.operator === "IN" || node.operator === "NOT_IN") {
         const list = JSON.parse(b);
         if (!Array.isArray(list) || !list.every(value => typeof value === "string") && !list.every(value => typeof value === "number"))
-            throw new Error("IN 的右值必须是同类型字符串或数字 JSON 数组");
+            throw new Error("The right value of IN must be a JSON array of strings or numbers of the same type");
         const hit = list.length > 0 && list.some(value => value === (typeof list[0] === "number" ? Number(a) : a));
         return node.operator === "IN" ? hit : !hit;
     }
     const an = a.trim() !== "" && Number.isFinite(Number(a)), bn = b.trim() !== "" && Number.isFinite(Number(b));
     if (an !== bn)
-        throw new Error("条件比较的左右值类型不一致");
+        throw new Error("Left and right values of the condition comparison have different types");
     const left = an ? Number(a) : a, right = bn ? Number(b) : b;
     switch (node.operator) {
         case "EQ": return left === right;
@@ -71,15 +71,15 @@ function jsonPath(source, path) {
     while (cursor < path.length) {
         const match = /^(?:\.?([A-Za-z_$][\w$]*)|\[(\d+)\])/.exec(path.slice(cursor));
         if (!match)
-            throw new Error(`JSON 路径无效：${path}`);
+            throw new Error(`Invalid JSON path: ${path}`);
         const key = match[1] === undefined ? match[2] : match[1];
         if (result === null || typeof result !== "object" || !Object.prototype.hasOwnProperty.call(result, key))
-            throw new Error(`JSON 路径不存在：${path}`);
+            throw new Error(`JSON path does not exist: ${path}`);
         result = result[key];
         cursor += match[0].length;
     }
     if (path === "")
-        throw new Error("JSON 路径不能为空，整个对象请使用 $");
+        throw new Error("JSON path cannot be empty; use $ for the whole object");
     return typeof result === "string" ? result : JSON.stringify(result);
 }
 /** Executes all six extraction modes, reporting malformed or missing data. */
@@ -88,7 +88,7 @@ function extract(node, results) {
         case "RANDOM_INT": {
             if (node.useFixed) {
                 if (!/^-?\d+$/.test(node.fixedValue) || !Number.isSafeInteger(Number(node.fixedValue)))
-                    throw new Error("固定值必须是整数");
+                    throw new Error("Fixed value must be an integer");
                 return node.fixedValue;
             }
             return String(node.randomMin + Math.floor(Math.random() * (node.randomMax - node.randomMin + 1)));
@@ -98,14 +98,14 @@ function extract(node, results) {
         case "SUB": {
             const source = resolve(node.source, results);
             if (node.startIndex > source.length)
-                throw new Error("截取起点超出字符串长度");
+                throw new Error("Substring start exceeds the string length");
             return node.length === -1 ? source.slice(node.startIndex) : source.slice(node.startIndex, node.startIndex + node.length);
         }
         case "JSON": return jsonPath(resolve(node.source, results), node.expression);
         case "REGEX": {
             const match = new RegExp(node.expression).exec(resolve(node.source, results));
             if (match === null || match[node.group] === undefined)
-                throw new Error("正则表达式未匹配到指定分组");
+                throw new Error("The regex did not match the specified group");
             return match[node.group];
         }
     }
@@ -145,11 +145,11 @@ async function execute(workflow, triggerId, extras, host) {
     try {
         (0, validation_1.validateGraph)(workflow, true);
         if (!workflow.enabled)
-            throw new Error("工作流已停用");
+            throw new Error("Workflow is disabled");
         const nodes = new Map(workflow.nodes.map(node => [node.id, node]));
         const triggers = workflow.nodes.filter(node => node.type === "trigger" && (triggerId === null ? node.triggerType === "manual" : node.id === triggerId));
         if (!triggers.length)
-            throw new Error(triggerId === null ? "工作流没有手动触发节点" : "指定触发节点不存在");
+            throw new Error(triggerId === null ? "Workflow has no manual trigger node" : "The specified trigger node does not exist");
         const active = new Set(triggers.map(node => node.id));
         const queue = [...active];
         for (let i = 0; i < queue.length; i++)
@@ -170,12 +170,12 @@ async function execute(workflow, triggerId, extras, host) {
             }
             const index = pending.findIndex(node => workflow.connections.filter(edge => edge.targetNodeId === node.id && active.has(edge.sourceNodeId)).every(edge => !["pending", "running"].includes(run.nodes[edge.sourceNodeId].status)));
             if (index < 0)
-                throw new Error("依赖图无法继续执行");
+                throw new Error("The dependency graph cannot continue execution");
             const node = pending.splice(index, 1)[0];
             const incoming = workflow.connections.filter(edge => edge.targetNodeId === node.id && active.has(edge.sourceNodeId));
             try {
                 if (incoming.length > 0 && !incoming.some(edge => edgeMatches(edge, nodes.get(edge.sourceNodeId), run.nodes[edge.sourceNodeId]))) {
-                    await transition(node, "skipped", "连线条件未满足");
+                    await transition(node, "skipped", "Edge condition not satisfied");
                     continue;
                 }
                 await transition(node, "running", "");
@@ -219,7 +219,7 @@ async function execute(workflow, triggerId, extras, host) {
     for (const node of Object.values(run.nodes))
         if (node.status === "pending") {
             node.status = "skipped";
-            node.output = "执行已取消";
+            node.output = "Execution cancelled";
             node.finishedAt = Date.now();
         }
     run.finishedAt = Date.now();

@@ -35,14 +35,14 @@ async function initialize(): Promise<Database> {
     db.manifestTemplates = [];
     await PluginConfig.flush(db);
   }
-  if (db.version !== 2) throw new Error(`不支持的数据版本：${db.version}`);
+  if (db.version !== 2) throw new Error(`Unsupported data version: ${db.version}`);
   const runs = copy(db.runs);
   let changed = false;
   for (const run of runs) {
     if (run.status !== "RUNNING") continue;
     changed = true; run.status = "FAILED"; run.finishedAt = Date.now();
-    run.logs.push({ time: Date.now(), nodeId: "", level: "error", message: "运行时已中断；本次执行未完成。" });
-    for (const node of Object.values(run.nodes)) if (node.status === "running" || node.status === "pending") { node.status = "failed"; node.output = "运行时中断"; node.finishedAt = Date.now(); }
+    run.logs.push({ time: Date.now(), nodeId: "", level: "error", message: "Runtime interrupted; this execution did not complete." });
+    for (const node of Object.values(run.nodes)) if (node.status === "running" || node.status === "pending") { node.status = "failed"; node.output = "Runtime interrupted"; node.finishedAt = Date.now(); }
     const workflow = db.workflows.find(item => item.id === run.workflowId);
     if (workflow) { workflow.failedExecutions++; workflow.lastExecutionStatus = "FAILED"; }
   }
@@ -80,20 +80,20 @@ export async function replaceManifestTemplates(sourceToolPkgId: string, template
 /** Looks up an existing workflow by exact identity. */
 function find(db: Database, workflowId: string): Workflow {
   const workflow = db.workflows.find(item => item.id === workflowId);
-  if (!workflow) throw new Error(`工作流不存在：${workflowId}`);
+  if (!workflow) throw new Error(`Workflow does not exist: ${workflowId}`);
   return workflow;
 }
 
 /** Rejects changes to a workflow while its saved snapshot is executing. */
 function editable(workflowId: string): void {
-  if (active.has(workflowId)) throw new Error("工作流正在执行，结束后才能修改或删除");
+  if (active.has(workflowId)) throw new Error("Workflow is currently executing; it can be modified or deleted only after it finishes");
 }
 
 /** Formats the actual tool output without hiding execution errors. */
 function output(value: unknown): string {
   if (typeof value === "string") return value;
   const text = JSON.stringify(value);
-  if (text === undefined) throw new Error("工具或脚本没有返回可序列化的结果");
+  if (text === undefined) throw new Error("The tool or script did not return a serializable result");
   return text;
 }
 
@@ -121,7 +121,7 @@ async function runWorkflow(workflowId: string, triggerId: string | null, extras:
   const db = await load();
   if (!reserved) editable(workflowId);
   const workflow = copy(find(db, workflowId));
-  if (!workflow.enabled) throw new Error("工作流已停用");
+  if (!workflow.enabled) throw new Error("Workflow is disabled");
   const control = { cancelled: false };
   active.set(workflowId, control);
   try {
@@ -146,7 +146,7 @@ async function runWorkflow(workflowId: string, triggerId: string | null, extras:
 
 /** Starts a workflow without holding the caller context open for its full execution. */
 async function startWorkflow(workflowId: string, triggerId: string | null, extras: Record<string, string>, observer?: (run: Run) => Promise<void>): Promise<Snapshot> {
-  if (active.has(workflowId) || launching.has(workflowId)) throw new Error("工作流正在执行，结束后才能再次触发");
+  if (active.has(workflowId) || launching.has(workflowId)) throw new Error("Workflow is currently executing; it can be triggered again only after it finishes");
   launching.add(workflowId);
   void runWorkflow(workflowId, triggerId, extras, observer, true)
     .catch(error => console.error(`[workflow] Background execution failed for ${workflowId}: ${errorText(error)}`))
@@ -161,13 +161,13 @@ export async function dispatch(request: Request, observer?: (run: Run) => Promis
     case "list": return snapshot();
     case "tool_catalog": return toolCatalogSnapshot();
     case "create": {
-      if (!request.name.trim()) throw new Error("工作流名称不能为空");
+      if (!request.name.trim()) throw new Error("Workflow name cannot be empty");
       db.workflows = [...db.workflows, newWorkflow(request.name.trim(), request.description)]; break;
     }
     case "save": {
       editable(request.workflow.id);
       const stored = find(db, request.workflow.id);
-      if (stored.revision !== request.workflow.revision) throw new Error("工作流已被其他入口修改，请重新加载后编辑");
+      if (stored.revision !== request.workflow.revision) throw new Error("The workflow has been modified elsewhere; please reload it before editing");
       const parsed = parseWorkflow(request.workflow);
       const next = { ...stored, name: parsed.name, description: parsed.description, enabled: parsed.enabled, nodes: parsed.nodes,
         connections: parsed.connections, updatedAt: Date.now(), revision: stored.revision + 1 };
@@ -175,7 +175,7 @@ export async function dispatch(request: Request, observer?: (run: Run) => Promis
       db.workflows = db.workflows.map(item => item.id === next.id ? next : item); break;
     }
     case "copy": {
-      const next = duplicate(find(db, request.id)); next.name += " 副本"; db.workflows = [...db.workflows, next]; break;
+      const next = duplicate(find(db, request.id)); next.name += " copy"; db.workflows = [...db.workflows, next]; break;
     }
     case "delete": {
       request.ids.forEach(editable);
@@ -192,7 +192,7 @@ export async function dispatch(request: Request, observer?: (run: Run) => Promis
     }
     case "import_manifest_template": {
       const template = db.manifestTemplates.find(item => item.sourceToolPkgId === request.sourceToolPkgId && item.templateId === request.templateId);
-      if (template === undefined) throw new Error(`工作流模板不存在：${request.sourceToolPkgId}/${request.templateId}`);
+      if (template === undefined) throw new Error(`Workflow template does not exist: ${request.sourceToolPkgId}/${request.templateId}`);
       const next = duplicate(template.workflow);
       next.name = template.displayName;
       next.description = template.description;
@@ -203,7 +203,7 @@ export async function dispatch(request: Request, observer?: (run: Run) => Promis
     case "start": return startWorkflow(request.id, request.triggerId, request.extras, observer);
     case "cancel": {
       const control = active.get(request.id);
-      if (!control) throw new Error("该工作流没有正在进行的执行");
+      if (!control) throw new Error("This workflow has no execution in progress");
       control.cancelled = true; return snapshot();
     }
   }

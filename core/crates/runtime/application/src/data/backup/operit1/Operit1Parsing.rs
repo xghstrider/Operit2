@@ -4,7 +4,7 @@ fn epochMillisToLocalDateTimeString(value: i64) -> Result<String, String> {
     let datetime = chrono::Local
         .timestamp_millis_opt(value)
         .single()
-        .ok_or_else(|| format!("Operit1 聊天时间戳无效：{value}"))?;
+        .ok_or_else(|| format!("Invalid Operit1 chat timestamp: {value}"))?;
     Ok(datetime
         .naive_local()
         .format("%Y-%m-%dT%H:%M:%S%.3f")
@@ -16,7 +16,7 @@ fn epochMillisToLocalDateString(value: i64) -> Result<String, String> {
     let datetime = chrono::Local
         .timestamp_millis_opt(value)
         .single()
-        .ok_or_else(|| format!("Operit1 用户偏好日期无效：{value}"))?;
+        .ok_or_else(|| format!("Invalid Operit1 user preference date: {value}"))?;
     Ok(datetime.naive_local().format("%Y-%m-%d").to_string())
 }
 
@@ -36,13 +36,13 @@ fn requiredPreferenceString<'a>(
         .ok_or_else(|| missingMessage.to_string())?;
     value
         .asString()
-        .ok_or_else(|| format!("Operit1 DataStore 键不是字符串：{key}"))
+        .ok_or_else(|| format!("Operit1 DataStore key is not a string: {key}"))
 }
 
 #[allow(non_snake_case)]
 fn parseCustomParameterValue(value: &str) -> Result<Value, String> {
     serde_json::from_str(value)
-        .map_err(|error| format!("Operit1 自定义参数值不是合法 JSON：{error}"))
+        .map_err(|error| format!("Operit1 custom parameter value is not valid JSON: {error}"))
 }
 
 #[allow(non_snake_case)]
@@ -55,7 +55,7 @@ fn parseParameterValueType(
         "STRING" => Ok(operit_model::ModelParameter::ParameterValueType::STRING),
         "BOOLEAN" => Ok(operit_model::ModelParameter::ParameterValueType::BOOLEAN),
         "OBJECT" => Ok(operit_model::ModelParameter::ParameterValueType::OBJECT),
-        other => Err(format!("未知模型参数值类型：{other}")),
+        other => Err(format!("Unknown model parameter value type: {other}")),
     }
 }
 
@@ -66,7 +66,7 @@ fn parseParameterCategory(value: &str) -> Result<ParameterCategory, String> {
         "CREATIVITY" => Ok(ParameterCategory::CREATIVITY),
         "REPETITION" => Ok(ParameterCategory::REPETITION),
         "OTHER" => Ok(ParameterCategory::OTHER),
-        other => Err(format!("未知模型参数分类：{other}")),
+        other => Err(format!("Unknown model parameter category: {other}")),
     }
 }
 

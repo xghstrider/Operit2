@@ -834,7 +834,7 @@ class _DrawerContentState extends State<DrawerContent> {
     if (_groupingMode == _HistoryGroupingMode.workspace) {
       final workspaceName = history.workspaceName?.trim();
       return workspaceName == null || workspaceName.isEmpty
-          ? '未绑定工作区'
+          ? 'Workspace not bound'
           : workspaceName;
     }
     final characterGroupId = history.characterGroupId?.trim();
@@ -843,7 +843,7 @@ class _DrawerContentState extends State<DrawerContent> {
           _shortIdentifier(characterGroupId);
     }
     final name = history.characterCardName?.trim();
-    return name == null || name.isEmpty ? '未绑定' : name;
+    return name == null || name.isEmpty ? 'Not bound' : name;
   }
 
   /// Resolves the runtime avatar path for a character-card history section.
@@ -866,7 +866,7 @@ class _DrawerContentState extends State<DrawerContent> {
 
   String _groupLabel(core_proxy.ChatHistoryListItem history) {
     final group = history.group?.trim();
-    return group == null || group.isEmpty ? '未分组' : group;
+    return group == null || group.isEmpty ? 'Ungrouped' : group;
   }
 
   void _toggleCharacterSection(String sectionKey) {
@@ -991,7 +991,7 @@ class _DrawerContentState extends State<DrawerContent> {
                         children: <Widget>[
                           Expanded(
                             child: Text(
-                              '会话',
+                              'Sessions',
                               style: Theme.of(context).textTheme.titleSmall
                                   ?.copyWith(
                                     color: widget.appearance.titleColor
@@ -1005,8 +1005,8 @@ class _DrawerContentState extends State<DrawerContent> {
                             visualDensity: VisualDensity.compact,
                             tooltip:
                                 _groupingMode == _HistoryGroupingMode.workspace
-                                ? '按角色卡分组'
-                                : '按工作区分组',
+                                ? 'Group by Character Card'
+                                : 'Group by Workspace',
                             icon: Icon(
                               _groupingMode == _HistoryGroupingMode.workspace
                                   ? Icons.badge_outlined
@@ -1021,7 +1021,7 @@ class _DrawerContentState extends State<DrawerContent> {
                                 onPressed: () =>
                                     themeController.toggle(buttonContext),
                                 visualDensity: VisualDensity.compact,
-                                tooltip: darkThemeActive ? '切换白天模式' : '切换黑夜模式',
+                                tooltip: darkThemeActive ? 'Switch to light mode' : 'Switch to dark mode',
                                 icon: Icon(
                                   darkThemeActive
                                       ? Icons.light_mode_outlined
@@ -1035,7 +1035,7 @@ class _DrawerContentState extends State<DrawerContent> {
                           IconButton(
                             onPressed: _toggleSearchExpanded,
                             visualDensity: VisualDensity.compact,
-                            tooltip: _searchExpanded ? '收起搜索' : '搜索对话',
+                            tooltip: _searchExpanded ? 'Collapse search' : 'Search conversations',
                             icon: Icon(
                               _searchExpanded ? Icons.search_off : Icons.search,
                               size: 20,
@@ -1172,7 +1172,7 @@ class _DrawerContentState extends State<DrawerContent> {
                     SliverToBoxAdapter(
                       child: _HistoryLimitButton(
                         icon: Icons.expand_more,
-                        label: '展开更多 $hiddenHistoryCount',
+                        label: 'Expand More $hiddenHistoryCount',
                         appearance: widget.appearance,
                         onClick: () => _showMoreHistories(hiddenHistoryCount),
                       ),
@@ -1187,7 +1187,7 @@ class _DrawerContentState extends State<DrawerContent> {
                           bottom: 2,
                         ),
                         child: Text(
-                          '插件',
+                          'Plugins',
                           style: Theme.of(context).textTheme.titleSmall
                               ?.copyWith(
                                 color: widget.appearance.titleColor.withValues(
@@ -1246,7 +1246,7 @@ class _DrawerContentState extends State<DrawerContent> {
               Expanded(
                 child: BottomSidebarAction(
                   icon: Icons.inventory_2_outlined,
-                  label: '包管理',
+                  label: 'Package Manager',
                   appearance: widget.appearance,
                   selected: widget.selectedRouteId == packageManagerRouteId,
                   onClick: _openPackageManager,
@@ -1256,7 +1256,7 @@ class _DrawerContentState extends State<DrawerContent> {
               Expanded(
                 child: BottomSidebarAction(
                   icon: Icons.settings_outlined,
-                  label: '设置',
+                  label: 'Settings',
                   appearance: widget.appearance,
                   selected: widget.selectedRouteId == settingsRouteId,
                   onClick: _openSettings,

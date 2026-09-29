@@ -485,7 +485,7 @@ fn appleEnvironmentDescriptor() -> HostEnvironmentDescriptor {
             "Use absolute Apple platform paths such as /Users/Name/Documents or an app sandbox path."
                 .to_string(),
         pathStyleDescriptionCn:
-            "使用 Apple 平台绝对路径，例如 /Users/Name/Documents 或应用沙盒路径。".to_string(),
+            "Uses Apple platform absolute paths, e.g. /Users/Name/Documents or app sandbox paths.".to_string(),
         examplePaths: vec![
             "/Users/Name/Documents".to_string(),
             "/tmp/work".to_string(),
@@ -514,25 +514,25 @@ fn appleEnvironmentDescriptor() -> HostEnvironmentDescriptor {
         structuredCapabilities: vec![
             HostCapability {
                 id: "fs.read".to_string(),
-                displayName: "文件读取".to_string(),
+                displayName: "File Read".to_string(),
                 scope: CapabilityScope::FileSystem,
                 operations: vec![CapabilityOperation::Read],
             },
             HostCapability {
                 id: "fs.write".to_string(),
-                displayName: "文件写入".to_string(),
+                displayName: "File Write".to_string(),
                 scope: CapabilityScope::FileSystem,
                 operations: vec![CapabilityOperation::Write],
             },
             HostCapability {
                 id: "runtime.process".to_string(),
-                displayName: "进程执行".to_string(),
+                displayName: "Process Execution".to_string(),
                 scope: CapabilityScope::Runtime,
                 operations: vec![CapabilityOperation::Execute],
             },
             HostCapability {
                 id: "system.notifications.send".to_string(),
-                displayName: "发送系统通知".to_string(),
+                displayName: "Send System Notification".to_string(),
                 scope: CapabilityScope::System,
                 operations: vec![CapabilityOperation::Execute],
             },
@@ -547,8 +547,8 @@ fn appleEnvironmentDescriptor() -> HostEnvironmentDescriptor {
 fn appleOnboardingRequirements() -> Vec<HostOnboardingRequirement> {
     vec![HostOnboardingRequirement {
         id: "ios.notifications".to_string(),
-        title: "通知".to_string(),
-        description: "允许 Operit 在 AI 回复完成或工具等待批准时发送系统通知。".to_string(),
+        title: "Notifications".to_string(),
+        description: "Allows Operit to send system notifications when an AI reply completes or a tool is awaiting approval.".to_string(),
         capabilityIds: vec!["system.notifications.send".to_string()],
         isRequired: true,
         status: HostRequirementStatus::Missing,

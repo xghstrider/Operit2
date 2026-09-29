@@ -346,8 +346,8 @@ class _GitHubOAuthLoginDialogState extends State<GitHubOAuthLoginDialog> {
                   Expanded(
                     child: Text(
                       widget.mode == GitHubOAuthLoginMode.external
-                          ? 'GitHub 登录（系统浏览器）'
-                          : 'GitHub 登录（内置浏览器）',
+                          ? 'GitHub Login (System Browser)'
+                          : 'GitHub Login (In-App Browser)',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -361,7 +361,7 @@ class _GitHubOAuthLoginDialogState extends State<GitHubOAuthLoginDialog> {
                     )
                   else
                     IconButton(
-                      tooltip: '取消登录',
+                      tooltip: 'Cancel Login',
                       onPressed: _cancelLogin,
                       icon: const Icon(Icons.close),
                     ),
@@ -396,16 +396,16 @@ class _GitHubOAuthLoginDialogState extends State<GitHubOAuthLoginDialog> {
             const SizedBox(height: 24),
             Text(
               waitingForBrowser
-                  ? '正在打开系统默认浏览器…'
+                  ? 'Opening the system default browser…'
                   : _isCompleting
-                  ? '正在完成 GitHub 登录…'
-                  : '请在系统默认浏览器中完成 GitHub 登录，然后返回此窗口。',
+                  ? 'Finishing GitHub login…'
+                  : 'Complete the GitHub login in the system default browser, then return to this window.',
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16),
             ),
             if (_isExternalBrowserOpened && !_isCompleting) ...<Widget>[
               const SizedBox(height: 12),
-              const Text('浏览器完成回调后，登录状态会自动同步。', textAlign: TextAlign.center),
+              const Text('After the browser completes the callback, the login status will sync automatically.', textAlign: TextAlign.center),
             ],
           ],
         ),
@@ -460,7 +460,7 @@ class _GitHubOAuthLoginMethodDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('选择 GitHub 登录方式'),
+      title: const Text('Choose a GitHub Login Method'),
       content: SizedBox(
         width: 420,
         child: Column(
@@ -468,15 +468,15 @@ class _GitHubOAuthLoginMethodDialog extends StatelessWidget {
           children: <Widget>[
             _GitHubOAuthLoginMethodTile(
               icon: Icons.open_in_browser,
-              title: '系统默认浏览器',
-              subtitle: '使用浏览器现有的 GitHub 登录状态',
+              title: 'System Default Browser',
+              subtitle: 'Use the existing GitHub login state in the browser',
               onTap: () =>
                   Navigator.of(context).pop(GitHubOAuthLoginMode.external),
             ),
             _GitHubOAuthLoginMethodTile(
               icon: Icons.web,
-              title: '内置浏览器',
-              subtitle: '在 Operit 内完成 GitHub 登录',
+              title: 'In-App Browser',
+              subtitle: 'Complete the GitHub login within Operit',
               onTap: () =>
                   Navigator.of(context).pop(GitHubOAuthLoginMode.embedded),
             ),
@@ -486,7 +486,7 @@ class _GitHubOAuthLoginMethodDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('取消'),
+          child: const Text('Cancel'),
         ),
       ],
     );

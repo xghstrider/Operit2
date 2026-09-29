@@ -139,7 +139,7 @@ class _PackageListItemState extends State<PackageListItem> {
                     ),
                     if (hasError)
                       Tooltip(
-                        message: widget.errorMessage ?? '前置插件不可用',
+                        message: widget.errorMessage ?? 'Dependency plugins unavailable',
                         child: Padding(
                           padding: EdgeInsets.only(left: 6 * scale),
                           child: Icon(
@@ -158,7 +158,7 @@ class _PackageListItemState extends State<PackageListItem> {
                     ],
                     SizedBox(width: 2 * scale),
                     IconButton(
-                      tooltip: _expanded ? '收起' : '展开',
+                      tooltip: _expanded ? 'Collapse' : 'Expand',
                       visualDensity: VisualDensity.compact,
                       onPressed: _toggleExpanded,
                       icon: Icon(

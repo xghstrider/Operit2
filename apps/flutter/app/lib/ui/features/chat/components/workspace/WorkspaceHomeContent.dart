@@ -130,8 +130,8 @@ class _WorkspaceStatusSummary extends StatelessWidget {
         workspaceName != null && workspaceName.isNotEmpty;
     final title = workspaceName != null && workspaceName.isNotEmpty
         ? workspaceName
-        : '工作区总览';
-    final subtitle = hasWorkspace ? '工作区总览' : '当前对话未绑定工作区';
+        : 'Workspace Overview';
+    final subtitle = hasWorkspace ? 'Workspace Overview' : 'Current conversation is not bound to a workspace';
     return OperitGlassSurface(
       color: Colors.transparent,
       transparentAlpha: 0,
@@ -224,12 +224,12 @@ class _WorkspaceStatusSummary extends StatelessWidget {
                           children: <Widget>[
                             _WorkspaceSessionButton(
                               icon: Icons.terminal,
-                              label: '$terminalSessionCount 个终端',
+                              label: '$terminalSessionCount terminals',
                               onTap: onOpenTerminalSessions,
                             ),
                             _WorkspaceSessionButton(
                               icon: Icons.public,
-                              label: '$browserSessionCount 个浏览器',
+                              label: '$browserSessionCount browsers',
                               onTap: onOpenBrowserSessions,
                             ),
                           ],
@@ -246,7 +246,7 @@ class _WorkspaceStatusSummary extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      '挂载文件夹',
+                      'Mounted Folders',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.labelLarge?.copyWith(
@@ -258,7 +258,7 @@ class _WorkspaceStatusSummary extends StatelessWidget {
                   SizedBox.square(
                     dimension: 28,
                     child: IconButton(
-                      tooltip: '挂载新文件夹',
+                      tooltip: 'Mount New Folder',
                       padding: EdgeInsets.zero,
                       visualDensity: VisualDensity.compact,
                       onPressed: onAddFolder,
@@ -318,7 +318,7 @@ class _WorkspaceCharacterAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Tooltip(
-      message: '${usage.name} · ${usage.conversationCount} 次',
+      message: '${usage.name} · ${usage.conversationCount} times',
       waitDuration: const Duration(milliseconds: 450),
       child: Container(
         width: 22,
@@ -376,9 +376,9 @@ class _WorkspaceSessionButton extends StatelessWidget {
 
 /// Builds the static summary line for workspace overview counts.
 String _workspaceSummaryText(WorkspaceOverviewUsage usage) {
-  return '${usage.conversationCount} 个对话 · '
-      '${usage.characterUsages.length} 个角色卡 · '
-      '${usage.mountedFolders.length} 个文件夹';
+  return '${usage.conversationCount} conversations · '
+      '${usage.characterUsages.length} character cards · '
+      '${usage.mountedFolders.length} folders';
 }
 
 class _WorkspaceMountedFolderStack extends StatelessWidget {
@@ -403,7 +403,7 @@ class _WorkspaceMountedFolderStack extends StatelessWidget {
     if (loading) {
       return _WorkspaceInlineState(
         icon: Icons.sync,
-        text: '正在读取挂载文件夹',
+        text: 'Reading mounted folders',
         progress: true,
         color: theme.colorScheme.onSurfaceVariant,
       );
@@ -418,7 +418,7 @@ class _WorkspaceMountedFolderStack extends StatelessWidget {
     if (folders.isEmpty) {
       return _WorkspaceInlineState(
         icon: Icons.folder_off_outlined,
-        text: '当前工作区暂无挂载文件夹',
+        text: 'No mounted folders in the current workspace yet',
         color: theme.colorScheme.onSurfaceVariant,
       );
     }

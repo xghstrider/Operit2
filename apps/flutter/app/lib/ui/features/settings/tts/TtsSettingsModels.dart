@@ -164,7 +164,7 @@ String _ttsConfigModelVoiceText(core_proxy.TtsConfig config) {
   final model = config.model.trim();
   final voice = config.voice.trim();
   if (model.isEmpty && voice.isEmpty) {
-    return '系统默认音色';
+    return 'System default voice';
   }
   if (model.isEmpty) {
     return voice;
@@ -220,7 +220,7 @@ String _availableTtsVoiceTitle(core_proxy.AvailableTtsVoice voice) {
   final model = voice.model.trim();
   final voiceName = voice.voice.trim();
   if (model.isEmpty && voiceName.isEmpty) {
-    return '系统默认音色';
+    return 'System default voice';
   }
   if (model.isEmpty) {
     return voiceName;
@@ -292,12 +292,12 @@ List<Map<String, Object?>> _decodeJsonList(String raw, String label) {
   final text = raw.isEmpty ? '[]' : raw;
   final decoded = jsonDecode(text);
   if (decoded is! List<Object?>) {
-    throw FormatException('$label 必须是数组');
+    throw FormatException('$label must be an array');
   }
   return decoded
       .map((item) {
         if (item is! Map<String, Object?>) {
-          throw FormatException('$label 每一项必须是对象');
+          throw FormatException('$label items must all be objects');
         }
         return item;
       })

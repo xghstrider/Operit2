@@ -59,8 +59,8 @@ mod tests {
     #[test]
     fn parses_operit1_locale_object() {
         let text: LocalizedText =
-            serde_json::from_str(r#"{"zh":"思考引导","en":"Thinking Guidance"}"#).unwrap();
-        assert_eq!(text.resolve(false), "思考引导");
+            serde_json::from_str(r#"{"zh":"Thinking guidance","en":"Thinking Guidance"}"#).unwrap();
+        assert_eq!(text.resolve(false), "Thinking guidance");
         assert_eq!(text.resolve(true), "Thinking Guidance");
     }
 }

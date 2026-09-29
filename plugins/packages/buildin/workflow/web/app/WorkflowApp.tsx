@@ -260,7 +260,7 @@ function App() {
           );
         });
         if (typeof window.WorkflowHost?.request !== "function")
-          throw new Error("工作流宿主接口未就绪");
+          throw new Error("Workflow host interface is not ready");
       }
       await waitForWorkflowHost();
       window.applyWorkflowTheme(await window.WorkflowHost.currentTheme());
@@ -299,11 +299,11 @@ function App() {
   }
   /** Validates and persists the entire graph as one revision. */
   async function save() {
-    if (!workflow) throw new Error("没有打开工作流");
+    if (!workflow) throw new Error("No workflow is open");
     validateGraph(workflow, false);
     const result = await request({ action: "save", workflow });
     const saved = result.workflows.find((item) => item.id === workflow.id);
-    if (!saved) throw new Error("保存结果缺少工作流");
+    if (!saved) throw new Error("Save result is missing a workflow");
     setWorkflow(saved);
     setDirty(false);
     return saved;
@@ -326,7 +326,7 @@ function App() {
     );
     if (dependents.length)
       throw new Error(
-        "请先修改参数引用：" + dependents.map((node) => node.name).join("、"),
+        "Please update the parameter references first: " + dependents.map((node) => node.name).join(", "),
       );
     edit({
       ...workflow,
@@ -385,23 +385,23 @@ function App() {
             {workflow && (
               <Button
                 className="toolbar-back"
-                aria-label="返回列表"
+                aria-label="Back to List"
                 startIcon={<ArrowBackIcon />}
                 onClick={back}
               >
-                <span className="action-label">返回列表</span>
+                <span className="action-label">Back to List</span>
               </Button>
             )}
             <Box className="title-block">
               <Typography variant="h6" noWrap>
-                {workflow ? workflow.name : "我的工作流"}
+                {workflow ? workflow.name : "My Workflow"}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {workflow
                   ? dirty
-                    ? "有未保存的修改"
-                    : "已保存"
-                  : "编排节点，让重复的工作自动完成"}
+                    ? "Unsaved changes"
+                    : "Saved"
+                  : "Orchestrate nodes to automate repetitive tasks"}
               </Typography>
             </Box>
             {workflow ? (
@@ -409,17 +409,17 @@ function App() {
                 {!compact && (
                   <Button
                   className="toolbar-secondary"
-                  aria-label="添加节点"
+                  aria-label="Add Node"
                   startIcon={<AddIcon />}
                     disabled={editorLocked}
                     onClick={() => setNodePicker(true)}
                   >
-                    <span className="action-label">添加节点</span>
+                    <span className="action-label">Add Node</span>
                   </Button>
                 )}
                 <Button
                   className="toolbar-secondary"
-                  aria-label="设置"
+                  aria-label="Settings"
                   startIcon={<SettingsOutlinedIcon />}
                   disabled={editorLocked}
                   onClick={() => {
@@ -428,11 +428,11 @@ function App() {
                     setDialog("meta");
                   }}
                 >
-                  <span className="action-label">设置</span>
+                  <span className="action-label">Settings</span>
                 </Button>
                 <Button
                   className="toolbar-secondary"
-                  aria-label="记录"
+                  aria-label="Logs"
                   startIcon={<HistoryOutlinedIcon />}
                   disabled={busy}
                   onClick={() => {
@@ -440,11 +440,11 @@ function App() {
                     setDialog("logs");
                   }}
                 >
-                  <span className="action-label">记录</span>
+                  <span className="action-label">Logs</span>
                 </Button>
                 <Button
                   className="toolbar-secondary"
-                  aria-label="保存"
+                  aria-label="Save"
                   startIcon={<SaveOutlinedIcon />}
                   disabled={editorLocked || !dirty}
                   onClick={() =>
@@ -453,7 +453,7 @@ function App() {
                     })
                   }
                 >
-                  <span className="action-label">保存</span>
+                  <span className="action-label">Save</span>
                 </Button>
                 <Button
                   className="run-action"
@@ -489,29 +489,29 @@ function App() {
                     })
                   }
                 >
-                  {workflowRunning ? "执行中…" : "运行"}
+                  {workflowRunning ? "Running..." : "Run"}
                 </Button>
               </Stack>
             ) : (
               <Stack className="toolbar-actions" direction="row" spacing={0.5}>
                 <Button
                   className="toolbar-secondary"
-                  aria-label="导入"
+                  aria-label="Import"
                   startIcon={<FileUploadOutlinedIcon />}
                   onClick={() => {
                     setText("");
                     setDialog("import");
                   }}
                 >
-                  <span className="action-label">导入</span>
+                  <span className="action-label">Import</span>
                 </Button>
                 <Button
                   className="toolbar-secondary"
-                  aria-label="模板"
+                  aria-label="Templates"
                   startIcon={<AutoAwesomeOutlinedIcon />}
                   onClick={() => setDialog("templates")}
                 >
-                  <span className="action-label">模板</span>
+                  <span className="action-label">Templates</span>
                 </Button>
                 <Button
                   className="new-action"
@@ -524,7 +524,7 @@ function App() {
                     setDialog("create");
                   }}
                 >
-                  新建
+                  New
                 </Button>
               </Stack>
             )}
@@ -537,14 +537,14 @@ function App() {
           </Alert>
         )}
         {!ready ? (
-          <Box sx={{ p: 4 }}>正在加载…</Box>
+          <Box sx={{ p: 4 }}>Loading...</Box>
         ) : !workflow ? (
           <Box className="list">
             {!snapshot.workflows.length && (
               <Box className="empty">
-                <Typography variant="h5">创建你的第一个工作流</Typography>
+                <Typography variant="h5">Create Your First Workflow</Typography>
                 <Typography color="text.secondary">
-                  添加触发节点，然后连接工具与条件。
+                  Add a trigger node, then connect tools and conditions.
                 </Typography>
                 <Button
                   variant="contained"
@@ -554,7 +554,7 @@ function App() {
                     setDialog("create");
                   }}
                 >
-                  新建工作流
+                  New Workflow
                 </Button>
               </Box>
             )}
@@ -586,26 +586,26 @@ function App() {
                       }
                       variant="caption"
                     >
-                      {item.enabled ? "已启用" : "已停用"}
+                      {item.enabled ? "Enabled" : "Disabled"}
                     </Typography>
                   </Box>
                   <Typography color="text.secondary" className="workflow-card-description">
-                    {item.description || "暂无说明"}
+                    {item.description || "No description"}
                   </Typography>
                   <Stack className="workflow-card-meta" direction="row" spacing={1}>
-                    <Chip size="small" label={`${item.nodes.length} 个节点`} />
+                    <Chip size="small" label={`${item.nodes.length} nodes`} />
                     {item.lastExecutionStatus && (
-                      <Chip size="small" label={`最近 ${statuses[item.lastExecutionStatus]}`} />
+                      <Chip size="small" label={`Last run: ${statuses[item.lastExecutionStatus]}`} />
                     )}
                   </Stack>
                 </CardContent>
                 <CardActions className="workflow-card-actions">
                   <Button size="small" variant="contained" onClick={() => open(item)}>
-                    打开工作流
+                    Open Workflow
                   </Button>
-                  <Tooltip title="复制工作流">
+                  <Tooltip title="Duplicate Workflow">
                     <IconButton
-                      aria-label="复制工作流"
+                      aria-label="Duplicate Workflow"
                       onClick={() =>
                         perform(async () => {
                           await request({ action: "copy", id: item.id });
@@ -617,7 +617,7 @@ function App() {
                   </Tooltip>
                   <FormControlLabel
                     className="workflow-card-toggle"
-                    label="启用"
+                    label="Enabled"
                     control={
                       <Switch
                         size="small"
@@ -709,9 +709,9 @@ function App() {
               </WorkflowCanvas>
               {!workflow.nodes.length && (
                 <Box className="canvas-empty">
-                  <Typography variant="h6">从触发节点开始</Typography>
+                  <Typography variant="h6">Start From a Trigger Node</Typography>
                   <Typography color="text.secondary">
-                    点击“添加节点”，从触发节点开始
+                    Click "Add Node" to start from a trigger node
                   </Typography>
                 </Box>
               )}
@@ -728,7 +728,7 @@ function App() {
               if (node) setDraft(copy(node));
             }}
           >
-            编辑选中节点
+            Edit Selected Node
           </Button>
         )}
         {workflow && compact && (
@@ -745,7 +745,7 @@ function App() {
                   if (node) setDraft(copy(node));
                 }}
               >
-                编辑节点
+                Edit Node
               </Button>
             )}
             <Button
@@ -754,7 +754,7 @@ function App() {
               disabled={editorLocked}
               onClick={() => setNodePicker(true)}
             >
-              添加节点
+              Add Node
             </Button>
           </Box>
         )}
@@ -764,10 +764,10 @@ function App() {
           maxWidth="sm"
           fullWidth
         >
-          <DialogTitle>添加节点</DialogTitle>
+          <DialogTitle>Add Node</DialogTitle>
           <DialogContent>
             <Typography color="text.secondary" sx={{ mb: 2 }}>
-              选择要放入画布的节点类型
+              Select the node type to place on the canvas
             </Typography>
             <Box className="node-picker-grid">
               {Object.entries(STYLES).map(([kind, style]) => (
@@ -784,7 +784,7 @@ function App() {
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setNodePicker(false)}>关闭</Button>
+            <Button onClick={() => setNodePicker(false)}>Close</Button>
           </DialogActions>
         </Dialog>
         <Dialog
@@ -794,7 +794,7 @@ function App() {
           maxWidth="sm"
           fullWidth
         >
-          <DialogTitle>配置节点</DialogTitle>
+          <DialogTitle>Configure Node</DialogTitle>
           <DialogContent>
             {draft && workflow && (
               <NodeForm
@@ -809,9 +809,9 @@ function App() {
           </DialogContent>
           <DialogActions>
             <Button color="error" onClick={() => perform(removeNode)}>
-              删除节点
+              Delete Node
             </Button>
-            <Button onClick={() => setDraft(null)}>取消</Button>
+            <Button onClick={() => setDraft(null)}>Cancel</Button>
             <Button
               variant="contained"
               onClick={() =>
@@ -833,7 +833,7 @@ function App() {
                 })
               }
             >
-              应用
+              Apply
             </Button>
           </DialogActions>
         </Dialog>
@@ -849,15 +849,15 @@ function App() {
           <DialogTitle>
             {
               {
-                create: "新建工作流",
-                meta: "工作流设置",
-                import: "导入工作流",
-                export: "导出工作流",
-                templates: "从模板创建",
-                logs: "执行记录",
-                edge: "连线条件",
-                leave: "保存修改？",
-                delete: "删除工作流？",
+                create: "New Workflow",
+                meta: "Workflow Settings",
+                import: "Import Workflow",
+                export: "Export Workflow",
+                templates: "Create from Template",
+                logs: "Execution Logs",
+                edge: "Edge Condition",
+                leave: "Save changes?",
+                delete: "Delete workflow?",
               }[dialog]
             }
           </DialogTitle>
@@ -865,12 +865,12 @@ function App() {
             {["create", "meta"].includes(dialog) && (
               <Stack spacing={2} sx={{ pt: 1 }}>
                 <TextField
-                  label="名称"
+                  label="Name"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                 />
                 <TextField
-                  label="说明"
+                  label="Description"
                   multiline
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
@@ -878,7 +878,7 @@ function App() {
                 {dialog === "meta" && workflow && (
                   <>
                     <FormControlLabel
-                      label="启用工作流"
+                      label="Enable Workflow"
                       control={
                         <Switch
                           checked={workflow.enabled}
@@ -894,10 +894,10 @@ function App() {
                         setDialog("export");
                       }}
                     >
-                      导出 JSON
+                      Export JSON
                     </Button>
                     <Button color="error" onClick={() => setDialog("delete")}>
-                      删除工作流
+                      Delete Workflow
                     </Button>
                   </>
                 )}
@@ -915,7 +915,7 @@ function App() {
                 />
                 {dialog === "import" && (
                   <Button component="label">
-                    选择 JSON 文件
+                    Select JSON File
                     <input
                       hidden
                       type="file"
@@ -989,21 +989,21 @@ function App() {
               <TextField
                 fullWidth
                 sx={{ mt: 1 }}
-                label="条件（空：默认分支；false：否分支）"
+                label="Condition (empty: default branch; false: else branch)"
                 value={text}
                 onChange={(event) => setText(event.target.value)}
               />
             )}
             {dialog === "leave" && (
-              <Typography>工作流有未保存的修改。</Typography>
+              <Typography>The workflow has unsaved changes.</Typography>
             )}
             {dialog === "delete" && (
-              <Typography>将删除此工作流及其执行记录。</Typography>
+              <Typography>This workflow and its execution logs will be deleted.</Typography>
             )}
             {dialog === "export" && (
               <Stack spacing={2} sx={{ mt: 2 }}>
                 <TextField
-                  label="保存路径"
+                  label="Save Path"
                   value={exportPath}
                   onChange={(event) => setExportPath(event.target.value)}
                 />
@@ -1016,7 +1016,7 @@ function App() {
                     })
                   }
                 >
-                  保存 JSON 文件
+                  Save JSON File
                 </Button>
               </Stack>
             )}
@@ -1035,7 +1035,7 @@ function App() {
                   setDialog("");
                 }}
               >
-                放弃修改
+                Discard Changes
               </Button>
             )}
             {dialog === "edge" && (
@@ -1052,11 +1052,11 @@ function App() {
                   setDialog("");
                 }}
               >
-                删除连线
+                Delete Edge
               </Button>
             )}
             <Button disabled={busy} onClick={() => setDialog("")}>
-              关闭
+              Close
             </Button>
             {!["logs", "templates", "export"].includes(dialog) && (
               <Button
@@ -1073,7 +1073,7 @@ function App() {
                       open(result.workflows[result.workflows.length - 1]);
                     }
                     if (dialog === "meta" && workflow) {
-                      if (!name.trim()) throw new Error("名称不能为空");
+                      if (!name.trim()) throw new Error("Name cannot be empty");
                       edit({ ...workflow, name, description });
                     }
                     if (dialog === "import") {
@@ -1104,7 +1104,7 @@ function App() {
                   })
                 }
               >
-                {dialog === "leave" ? "保存并返回" : "确定"}
+                {dialog === "leave" ? "Save and Return" : "OK"}
               </Button>
             )}
           </DialogActions>

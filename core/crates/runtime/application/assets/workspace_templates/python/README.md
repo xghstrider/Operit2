@@ -1,59 +1,59 @@
-# Operit Python 项目
+# Operit Python Project
 
-这是一个使用 Operit 创建的 Python 项目。
+This is a Python project created with Operit.
 
-## 快速开始（推荐使用虚拟环境）
+## Quick Start (virtual environment recommended)
 
-### 1. 创建并激活虚拟环境
+### 1. Create and activate a virtual environment
 ```bash
-# 创建虚拟环境
-点击 "创建虚拟环境" 按钮
+# Create the virtual environment
+Click the "Create Virtual Environment" button
 
-# 激活虚拟环境（每次打开终端后都需要激活）
-点击 "激活虚拟环境" 按钮
+# Activate the virtual environment (you need to activate it every time you open a terminal)
+Click the "Activate Virtual Environment" button
 ```
 
-### 2. 安装依赖
+### 2. Install dependencies
 ```bash
-点击 "安装依赖" 按钮
+Click the "Install Dependencies" button
 ```
 
-### 3. 运行程序
+### 3. Run the program
 ```bash
-点击 "运行 main.py" 按钮
+Click the "Run main.py" button
 ```
 
-### 4. 启动Web服务器（可选）
+### 4. Start the web server (optional)
 ```bash
-点击 "启动 HTTP 服务器" 按钮
-然后点击 "浏览器预览" 查看效果
+Click the "Start HTTP Server" button
+Then click "Browser Preview" to see the result
 ```
 
-## 项目结构
+## Project Structure
 
-- `main.py` - 主程序入口
-- `requirements.txt` - Python 依赖列表
-- `venv/` - 虚拟环境目录（创建后）
-- `.operit/config.json` - Operit 工作区配置
+- `main.py` - Main program entry point
+- `requirements.txt` - Python dependency list
+- `venv/` - Virtual environment directory (after creation)
+- `.operit/config.json` - Operit workspace configuration
 
-## 虚拟环境说明
+## About Virtual Environments
 
-虚拟环境的好处：
-- ✅ 隔离项目依赖
-- ✅ 避免包版本冲突
-- ✅ 便于项目迁移
+Benefits of a virtual environment:
+- ✅ Isolates project dependencies
+- ✅ Avoids package version conflicts
+- ✅ Makes project migration easier
 
-## 常用命令
+## Common Commands
 
-- `创建虚拟环境` - 首次使用时执行
-- `激活虚拟环境` - 每次使用前激活
-- `安装依赖` - 安装 requirements.txt 中的包
-- `查看已安装包` - 查看当前环境的包列表
+- `Create Virtual Environment` - run this on first use
+- `Activate Virtual Environment` - activate before each use
+- `Install Dependencies` - install the packages listed in requirements.txt
+- `List Installed Packages` - view the packages in the current environment
 
-## 提示
+## Tips
 
-- 推荐使用 Python 3.8+
-- 首次使用先创建并激活虚拟环境
-- 修改代码后重新运行查看效果
+- Python 3.8+ is recommended
+- Create and activate a virtual environment before first use
+- Re-run the program after changing code to see the effect
 
 Happy Coding! 🐍

@@ -403,8 +403,8 @@ mod tests {
     #[test]
     fn narrow_rows_keep_actions_inside_their_lines() {
         let node: Node = serde_json::from_value(serde_json::json!({"type":"Row","children":[
-            {"type":"Button","props":{"text":"确认","onClick":{"__actionId":"yes"}}},
-            {"type":"Button","props":{"text":"取消","onClick":{"__actionId":"no"}}}
+            {"type":"Button","props":{"text":"Confirm","onClick":{"__actionId":"yes"}}},
+            {"type":"Button","props":{"text":"Cancel","onClick":{"__actionId":"no"}}}
         ]}))
         .unwrap();
         let surface = render(&node, 6, TuiLanguage::Chinese.text()).unwrap();

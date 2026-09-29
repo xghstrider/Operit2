@@ -80,17 +80,17 @@ class _MessageCopyPreviewSheetState extends State<MessageCopyPreviewSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text('复制消息', style: theme.textTheme.titleMedium),
+            Text('Copy Message', style: theme.textTheme.titleMedium),
             const SizedBox(height: 12),
             SegmentedButton<MessageCopyFormat>(
               segments: const <ButtonSegment<MessageCopyFormat>>[
                 ButtonSegment<MessageCopyFormat>(
                   value: MessageCopyFormat.plainText,
-                  label: Text('纯文本'),
+                  label: Text('Plain text'),
                 ),
                 ButtonSegment<MessageCopyFormat>(
                   value: MessageCopyFormat.markdownSource,
-                  label: Text('Markdown 源码'),
+                  label: Text('Markdown source'),
                 ),
               ],
               selected: <MessageCopyFormat>{_format},
@@ -119,7 +119,7 @@ class _MessageCopyPreviewSheetState extends State<MessageCopyPreviewSheet> {
                         if (snapshot.hasError) {
                           return Center(
                             child: Text(
-                              '纯文本转换失败：${snapshot.error}',
+                              'Plain text conversion failed: ${snapshot.error}',
                               style: TextStyle(color: theme.colorScheme.error),
                             ),
                           );
@@ -139,8 +139,8 @@ class _MessageCopyPreviewSheetState extends State<MessageCopyPreviewSheet> {
                 icon: const Icon(Icons.content_copy, size: 18),
                 label: Text(
                   _format == MessageCopyFormat.plainText
-                      ? '复制纯文本'
-                      : '复制 Markdown 源码',
+                      ? 'Copy plain text'
+                      : 'Copy Markdown source',
                 ),
               ),
             ),
@@ -159,7 +159,7 @@ class _MessageCopyPreviewSheetState extends State<MessageCopyPreviewSheet> {
         return;
       }
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-        SnackBar(content: Text('复制失败：${error.message ?? error.code}')),
+        SnackBar(content: Text('Copy failed: ${error.message ?? error.code}')),
       );
       return;
     }
@@ -168,7 +168,7 @@ class _MessageCopyPreviewSheetState extends State<MessageCopyPreviewSheet> {
     }
     ScaffoldMessenger.maybeOf(
       context,
-    )?.showSnackBar(const SnackBar(content: Text('消息已复制到剪贴板')));
+    )?.showSnackBar(const SnackBar(content: Text('Message copied to clipboard')));
   }
 }
 

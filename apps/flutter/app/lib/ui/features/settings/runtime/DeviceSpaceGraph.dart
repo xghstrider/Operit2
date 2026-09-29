@@ -962,38 +962,38 @@ class _GraphCopy {
     : zh = Localizations.localeOf(context).languageCode == 'zh';
 
   final bool zh;
-  String get relationships => zh ? '设备关系' : 'Device relationships';
-  String get topology => zh ? '连接拓扑' : 'Connection topology';
-  String get showTopology => zh ? '点击展开拓扑' : 'Explore connections';
-  String get showRelationships => zh ? '点击回到关系' : 'Back to relationships';
-  String get deviceDetails => zh ? '查看设备与连接详情' : 'View device and connections';
+  String get relationships => zh ? 'Device Relationships' : 'Device relationships';
+  String get topology => zh ? 'Connection Topology' : 'Connection topology';
+  String get showTopology => zh ? 'Tap to Expand Topology' : 'Explore connections';
+  String get showRelationships => zh ? 'Tap to Return to Relationships' : 'Back to relationships';
+  String get deviceDetails => zh ? 'View Device and Connection Details' : 'View device and connections';
   String get relationshipsHint => zh
-      ? '悬停或点击查看设备 · 点击中心展开拓扑'
+      ? 'Hover or tap to view devices · Tap the center to expand the topology'
       : 'Hover or select a device · Select the center to explore connections';
   String get topologyHint => zh
-      ? '实线在线 · 虚线未连通 · 点击当前设备返回'
+      ? 'Solid lines: online · Dashed lines: not connected · Tap your current device to return'
       : 'Solid: online · Dashed: not connected · Select your device to return';
   String get empty => zh
-      ? '空间已就绪，连接另一台设备，让协作从这里开始'
+      ? 'The space is ready. Connect another device and let collaboration start here'
       : 'Your space is ready. Connect another device to get started.';
-  String deviceCount(int count) => zh ? '$count 台设备' : '$count devices';
+  String deviceCount(int count) => zh ? '$count devices' : '$count devices';
   String get compactRelationshipsHint => zh
-      ? '点击查看设备 · 点击中心展开拓扑'
+      ? 'Tap to view devices · Tap the center to expand the topology'
       : 'Tap a device for details · Tap the center for connections';
   String get compactTopologyHint =>
-      zh ? '实线在线 · 点击当前设备返回' : 'Solid: online · Select your device to return';
-  String get noConnections => zh ? '尚无连接记录' : 'No recorded connections';
+      zh ? 'Solid lines: online · Tap your current device to return' : 'Solid: online · Select your device to return';
+  String get noConnections => zh ? 'No connection records yet' : 'No recorded connections';
 
   String connectionStatus(
     generated.RuntimeDeviceSpaceConnectionStatus status,
   ) => switch (status) {
-    generated.RuntimeDeviceSpaceConnectionStatus.online => zh ? '在线' : 'Online',
+    generated.RuntimeDeviceSpaceConnectionStatus.online => zh ? 'Online' : 'Online',
     generated.RuntimeDeviceSpaceConnectionStatus.offline =>
-      zh ? '离线' : 'Offline',
+      zh ? 'Offline' : 'Offline',
     generated.RuntimeDeviceSpaceConnectionStatus.versionMismatch =>
-      zh ? 'Core 版本不匹配' : 'Core version mismatch',
+      zh ? 'Core version mismatch' : 'Core version mismatch',
     generated.RuntimeDeviceSpaceConnectionStatus.unknown =>
-      zh ? '状态未知' : 'Unknown',
+      zh ? 'Unknown status' : 'Unknown',
   };
 }
 

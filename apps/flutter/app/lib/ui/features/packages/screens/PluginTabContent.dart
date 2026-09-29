@@ -63,10 +63,10 @@ class PluginTabContent extends StatelessWidget {
                 sliver: SliverToBoxAdapter(
                   child: EmptyState(
                     icon: Icons.extension_off_outlined,
-                    title: '没有插件',
+                    title: 'No Plugins',
                     message: isSearchActive
-                        ? '没有匹配的插件。'
-                        : '当前没有可显示的 ToolPkg 插件。',
+                        ? 'No matching plugins.'
+                        : 'No ToolPkg plugins to display right now.',
                     scrollable: false,
                   ),
                 ),
@@ -75,7 +75,7 @@ class PluginTabContent extends StatelessWidget {
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                 sliver: const SliverToBoxAdapter(
-                  child: _PluginSectionHeader(title: '当前插件'),
+                  child: _PluginSectionHeader(title: 'Current Plugins'),
                 ),
               ),
               if (plugins.isEmpty && loadIssues.isEmpty)
@@ -83,7 +83,7 @@ class PluginTabContent extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                   sliver: SliverToBoxAdapter(
                     child: _PluginSectionEmpty(
-                      message: isSearchActive ? '没有匹配的当前插件。' : '当前没有可显示的插件。',
+                      message: isSearchActive ? 'No matching current plugins.' : 'No plugins to display right now.',
                     ),
                   ),
                 )
@@ -105,9 +105,9 @@ class PluginTabContent extends StatelessWidget {
                         metadata: <String>[
                           plugin.packageName,
                           'v${plugin.version}',
-                          '${plugin.subpackages.length} 子包',
+                          '${plugin.subpackages.length} subpackages',
                           if (plugin.dependencyIssues.isNotEmpty)
-                            '${plugin.dependencyIssues.length} 个前置插件问题',
+                            '${plugin.dependencyIssues.length} dependency plugin issues',
                         ],
                         hasError: plugin.dependencyIssues.isNotEmpty,
                         errorMessage: issueMessage,
@@ -124,8 +124,8 @@ class PluginTabContent extends StatelessWidget {
                                       enabledPluginNames.contains(
                                         plugin.packageName,
                                       )
-                                      ? '打开'
-                                      : '启用后打开',
+                                      ? 'Open'
+                                      : 'Open after enabling',
                                   onPressed:
                                       enabledPluginNames.contains(
                                         plugin.packageName,
@@ -155,8 +155,8 @@ class PluginTabContent extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                   sliver: const SliverToBoxAdapter(
                     child: _PluginSectionHeader(
-                      title: '加载失败',
-                      subtitle: '这些插件未能完成解析或注册，点击卡片查看完整错误。',
+                      title: 'Load Failed',
+                      subtitle: 'These plugins failed to parse or register. Tap a card to view the full error.',
                     ),
                   ),
                 ),
@@ -196,8 +196,8 @@ class PluginTabContent extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                   sliver: const SliverToBoxAdapter(
                     child: _PluginSectionHeader(
-                      title: '更多插件',
-                      subtitle: 'App 自带的官方额外插件，加载后进入当前插件。',
+                      title: 'More Plugins',
+                      subtitle: 'Official extra plugins bundled with the app. They are added to current plugins once loaded.',
                     ),
                   ),
                 ),
@@ -207,7 +207,7 @@ class PluginTabContent extends StatelessWidget {
                     itemCount: morePlugins.length,
                     itemBuilder: (context, index) {
                       final plugin = morePlugins[index];
-                      final kindLabel = plugin.isToolPkg ? 'ToolPkg' : '脚本包';
+                      final kindLabel = plugin.isToolPkg ? 'ToolPkg' : 'Script package';
                       return PackageListItem(
                         key: ValueKey<String>(
                           'bundled-plugin:${plugin.packageName}',
@@ -222,10 +222,10 @@ class PluginTabContent extends StatelessWidget {
                           kindLabel,
                           if (plugin.version.trim().isNotEmpty)
                             'v${plugin.version}',
-                          '${plugin.toolCount} 工具',
+                          '${plugin.toolCount} tools',
                           if (plugin.subpackageCount > 0)
-                            '${plugin.subpackageCount} 子包',
-                          '官方额外',
+                            '${plugin.subpackageCount} subpackages',
+                          'Official extra',
                         ],
                         enabled: false,
                         onEnabledChanged: (_) {},
@@ -234,7 +234,7 @@ class PluginTabContent extends StatelessWidget {
                           FilledButton.tonalIcon(
                             onPressed: () => onLoadMorePlugin(plugin),
                             icon: const Icon(Icons.add, size: 18),
-                            label: const Text('加载'),
+                            label: const Text('Load'),
                             style: FilledButton.styleFrom(
                               visualDensity: VisualDensity.compact,
                               padding: const EdgeInsets.symmetric(
@@ -268,14 +268,14 @@ String _pluginDependencyIssueMessage(
 ) {
   final issues = plugin.dependencyIssues;
   if (issues.length > 1) {
-    return '${issues.length} 个前置插件不可用';
+    return '${issues.length} dependency plugins unavailable';
   }
   final issue = issues.single;
   return switch (issue.code) {
-    'missing' => '缺少前置插件：${issue.id}',
-    'disabled' => '前置插件未启用：${issue.id}',
-    'version_incompatible' => '前置插件版本不满足：${issue.id}',
-    'load_order' => '前置插件加载顺序错误：${issue.id}',
+    'missing' => 'Missing dependency plugin: ${issue.id}',
+    'disabled' => 'Dependency plugin not enabled: ${issue.id}',
+    'version_incompatible' => 'Dependency plugin version not satisfied: ${issue.id}',
+    'load_order' => 'Dependency plugin load order error: ${issue.id}',
     _ => throw StateError(
       'Unsupported ToolPkg dependency issue code: ${issue.code}',
     ),

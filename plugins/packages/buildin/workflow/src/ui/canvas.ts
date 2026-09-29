@@ -134,7 +134,7 @@ export function graphCanvas(ctx: ComposeDslContext, workflow: Workflow, actions:
     );
     centered(style.label, x + 66 * v.zoom, y + 7 * v.zoom, 10 * v.zoom, 44 * v.zoom, style.color);
     centered(node.name, x + width / 2, y + 28 * v.zoom, 13 * v.zoom, width - 16 * v.zoom, "#212121", 2);
-    if (result) centered({ pending: "等待", running: "执行中", success: "成功", failed: "失败", skipped: "跳过" }[result.status], x + width / 2, y + 63 * v.zoom, 9 * v.zoom, width - 16 * v.zoom, border);
+    if (result) centered({ pending: "Pending", running: "Running", success: "Success", failed: "Failed", skipped: "Skipped" }[result.status], x + width / 2, y + 63 * v.zoom, 9 * v.zoom, width - 16 * v.zoom, border);
     else if (node.description) centered(node.description, x + width / 2, y + 63 * v.zoom, 9 * v.zoom, width - 16 * v.zoom, "#757575");
   }
   return ctx.UI.Canvas({ key: "workflow-canvas", fillMaxSize: true, background: "#F8F9FA",

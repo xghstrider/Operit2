@@ -30,19 +30,19 @@ function date(value: number): string {
 /** Describes the elapsed time since the most recent execution. */
 function relative(value: number): string {
   const minutes = Math.floor((Date.now() - value) / 60000);
-  if (minutes < 1) return "刚刚";
-  if (minutes < 60) return minutes + " 分钟前";
-  if (minutes < 1440) return Math.floor(minutes / 60) + " 小时前";
-  return Math.floor(minutes / 1440) + " 天前";
+  if (minutes < 1) return "Just now";
+  if (minutes < 60) return minutes + " minutes ago";
+  if (minutes < 1440) return Math.floor(minutes / 60) + " hours ago";
+  return Math.floor(minutes / 1440) + " days ago";
 }
 
 /** Maps persisted run state to the original Material status presentation. */
 function status(run: Run["status"]): { text: string; color: string; icon: string } {
   return {
-    SUCCESS: { text: "执行成功", color: "tertiary", icon: "CheckCircle" },
-    FAILED: { text: "执行失败", color: "error", icon: "Error" },
-    RUNNING: { text: "正在执行", color: "primary", icon: "PlayCircle" },
-    CANCELLED: { text: "已取消", color: "onSurfaceVariant", icon: "Close" },
+    SUCCESS: { text: "Success", color: "tertiary", icon: "CheckCircle" },
+    FAILED: { text: "Failed", color: "error", icon: "Error" },
+    RUNNING: { text: "Running", color: "primary", icon: "PlayCircle" },
+    CANCELLED: { text: "Cancelled", color: "onSurfaceVariant", icon: "Close" },
   }[run];
 }
 
@@ -76,7 +76,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
   /** Resolves the selected workflow as an explicit precondition for editor actions. */
   function current(): Workflow {
     const workflow = live.current.workflow;
-    if (workflow === null) throw new Error("没有正在编辑的工作流");
+    if (workflow === null) throw new Error("No workflow is being edited");
     return workflow;
   }
 
@@ -93,7 +93,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
 
   /** Saves one completed edit, keeping the modal available when validation fails. */
   async function commit(workflow: Workflow): Promise<void> {
-    if (live.current.busy || live.current.saving) throw new Error("请等待当前操作完成");
+    if (live.current.busy || live.current.saving) throw new Error("Please wait for the current operation to complete");
     validateGraph(workflow, false);
     update({ saving: true });
     try { await request({ action: "save", workflow }); }
@@ -110,7 +110,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
   /** Opens the graph created by an operation that appends exactly one workflow. */
   function openCreated(snapshot: Snapshot): void {
     const workflow = snapshot.workflows[snapshot.workflows.length - 1];
-    if (workflow === undefined) throw new Error("创建结果缺少工作流");
+    if (workflow === undefined) throw new Error("The creation result is missing a workflow");
     open(workflow);
   }
 
@@ -152,7 +152,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
   /** Persists an accepted node form; cancelling never inserts an unfinished node. */
   async function saveNode(): Promise<void> {
     const node = live.current.nodeDraft;
-    if (node === null) throw new Error("节点草稿不存在");
+    if (node === null) throw new Error("Node draft does not exist");
     const workflow = current();
     await commit({ ...workflow, nodes: live.current.adding ? [...workflow.nodes, node] : workflow.nodes.map(item => item.id === node.id ? node : item) });
     fit();
@@ -166,7 +166,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
     try {
       const snapshot = await request({ action: "run", id: workflow.id, triggerId: null, extras: {} });
       const runs = snapshot.runs.filter(item => item.workflowId === workflow.id).sort((a, b) => b.startedAt - a.startedAt);
-      if (runs.length === 0) throw new Error("执行完成但没有返回执行记录");
+      if (runs.length === 0) throw new Error("Execution finished but no run record was returned");
       update({ latest: runs[0], modal: "result" });
     } finally { update({ busy: false }); }
   }
@@ -175,7 +175,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
   async function removeNode(): Promise<void> {
     const workflow = current(), nodeId = live.current.selected;
     const dependents = workflow.nodes.filter(node => node.id !== nodeId && values(node).some(value => "nodeId" in value && value.nodeId === nodeId));
-    if (dependents.length) throw new Error("先修改这些节点的参数引用：" + dependents.map(node => node.name).join("、"));
+    if (dependents.length) throw new Error("First update the parameter references of these nodes: " + dependents.map(node => node.name).join(", "));
     await commit({ ...workflow, nodes: workflow.nodes.filter(node => node.id !== nodeId),
       connections: workflow.connections.filter(edge => edge.sourceNodeId !== nodeId && edge.targetNodeId !== nodeId) });
     update({ selected: null, fitted: false });
@@ -238,7 +238,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
     }, UI.Column({ padding: 18, spacing: 12, fillMaxWidth: true }, [
       UI.Row({ fillMaxWidth: true, verticalAlignment: "center", spacing: 8 }, [
         UI.Text({ text: workflow.name, style: "titleMedium", fontWeight: "medium", maxLines: 1, overflow: "ellipsis", weight: 1 }),
-        ...(!workflow.enabled ? [UI.Text({ text: "已禁用", fontSize: 10, color: "error", paddingHorizontal: 6, paddingVertical: 2,
+        ...(!workflow.enabled ? [UI.Text({ text: "Disabled", fontSize: 10, color: "error", paddingHorizontal: 6, paddingVertical: 2,
           modifier: ctx.Modifier.background(ctx.MaterialTheme.colorScheme.errorContainer.copy({ alpha: 0.5 }), { cornerRadius: 4 }) })] : []),
         state.selectionMode
           ? UI.Checkbox({ checked: selected, onCheckedChange: () => mark(workflow) })
@@ -250,7 +250,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
       ...executionStatus(workflow),
       UI.Row({ fillMaxWidth: true, spacing: 4, verticalAlignment: "center" }, [
         UI.Text({ text: String(workflow.nodes.length), style: "labelMedium", fontWeight: "semibold", color: "primary" }),
-        UI.Text({ text: "节点", style: "labelSmall", color: "onSurfaceVariant" }),
+        UI.Text({ text: "Nodes", style: "labelSmall", color: "onSurfaceVariant" }),
         ...(workflow.totalExecutions > 0 ? [UI.Icon({ name: "PlayCircle", size: 14, tint: "onSurfaceVariant", paddingStart: 8 }),
           UI.Text({ text: String(workflow.totalExecutions), style: "labelSmall", color: "onSurfaceVariant" })] : []),
         UI.Box({ weight: 1 }),
@@ -275,22 +275,22 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
   /** Renders the centered empty state or responsive scrollable card rows. */
   function listView(): ComposeNode {
     if (!state.ready) return UI.Box({ fillMaxSize: true, contentAlignment: "center" },
-      state.error ? button("重新加载", initialize) : UI.CircularProgressIndicator());
+      state.error ? button("Reload", initialize) : UI.CircularProgressIndicator());
     if (state.snapshot.workflows.length === 0) return UI.Box({ fillMaxSize: true, contentAlignment: "center", padding: 24 },
       UI.Column({ horizontalAlignment: "center", spacing: 8 }, [
         UI.Box({ width: 72, height: 72, contentAlignment: "center",
           modifier: ctx.Modifier.background(ctx.MaterialTheme.colorScheme.primaryContainer.copy({ alpha: 0.3 }), { cornerRadius: 36 }) }, UI.Text({ text: "⚡", fontSize: 45 })),
         UI.Spacer({ height: 16 }),
-        UI.Text({ text: "开始创建工作流", style: "headlineSmall", fontWeight: "semibold" }),
-        UI.Text({ text: "自动化你的任务流程", style: "bodyMedium", color: "onSurfaceVariant" }),
+        UI.Text({ text: "Start Creating a Workflow", style: "headlineSmall", fontWeight: "semibold" }),
+        UI.Text({ text: "Automate your task workflows", style: "bodyMedium", color: "onSurfaceVariant" }),
         UI.Spacer({ height: 24 }),
-        UI.FilledTonalButton({ text: "＋  新建工作流", height: 48, onClick: () => update({ modal: "create", name: "", description: "" }) }),
+        UI.FilledTonalButton({ text: "+  New Workflow", height: 48, onClick: () => update({ modal: "create", name: "", description: "" }) }),
       ]));
     return UI.LazyColumn({ fillMaxSize: true, padding: 20, spacing: 12 }, [
       ...(state.selectionMode ? [UI.Card({ fillMaxWidth: true, elevation: 0, containerColor: "surfaceVariant" }, UI.Row({ padding: 12, spacing: 4, verticalAlignment: "center" }, [
-        UI.Text({ text: "已选择 " + state.marked.length + " / " + state.snapshot.workflows.length, weight: 1, style: "bodyMedium" }),
-        button("全选", () => update({ marked: state.snapshot.workflows.map(item => item.id) })),
-        button("清空", () => update({ marked: [] })),
+        UI.Text({ text: "Selected " + state.marked.length + " / " + state.snapshot.workflows.length, weight: 1, style: "bodyMedium" }),
+        button("Select All", () => update({ marked: state.snapshot.workflows.map(item => item.id) })),
+        button("Clear", () => update({ marked: [] })),
       ]))] : []),
       ...cardRows(),
       UI.Spacer({ height: 72 }),
@@ -301,17 +301,17 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
   function editor(workflow: Workflow): ComposeNode {
     return UI.Column({ fillMaxSize: true }, [
       UI.Row({ fillMaxWidth: true, spacing: 4, verticalAlignment: "center" }, [
-        iconButton("ArrowBack", "返回工作流列表", () => update({ workflow: null, menu: false, modal: "" }), !state.busy && !state.saving),
-        UI.TextButton({ key: "返回列表按钮", text: "返回工作流列表", enabled: !state.busy && !state.saving,
+        iconButton("ArrowBack", "Back to Workflow List", () => update({ workflow: null, menu: false, modal: "" }), !state.busy && !state.saving),
+        UI.TextButton({ key: "Back to List Button", text: "Back to Workflow List", enabled: !state.busy && !state.saving,
           onClick: () => update({ workflow: null, menu: false, modal: "" }) }),
         UI.Text({ text: workflow.name, style: "titleMedium", weight: 1, maxLines: 1, overflow: "ellipsis" }),
       ]),
       UI.Box({ weight: 1, fillMaxWidth: true, paddingHorizontal: 16, paddingVertical: 8 }, workflow.nodes.length === 0
         ? UI.Box({ fillMaxSize: true, background: "surfaceVariant", contentAlignment: "center" }, UI.Column({ padding: 24, spacing: 8, horizontalAlignment: "center" }, [
           UI.Text({ text: "📋", fontSize: 45 }),
-          UI.Text({ text: "暂无节点", style: "bodyLarge", color: "onSurfaceVariant" }),
-          UI.Text({ text: "点击右下角 + 按钮添加节点", style: "bodyMedium", color: "onSurfaceVariant" }),
-          button("返回工作流列表", () => update({ workflow: null, menu: false, modal: "" }), !state.busy),
+          UI.Text({ text: "No nodes yet", style: "bodyLarge", color: "onSurfaceVariant" }),
+          UI.Text({ text: "Tap the + button in the bottom-right corner to add a node", style: "bodyMedium", color: "onSurfaceVariant" }),
+          button("Back to Workflow List", () => update({ workflow: null, menu: false, modal: "" }), !state.busy),
         ]))
         : graphCanvas(ctx, workflow, {
           viewport: state.viewport, run: state.latest, dragging: drag.current.nodeId,
@@ -352,24 +352,24 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
     const actions: MenuAction[] = [];
     if (state.workflow === null) {
       if (state.selectionMode) {
-        if (state.marked.length) actions.push({ label: "删除所选 (" + state.marked.length + ")", icon: "Delete", danger: true, action: () => update({ modal: "delete" }) });
-        actions.push({ label: "退出多选", icon: "CheckCircle", action: () => update({ selectionMode: false, marked: [] }) });
+        if (state.marked.length) actions.push({ label: "Delete Selected (" + state.marked.length + ")", icon: "Delete", danger: true, action: () => update({ modal: "delete" }) });
+        actions.push({ label: "Exit Multi-Select", icon: "CheckCircle", action: () => update({ selectionMode: false, marked: [] }) });
       } else actions.push(
-        { label: "创建空白工作流", icon: "Add", action: () => update({ modal: "create", name: "", description: "" }) },
-        { label: "从模板创建", icon: "PlayCircle", action: () => update({ modal: "templates" }) },
-        { label: "多选", icon: "CheckCircle", action: () => update({ selectionMode: true, marked: [] }) },
-        { label: "导入工作流", icon: "FileUpload", action: () => update({ modal: "import", text: "" }) },
+        { label: "Create Blank Workflow", icon: "Add", action: () => update({ modal: "create", name: "", description: "" }) },
+        { label: "Create from Template", icon: "PlayCircle", action: () => update({ modal: "templates" }) },
+        { label: "Multi-Select", icon: "CheckCircle", action: () => update({ selectionMode: true, marked: [] }) },
+        { label: "Import Workflow", icon: "FileUpload", action: () => update({ modal: "import", text: "" }) },
       );
     } else {
-      if (state.workflow.enabled || state.busy) actions.push({ label: state.busy ? "取消执行" : "触发工作流", icon: state.busy ? "Close" : "PlayArrow",
+      if (state.workflow.enabled || state.busy) actions.push({ label: state.busy ? "Cancel Execution" : "Trigger Workflow", icon: state.busy ? "Close" : "PlayArrow",
         action: state.busy ? async () => { await request({ action: "cancel", id: current().id }); } : run });
       actions.push(
-        { label: "查看日志", icon: "Call", action: async () => { await request({ action: "list" }); update({ modal: "logs", logId: null, logNode: null }); } },
-        { label: "添加节点", icon: "Add", enabled: !state.busy, action: () => showNode(null) },
-        { label: "编辑工作流", icon: "Edit", enabled: !state.busy, action: () => {
+        { label: "View Logs", icon: "Call", action: async () => { await request({ action: "list" }); update({ modal: "logs", logId: null, logNode: null }); } },
+        { label: "Add Node", icon: "Add", enabled: !state.busy, action: () => showNode(null) },
+        { label: "Edit Workflow", icon: "Edit", enabled: !state.busy, action: () => {
           const workflow = current(); update({ modal: "meta", name: workflow.name, description: workflow.description, enabled: workflow.enabled });
         } },
-        { label: "删除工作流", icon: "Delete", enabled: !state.busy, danger: true, action: () => update({ modal: "delete" }) },
+        { label: "Delete Workflow", icon: "Delete", enabled: !state.busy, danger: true, action: () => update({ modal: "delete" }) },
       );
     }
     return UI.Column({ key: "workflow-speed-dial", modifier: ctx.Modifier.align("bottomEnd").heightIn(0, 440),
@@ -396,24 +396,24 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
     const outgoing = workflow.connections.filter(edge => edge.sourceNodeId === source.id);
     const targets = workflow.nodes.filter(node => node.id !== source.id && !outgoing.some(edge => edge.targetNodeId === node.id));
     return [
-      UI.Text({ text: "源节点：" + source.name, style: "bodyMedium", color: "onSurfaceVariant" }),
-      ...(outgoing.length ? [UI.Text({ text: "已有连接", style: "titleSmall", color: "primary" })] : []),
+      UI.Text({ text: "Source node: " + source.name, style: "bodyMedium", color: "onSurfaceVariant" }),
+      ...(outgoing.length ? [UI.Text({ text: "Existing Connections", style: "titleSmall", color: "primary" })] : []),
       ...outgoing.map(edge => {
         const target = workflow.nodes.find(node => node.id === edge.targetNodeId)!;
         return UI.Card({ fillMaxWidth: true, elevation: 0, containerColor: "errorContainer", containerAlpha: 0.3 }, UI.Row({ padding: 12, verticalAlignment: "center" }, [
           UI.Column({ weight: 1, spacing: 4 }, [UI.Text({ text: target.name }), UI.Text({ text: "→ " + (edge.condition === null
-            ? source.type === "condition" || source.type === "logic" ? "默认 true 分支" : "无条件" : edge.condition), style: "bodySmall", color: "onSurfaceVariant" })]),
-          iconButton("Edit", "编辑连接条件", () => update({ modal: "condition", edgeId: edge.id, text: edge.condition === null ? "" : edge.condition,
+            ? source.type === "condition" || source.type === "logic" ? "Default (true branch)" : "Unconditional" : edge.condition), style: "bodySmall", color: "onSurfaceVariant" })]),
+          iconButton("Edit", "Edit Connection Condition", () => update({ modal: "condition", edgeId: edge.id, text: edge.condition === null ? "" : edge.condition,
             conditionMode: edge.condition === null || edge.condition === "" ? "default" : edge.condition === "false" ? "false" : "custom" })),
-          iconButton("Delete", "删除连接", async () => { await commit({ ...current(), connections: current().connections.filter(item => item.id !== edge.id) }); }, !state.busy),
+          iconButton("Delete", "Delete Connection", async () => { await commit({ ...current(), connections: current().connections.filter(item => item.id !== edge.id) }); }, !state.busy),
         ]));
       }),
       ...(outgoing.length ? [UI.HorizontalDivider()] : []),
-      UI.Text({ text: targets.length ? "选择目标节点" : "没有可连接的节点", style: "titleSmall", color: "primary" }),
+      UI.Text({ text: targets.length ? "Select Target Node" : "No Connectable Nodes", style: "titleSmall", color: "primary" }),
       ...targets.map(target => UI.Card({ fillMaxWidth: true, elevation: 0, containerColor: "surfaceVariant" }, UI.Row({ padding: 12, spacing: 8, verticalAlignment: "center" }, [
         UI.Text({ text: target.type === "trigger" ? "🎯" : "⚙️" }),
         UI.Column({ weight: 1, spacing: 4 }, [UI.Text({ text: target.name }), ...(target.description ? [UI.Text({ text: target.description, style: "bodySmall", maxLines: 1 })] : [])]),
-        iconButton("Add", "连接到 " + target.name, async () => {
+        iconButton("Add", "Connect to " + target.name, async () => {
           const next = copy(current());
           next.connections.push({ id: id("edge"), sourceNodeId: source.id, targetNodeId: target.id, condition: null });
           await commit(next);
@@ -430,12 +430,12 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
       if (index >= 0) runs[index] = state.latest; else runs.unshift(state.latest);
     }
     const selected = state.logId === null ? runs[0] : runs.find(run => run.id === state.logId);
-    if (selected === undefined) return [UI.Text({ text: "暂无执行日志" })];
+    if (selected === undefined) return [UI.Text({ text: "No execution logs yet" })];
     return [
-      ...(runs.length > 1 ? [choose(ctx, "run-history", "执行记录", selected.id, runs.map(run => ({ value: run.id, label: date(run.startedAt) + " · " + status(run.status).text })), logId => update({ logId }))] : []),
+      ...(runs.length > 1 ? [choose(ctx, "run-history", "Run History", selected.id, runs.map(run => ({ value: run.id, label: date(run.startedAt) + " · " + status(run.status).text })), logId => update({ logId }))] : []),
       UI.Text({ text: status(selected.status).text, style: "titleMedium", color: status(selected.status).color }),
-      UI.Text({ text: "开始时间：" + date(selected.startedAt), style: "bodySmall" }),
-      ...(selected.finishedAt === null ? [] : [UI.Text({ text: "耗时：" + (selected.finishedAt - selected.startedAt) + " ms", style: "bodySmall" })]),
+      UI.Text({ text: "Start time: " + date(selected.startedAt), style: "bodySmall" }),
+      ...(selected.finishedAt === null ? [] : [UI.Text({ text: "Duration: " + (selected.finishedAt - selected.startedAt) + " ms", style: "bodySmall" })]),
       UI.HorizontalDivider(),
       ...Object.entries(selected.nodes).filter(([nodeId]) => state.logNode === null || nodeId === state.logNode).map(([nodeId, result]) => {
         const node = workflow.nodes.find(item => item.id === nodeId);
@@ -453,20 +453,20 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
   function modal(): ComposeNode[] {
     const workflow = state.workflow;
     const node = workflow === null ? undefined : workflow.nodes.find(item => item.id === state.selected);
-    const cancel = button("取消", dismiss);
-    const close = button("关闭", dismiss);
+    const cancel = button("Cancel", dismiss);
+    const close = button("Close", dismiss);
     switch (state.modal) {
       case "": return [];
-      case "create": return [dialog("create", "创建工作流", [
-        field(ctx, "create-name", "工作流名称", state.name, name => update({ name })),
-        field(ctx, "create-description", "工作流描述", state.description, description => update({ description }), true),
-      ], [close, button("创建", async () => openCreated(await request({ action: "create", name: live.current.name, description: live.current.description })), state.name.trim().length > 0)], 212)];
+      case "create": return [dialog("create", "Create Workflow", [
+        field(ctx, "create-name", "Workflow Name", state.name, name => update({ name })),
+        field(ctx, "create-description", "Workflow Description", state.description, description => update({ description }), true),
+      ], [close, button("Create", async () => openCreated(await request({ action: "create", name: live.current.name, description: live.current.description })), state.name.trim().length > 0)], 212)];
       case "templates": {
         const options = [
           ...templates().map(template => ({ key: `builtin:${template.id}`, name: template.name, description: template.description, builtin: template })),
           ...state.snapshot.manifestTemplates.map(template => ({ key: `${template.sourceToolPkgId}:${template.templateId}`, name: template.displayName, description: template.description, manifest: template })),
         ];
-        return [dialog("templates", "选择模板", options.map(option => UI.Card({
+        return [dialog("templates", "Select Template", options.map(option => UI.Card({
           key: option.key,
           fillMaxWidth: true, elevation: 0, containerColor: "surfaceVariant",
           modifier: ctx.Modifier.clickable(() => perform(async () => {
@@ -477,102 +477,102 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
           })),
         }, UI.Column({ padding: 16, spacing: 8 }, [UI.Text({ text: option.name, style: "titleMedium" }), UI.Text({ text: option.description, style: "bodySmall", color: "onSurfaceVariant" })]))), [close], 320)];
       }
-      case "meta": return [dialog("meta", "编辑工作流", [
-        field(ctx, "workflow-name", "工作流名称", state.name, name => update({ name })),
-        field(ctx, "workflow-description", "工作流描述", state.description, description => update({ description }), true),
-        UI.Row({ fillMaxWidth: true, verticalAlignment: "center" }, [UI.Text({ text: "启用工作流", weight: 1 }), UI.Switch({ checked: state.enabled, onCheckedChange: (enabled: boolean) => update({ enabled }) })]),
+      case "meta": return [dialog("meta", "Edit Workflow", [
+        field(ctx, "workflow-name", "Workflow Name", state.name, name => update({ name })),
+        field(ctx, "workflow-description", "Workflow Description", state.description, description => update({ description }), true),
+        UI.Row({ fillMaxWidth: true, verticalAlignment: "center" }, [UI.Text({ text: "Enable Workflow", weight: 1 }), UI.Switch({ checked: state.enabled, onCheckedChange: (enabled: boolean) => update({ enabled }) })]),
         UI.FlowRow({ spacing: 8 }, [
-          button("导出 JSON", () => update({ modal: "export", text: JSON.stringify(current(), null, 2), path: "" })),
-          button("复制工作流", async () => { await request({ action: "copy", id: current().id }); await ctx.showToast("已复制工作流"); }),
+          button("Export JSON", () => update({ modal: "export", text: JSON.stringify(current(), null, 2), path: "" })),
+          button("Copy Workflow", async () => { await request({ action: "copy", id: current().id }); await ctx.showToast("Workflow copied"); }),
         ]),
-      ], [cancel, button("保存", async () => { await commit({ ...current(), name: live.current.name, description: live.current.description, enabled: live.current.enabled }); dismiss(); }, state.name.trim().length > 0 && !state.busy)], 340)];
+      ], [cancel, button("Save", async () => { await commit({ ...current(), name: live.current.name, description: live.current.description, enabled: live.current.enabled }); dismiss(); }, state.name.trim().length > 0 && !state.busy)], 340)];
       case "node": {
         const draft = state.nodeDraft;
-        if (draft === null || workflow === null) throw new Error("节点编辑上下文不存在");
-        const dialogs = [dialog("node:" + draft.id, state.adding ? "添加节点" : "编辑节点", [
-          ...(state.adding ? [choose(ctx, "node-type", "节点类型", draft.type, (Object.keys(STYLES) as NodeKind[]).map(value => ({ value, label: STYLES[value].label + "节点" })), value => {
+        if (draft === null || workflow === null) throw new Error("Node editing context does not exist");
+        const dialogs = [dialog("node:" + draft.id, state.adding ? "Add Node" : "Edit Node", [
+          ...(state.adding ? [choose(ctx, "node-type", "Node Type", draft.type, (Object.keys(STYLES) as NodeKind[]).map(value => ({ value, label: STYLES[value].label + " node" })), value => {
             const next = newNode(value as NodeKind);
             update({ nodeDraft: { ...next, id: draft.id, position: draft.position } });
           })] : []),
           ...nodeForm(ctx, workflow, draft, state.tools, nodeDraft => update({ nodeDraft }), () => update({ schedule: copy(live.current.nodeDraft) })),
-        ], [cancel, button(state.adding ? "添加" : "保存", saveNode, !state.busy)], 440)];
+        ], [cancel, button(state.adding ? "Add" : "Save", saveNode, !state.busy)], 440)];
         const schedule = state.schedule;
-        if (schedule !== null && schedule.type === "trigger") dialogs.push(dialog("schedule", "定时配置",
+        if (schedule !== null && schedule.type === "trigger") dialogs.push(dialog("schedule", "Schedule Configuration",
           scheduleForm(ctx, schedule, value => update({ schedule: value })), [
-            button("取消", () => update({ schedule: null })),
-            button("确认", () => update({ nodeDraft: live.current.schedule, schedule: null })),
+            button("Cancel", () => update({ schedule: null })),
+            button("Confirm", () => update({ nodeDraft: live.current.schedule, schedule: null })),
           ], 400, () => update({ schedule: null })));
         return dialogs;
       }
       case "nodeMenu": {
-        if (node === undefined) throw new Error("选中的节点不存在");
+        if (node === undefined) throw new Error("The selected node does not exist");
         return [dialog("node-menu", node.name, [
-          UI.TextButton({ text: "✎  编辑节点", fillMaxWidth: true, enabled: !state.busy, onClick: () => showNode(node) }),
-          UI.TextButton({ text: "☎  查看日志", fillMaxWidth: true, onClick: () => update({ modal: "logs", logNode: node.id, logId: null }) }),
-          UI.TextButton({ text: "↗  创建连接", fillMaxWidth: true, enabled: !state.busy, onClick: () => update({ modal: "connections" }) }),
-          UI.TextButton({ text: "删除节点", contentColor: "error", fillMaxWidth: true, enabled: !state.busy, onClick: () => update({ modal: "deleteNode" }) }),
+          UI.TextButton({ text: "✎  Edit Node", fillMaxWidth: true, enabled: !state.busy, onClick: () => showNode(node) }),
+          UI.TextButton({ text: "☎  View Logs", fillMaxWidth: true, onClick: () => update({ modal: "logs", logNode: node.id, logId: null }) }),
+          UI.TextButton({ text: "↗  Create Connection", fillMaxWidth: true, enabled: !state.busy, onClick: () => update({ modal: "connections" }) }),
+          UI.TextButton({ text: "Delete Node", contentColor: "error", fillMaxWidth: true, enabled: !state.busy, onClick: () => update({ modal: "deleteNode" }) }),
         ], [cancel], 236)];
       }
       case "connections":
-        if (workflow === null || node === undefined) throw new Error("连线编辑上下文不存在");
-        return [dialog("connections", "管理连接", connections(workflow, node), [close], 400)];
+        if (workflow === null || node === undefined) throw new Error("Connection editing context does not exist");
+        return [dialog("connections", "Manage Connections", connections(workflow, node), [close], 400)];
       case "condition": {
         const edge = current().connections.find(item => item.id === state.edgeId);
-        if (edge === undefined) throw new Error("连线不存在");
+        if (edge === undefined) throw new Error("Connection does not exist");
         const source = current().nodes.find(item => item.id === edge.sourceNodeId)!;
         const target = current().nodes.find(item => item.id === edge.targetNodeId)!;
         const choices: { value: State["conditionMode"]; label: string }[] = [
-          { value: "default", label: source.type === "condition" || source.type === "logic" ? "默认（true 分支）" : "默认（无条件）" },
-          { value: "false", label: "false 分支" }, { value: "custom", label: "自定义（正则表达式 / 成功或失败分支）" },
+          { value: "default", label: source.type === "condition" || source.type === "logic" ? "Default (true branch)" : "Default (unconditional)" },
+          { value: "false", label: "false branch" }, { value: "custom", label: "Custom (regex / success or failure branch)" },
         ];
-        return [dialog("condition", "编辑连接条件", [
+        return [dialog("condition", "Edit Connection Condition", [
           UI.Text({ text: source.name + " → " + target.name, style: "bodyMedium" }),
           ...choices.map(choice => UI.Row({ verticalAlignment: "center", spacing: 8 }, [
             UI.RadioButton({ selected: state.conditionMode === choice.value, onClick: () => update({ conditionMode: choice.value }) }),
             UI.Text({ text: choice.label, weight: 1 }),
           ])),
-          ...(state.conditionMode === "custom" ? [field(ctx, "edge-condition", "正则表达式 / on_success / on_error", state.text, text => update({ text }))] : []),
-        ], [button("取消", () => update({ modal: "connections" })), button("确认", async () => {
+          ...(state.conditionMode === "custom" ? [field(ctx, "edge-condition", "Regex / on_success / on_error", state.text, text => update({ text }))] : []),
+        ], [button("Cancel", () => update({ modal: "connections" })), button("Confirm", async () => {
           const condition = live.current.conditionMode === "default" ? null : live.current.conditionMode === "false" ? "false" : live.current.text.trim();
           await commit({ ...current(), connections: current().connections.map(item => item.id === edge.id ? { ...item, condition } : item) });
           update({ modal: "connections" });
         })], 260, () => update({ modal: "connections" }))];
       }
       case "logs":
-        if (workflow === null) throw new Error("工作流不存在");
-        return [dialog("logs", state.logNode === null ? "执行日志" : "节点执行日志", logs(workflow), [close], 420)];
-      case "result": return [dialog("result", "执行结果", [
-        UI.Text({ text: state.latest === null ? "执行已结束" : status(state.latest.status).text }),
-      ], [button("查看日志", () => update({ modal: "logs", logNode: null, logId: null })), button("确定", dismiss)], 64)];
-      case "deleteNode": return [dialog("delete-node", "确认删除", [
-        UI.Text({ text: "确定删除节点「" + (node === undefined ? "" : node.name) + "」及相关连接？" }),
-      ], [cancel, button("删除", removeNode, !state.busy, true)], 72)];
-      case "delete": return [dialog("delete-workflow", "确认删除", [
-        UI.Text({ text: workflow === null ? "确定删除所选的 " + state.marked.length + " 个工作流？" : "确定删除工作流「" + workflow.name + "」？" }),
-      ], [cancel, button("删除", async () => {
+        if (workflow === null) throw new Error("Workflow does not exist");
+        return [dialog("logs", state.logNode === null ? "Execution Logs" : "Node Execution Logs", logs(workflow), [close], 420)];
+      case "result": return [dialog("result", "Execution Result", [
+        UI.Text({ text: state.latest === null ? "Execution has finished" : status(state.latest.status).text }),
+      ], [button("View Logs", () => update({ modal: "logs", logNode: null, logId: null })), button("OK", dismiss)], 64)];
+      case "deleteNode": return [dialog("delete-node", "Confirm Deletion", [
+        UI.Text({ text: "Are you sure you want to delete node \"" + (node === undefined ? "" : node.name) + "\" and its related connections?" }),
+      ], [cancel, button("Delete", removeNode, !state.busy, true)], 72)];
+      case "delete": return [dialog("delete-workflow", "Confirm Deletion", [
+        UI.Text({ text: workflow === null ? "Are you sure you want to delete the selected " + state.marked.length + " workflows?" : "Are you sure you want to delete workflow \"" + workflow.name + "\"?" }),
+      ], [cancel, button("Delete", async () => {
         await request({ action: "delete", ids: workflow === null ? live.current.marked : [workflow.id] });
         update({ workflow: null, marked: [], selectionMode: false }); dismiss();
       }, !state.busy, true)], 72)];
-      case "import": return [dialog("import", "导入工作流", [
-        UI.Text({ text: "导入 Workflow JSON。导入后为停用状态，请检查节点配置后启用。", style: "bodySmall" }),
+      case "import": return [dialog("import", "Import Workflow", [
+        UI.Text({ text: "Import workflow JSON. Imported workflows are disabled by default; review the node configuration before enabling.", style: "bodySmall" }),
         field(ctx, "import-json", "Workflow JSON", state.text, text => update({ text }), true),
-        button("选择 JSON 文件", async () => {
+        button("Select JSON File", async () => {
           const picked = await ctx.openFilePicker({ picker: "document", mimeTypes: ["application/json"] });
           if (picked.cancelled) return;
-          if (picked.files.length !== 1) throw new Error("请选择一个工作流文件");
+          if (picked.files.length !== 1) throw new Error("Please select a workflow file");
           update({ text: (await Tools.Files.read(picked.files[0].path)).content });
         }),
-      ], [cancel, button("导入", async () => openCreated(await request({ action: "import", json: live.current.text })), state.text.trim().length > 0)], 310)];
-      case "export": return [dialog("export", "导出工作流", [
+      ], [cancel, button("Import", async () => openCreated(await request({ action: "import", json: live.current.text })), state.text.trim().length > 0)], 310)];
+      case "export": return [dialog("export", "Export Workflow", [
         UI.OutlinedTextField({ value: state.text, onValueChange: () => {}, readOnly: true, minLines: 5, maxLines: 10, fillMaxWidth: true }),
-        field(ctx, "export-path", "保存路径", state.path, path => update({ path })),
-      ], [close, button("导出", async () => {
-        await Tools.Files.create(live.current.path, live.current.text); await ctx.showToast("已导出工作流"); dismiss();
+        field(ctx, "export-path", "Save Path", state.path, path => update({ path })),
+      ], [close, button("Export", async () => {
+        await Tools.Files.create(live.current.path, live.current.text); await ctx.showToast("Workflow exported"); dismiss();
       }, state.path.trim().length > 0)], 340)];
     }
   }
 
-  return UI.Box({ fillMaxSize: true, key: "workflow-root", topBarTitle: UI.Text({ text: "工作流" }), onLoad: () => perform(initialize),
+  return UI.Box({ fillMaxSize: true, key: "workflow-root", topBarTitle: UI.Text({ text: "Workflow" }), onLoad: () => perform(initialize),
     modifier: ctx.Modifier.onSizeChanged(size => {
       if (size.width !== live.current.width) update({ width: size.width });
     }),
@@ -580,7 +580,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
     state.workflow === null ? listView() : editor(state.workflow),
     speedDial(),
     ...(state.error && state.modal === "" ? [UI.Row({ modifier: ctx.Modifier.align("topCenter"), background: "errorContainer", padding: 12, spacing: 8, fillMaxWidth: true }, [
-      UI.Text({ text: state.error, color: "onErrorContainer", weight: 1 }), button("关闭", () => update({ error: "" })),
+      UI.Text({ text: state.error, color: "onErrorContainer", weight: 1 }), button("Close", () => update({ error: "" })),
     ])] : []),
     ...modal(),
   ]);

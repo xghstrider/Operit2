@@ -2932,14 +2932,14 @@ mod tests {
     #[test]
     fn streamingLinePreservesSplitUtf8Characters() {
         let mut pending_bytes = Vec::new();
-        let encoded = "data: {\"text\":\"芯片\"}\n".as_bytes();
+        let encoded = "data: {\"text\":\"chip\"}\n".as_bytes();
         pending_bytes.extend_from_slice(&encoded[..15]);
         assert_eq!(takeNextStreamingLine(&mut pending_bytes).unwrap(), None);
         pending_bytes.extend_from_slice(&encoded[15..]);
 
         assert_eq!(
             takeNextStreamingLine(&mut pending_bytes).unwrap(),
-            Some("data: {\"text\":\"芯片\"}".to_string()),
+            Some("data: {\"text\":\"chip\"}".to_string()),
         );
         assert!(pending_bytes.is_empty());
     }

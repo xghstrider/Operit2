@@ -1,24 +1,24 @@
-# Operit Node.js 项目
+# Operit Node.js Project
 
-这是一个使用 Operit 创建的 Node.js 项目。
+This is a Node.js project created with Operit.
 
-## 快速开始
+## Quick Start
 
-1. 点击 "npm install" 安装依赖
-2. 点击 "npm start" 启动服务器
-3. 点击"浏览器预览"查看运行效果
+1. Click "npm install" to install dependencies
+2. Click "npm start" to start the server
+3. Click "Browser Preview" to see the running result
 
-## 项目结构
+## Project Structure
 
-- `index.js` - 主程序入口
-- `package.json` - 项目配置文件
-- `.operit/config.json` - Operit 工作区配置
+- `index.js` - Main program entry point
+- `package.json` - Project configuration file
+- `.operit/config.json` - Operit workspace configuration
 
-## 自定义
+## Customization
 
-您可以：
-- 修改 `index.js` 添加您的业务逻辑
-- 在 `package.json` 中添加依赖包
-- 在 `.operit/config.json` 中自定义命令按钮
+You can:
+- Edit `index.js` to add your own business logic
+- Add dependency packages in `package.json`
+- Customize command buttons in `.operit/config.json`
 
-祝编码愉快！🎉
+Happy coding! 🎉

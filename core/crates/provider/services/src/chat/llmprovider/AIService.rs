@@ -84,24 +84,24 @@ pub fn retry_error_text(error: &AiServiceError) -> String {
     let message = error.to_string();
     let lower = message.to_ascii_lowercase();
     if lower.contains("timeout") || lower.contains("timed out") {
-        "连接超时".to_string()
+        "Connection timed out".to_string()
     } else if lower.contains("dns")
         || lower.contains("resolve")
         || lower.contains("unknown host")
         || lower.contains("failed to lookup address")
     {
-        "无法解析主机".to_string()
+        "Unable to resolve host".to_string()
     } else {
         match error {
             AiServiceError::ConnectionFailed(value) if value.trim().is_empty() => {
-                "网络中断".to_string()
+                "Network interrupted".to_string()
             }
             AiServiceError::ConnectionFailed(value) => value.clone(),
             AiServiceError::RequestFailed(value) if value.trim().is_empty() => {
-                "网络中断".to_string()
+                "Network interrupted".to_string()
             }
             AiServiceError::RequestFailed(value) => value.clone(),
-            AiServiceError::RequestCancelled => "请求已取消".to_string(),
+            AiServiceError::RequestCancelled => "Request cancelled".to_string(),
             _ => message,
         }
     }
@@ -109,7 +109,7 @@ pub fn retry_error_text(error: &AiServiceError) -> String {
 
 /// Formats a retry progress message for the given retry attempt number.
 pub fn retry_message(error_text: &str, retry_number: i32) -> String {
-    format!("{error_text}，正在进行第 {retry_number} 次重试...")
+    format!("{error_text}, retrying (attempt {retry_number})...")
 }
 
 /// Common async interface implemented by every model provider.

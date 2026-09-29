@@ -58,7 +58,7 @@ export default function screen(ctx: ComposeDslContext): ComposeNode {
   return ctx.UI.Box(
     { fillMaxSize: true, onLoad: initialize },
     path === ""
-      ? ctx.UI.Text({ text: error || "正在加载工作流…" })
+      ? ctx.UI.Text({ text: error || "Loading workflow..." })
       : ctx.UI.WebView({
           key: "workflow-web",
           controller,

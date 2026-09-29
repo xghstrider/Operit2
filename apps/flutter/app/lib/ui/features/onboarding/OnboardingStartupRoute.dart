@@ -1886,7 +1886,7 @@ class _AiSetupIntroPage extends StatelessWidget {
                                       maxWidth: 420,
                                     ),
                                     child: Text(
-                                      '让日常任务，从这里变得简单',
+                                      'Make everyday tasks simple, starting here',
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
                                       style: textTheme.titleSmall?.copyWith(
@@ -2009,31 +2009,31 @@ class _AiSetupModePage extends StatelessWidget {
             children: <Widget>[
               const _SetupSectionHeader(
                 icon: Icons.route_rounded,
-                eyebrow: '启动方式',
-                title: '选择上手方式',
-                description: '可以配置新环境、导入 Operit1 数据，或加入已有设备空间直接同步配置和数据。',
+                eyebrow: 'Startup Method',
+                title: 'Choose How to Get Started',
+                description: 'You can configure a new environment, import Operit1 data, or join an existing device space to sync configuration and data directly.',
               ),
               const SizedBox(height: 22),
               _SetupModeTile(
                 icon: Icons.flash_on_rounded,
-                title: '快速开始',
-                subtitle: '配置模型供应商，直接完成基础设置',
+                title: 'Quick Start',
+                subtitle: 'Configure model providers and finish the basic setup directly',
                 selected: selectedMode == _AiSetupStartMode.quickStart,
                 onTap: () => onModeChanged(_AiSetupStartMode.quickStart),
               ),
               const SizedBox(height: 10),
               _SetupModeTile(
                 icon: Icons.move_to_inbox_rounded,
-                title: '从 Operit1 导入',
-                subtitle: '导入旧版配置和数据',
+                title: 'Import from Operit1',
+                subtitle: 'Import legacy configuration and data',
                 selected: selectedMode == _AiSetupStartMode.operit1Import,
                 onTap: () => onModeChanged(_AiSetupStartMode.operit1Import),
               ),
               const SizedBox(height: 10),
               _SetupModeTile(
                 icon: Icons.cloud_sync_rounded,
-                title: '加入已有设备空间',
-                subtitle: '扫描附近设备空间，加入后直接同步模型和数据',
+                title: 'Join an Existing Device Space',
+                subtitle: 'Scan nearby device spaces and sync models and data directly after joining',
                 selected: selectedMode == _AiSetupStartMode.deviceSpace,
                 onTap: () => onModeChanged(_AiSetupStartMode.deviceSpace),
               ),
@@ -2072,9 +2072,9 @@ class _AiSetupDeviceSpacePage extends StatelessWidget {
             children: <Widget>[
               const _SetupSectionHeader(
                 icon: Icons.cloud_sync_rounded,
-                eyebrow: '设备空间',
-                title: '加入设备空间',
-                description: '扫描附近设备空间并选择一台设备。完成配对后会先同步模型、配置和数据，再结束引导。',
+                eyebrow: 'Device Space',
+                title: 'Join Device Space',
+                description: 'Scan nearby device spaces and select a device. After pairing completes, models, configuration, and data are synced first before onboarding ends.',
               ),
               const SizedBox(height: 22),
               DeviceSpaceDiscoveryPanel(
@@ -2123,13 +2123,13 @@ class _AiSetupAgreementPage extends StatelessWidget {
               children: <Widget>[
                 const _SetupSectionHeader(
                   icon: Icons.description_outlined,
-                  eyebrow: '用户协议',
-                  title: '用户协议与隐私政策',
-                  description: '请阅读本协议。确认同意后，才能继续完成设备设置。',
+                  eyebrow: 'User Agreement',
+                  title: 'User Agreement and Privacy Policy',
+                  description: 'Please read this agreement. You can continue with device setup after confirming your acceptance.',
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  '版本：${OnboardingStartupRouteStrategy._currentAgreementVersion}',
+                  'Version: ${OnboardingStartupRouteStrategy._currentAgreementVersion}',
                   style: textTheme.labelMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 0,
@@ -2138,7 +2138,7 @@ class _AiSetupAgreementPage extends StatelessWidget {
                 if (waitSeconds > 0) ...<Widget>[
                   const SizedBox(height: 8),
                   Text(
-                    '阅读确认将在 $waitSeconds 秒后开放。',
+                    'Reading confirmation will unlock in $waitSeconds seconds.',
                     style: textTheme.labelMedium?.copyWith(
                       color: colorScheme.primary,
                       letterSpacing: 0,
@@ -2158,65 +2158,65 @@ class _AiSetupAgreementPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('人话版协议（非法律版本）', style: headingStyle),
+                      Text('Plain-Language Agreement (Non-Legal Version)', style: headingStyle),
                       const SizedBox(height: 10),
                       Text(
-                        'Operit 是在您的设备上运行的开源客户端。我们不运营模型推理服务、不托管聊天记录，也不向您提供共享 API Key。您配置云模型、语音、搜索、绘图、MCP 或其他网络功能时，数据会直接发送给相应服务商，并受其条款和隐私政策约束；本地模型在设备内推理。',
+                        'Operit is an open-source client that runs on your device. We do not operate model inference services, host chat history, or provide shared API keys. When you configure cloud models, speech, search, image generation, MCP, or other network features, data is sent directly to the corresponding service provider and governed by its terms and privacy policy; local models run inference on the device.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        '应用可能使用文件、终端、自动化、系统授权、Root、ADB 和扩展等能力。请在执行前核对内容、备份重要数据并谨慎授予权限。因您的操作、配置、第三方服务或第三方扩展造成的设备、数据、账号或其他损失，应由实际操作人依适用法律处理。',
+                        'The app may use capabilities such as files, terminal, automation, system authorization, Root, ADB, and extensions. Verify the content before executing, back up important data, and grant permissions carefully. Device, data, account, or other losses caused by your operations, configuration, third-party services, or third-party extensions shall be handled by the actual operator in accordance with applicable law.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        '市场中的插件、脚本、Skill、工具包和其他第三方内容，其著作权及责任归作者或权利人所有。展示或安装不代表 Operit 对其作出保证、背书或取得权利。',
+                        'Plugins, scripts, Skills, tool packages, and other third-party content in the marketplace are copyrighted and owned by their authors or rights holders. Display or installation does not mean that Operit guarantees, endorses, or acquires any rights to them.',
                         style: bodyStyle,
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 22),
                         child: Divider(),
                       ),
-                      Text('严谨版法律协议', style: headingStyle),
+                      Text('Formal Legal Agreement', style: headingStyle),
                       const SizedBox(height: 12),
                       Text(
-                        '1. 适用范围与协议版本\n本协议适用于 Operit 官方发布的客户端及其可选在线功能。使用本应用即表示您已阅读并同意当前版本。应用会记录您确认的版本；协议发生实质更新时，将要求重新确认。开源代码许可由仓库根目录 LICENSE 所载 GNU AGPL-3.0 规定，本协议不排除或缩减适用法律及开源许可证赋予您的权利。',
+                        '1. Scope and Agreement Version\nThis agreement applies to the officially released Operit client and its optional online features. Using this app means you have read and agreed to the current version. The app records the version you confirm; when the agreement is materially updated, you will be asked to confirm again. The open-source code license is governed by the GNU AGPL-3.0 stated in the LICENSE file at the repository root. This agreement does not exclude or limit the rights granted to you by applicable law and open-source licenses.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        '2. 产品定位与第三方服务\nOperit 不提供大语言模型推理、共享 API Key、聊天请求中转或聊天记录云端托管。您自行选择、配置和启用第三方服务，并自行判断服务商、模型、端点和扩展的安全性、合法性与适用性，妥善保管凭据。',
+                        '2. Product Positioning and Third-Party Services\nOperit does not provide large language model inference, shared API keys, chat request relaying, or cloud hosting of chat history. You choose, configure, and enable third-party services on your own. You are responsible for judging the security, legality, and suitability of providers, models, endpoints, and extensions, and for keeping your credentials safe.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        '3. 数据处理与隐私\n聊天记录、角色卡、记忆、模型配置和 API Key 通常保存在设备的应用数据中。您主动导出、备份、上传文件、使用第三方网络功能或向外部 HTTP 服务提交请求时，相关数据将依您的操作被复制、传输或披露。市场、公告、更新检查、GitHub 登录和发布等功能会访问 Operit、GitHub 或相关第三方资源。',
+                        '3. Data Processing and Privacy\nChat history, character cards, memory, model configuration, and API keys are usually stored in the app data on your device. When you actively export or back up data, upload files, use third-party network features, or submit requests to external HTTP services, the related data will be copied, transmitted, or disclosed according to your actions. Features such as the marketplace, announcements, update checks, GitHub login, and publishing access Operit, GitHub, or related third-party resources.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        '4. 对外部署与运营责任\n外部 HTTP 服务、机器人、自动回复及类似能力由您选择启用。您将其开放给他人或公众使用时，应作为实际部署或运营者负责访问控制、用户授权、内容安全、数据保护、未成年人保护、必要提示和其他适用义务。',
+                        '4. External Deployment and Operational Responsibility\nExternal HTTP services, bots, auto-replies, and similar capabilities are enabled at your discretion. When you open them to others or the public, as the actual deployer or operator you are responsible for access control, user authorization, content safety, data protection, protection of minors, necessary notices, and other applicable obligations.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        '5. 合法使用与内容责任\n您应遵守适用法律法规、第三方服务规则及平台规则，不得利用本应用、扩展或配置实施违法活动、侵害他人权益、未经授权访问系统或数据，或传播违法有害内容。AI 输出可能包含错误、遗漏或偏差，不构成医疗、法律、金融或其他专业建议。',
+                        '5. Lawful Use and Content Responsibility\nYou must comply with applicable laws and regulations, third-party service rules, and platform rules. You must not use this app, extensions, or configurations to carry out illegal activities, infringe upon the rights of others, access systems or data without authorization, or spread illegal or harmful content. AI output may contain errors, omissions, or biases and does not constitute medical, legal, financial, or other professional advice.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        '6. 软件按现状提供\n在适用法律允许的范围内，本软件按“现状”和“可用”状态提供。贡献者不对软件或第三方服务的持续可用性、准确性、安全性、适销性、特定用途适用性或不侵权作出明示或默示保证。',
+                        '6. Software Provided As Is\nTo the extent permitted by applicable law, this software is provided "as is" and "as available". Contributors make no express or implied warranties regarding the continued availability, accuracy, security, merchantability, fitness for a particular purpose, or non-infringement of the software or third-party services.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        '7. 协议更新与联系\n我们可能因功能、法律或安全要求更新本协议，并在应用内提供当前版本。对用户权益有实质影响的更新，将通过提高协议版本并要求重新确认的方式生效。您可通过项目仓库、应用内反馈入口或公开联系渠道提出问题和意见。',
+                        '7. Agreement Updates and Contact\nWe may update this agreement due to feature, legal, or security requirements and provide the current version in the app. Updates that materially affect user rights take effect by raising the agreement version and requiring re-confirmation. You can raise questions and feedback through the project repository, the in-app feedback entry, or public contact channels.',
                         style: bodyStyle,
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        '人话版仅为便于理解；若与中文严谨版不一致，以中文严谨版为准。',
+                        'The plain-language version is for ease of understanding only; if it differs from the formal Chinese version, the formal Chinese version prevails.',
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                           height: 1.4,
@@ -2271,14 +2271,14 @@ class _AiSetupStoragePage extends StatelessWidget {
             children: <Widget>[
               const _SetupSectionHeader(
                 icon: Icons.folder_copy_rounded,
-                eyebrow: '存储位置',
-                title: '确认本地存储位置',
-                description: '运行时数据和工作区数据相互独立，可以直接输入路径或分别选择目录。',
+                eyebrow: 'Storage Location',
+                title: 'Confirm Local Storage Locations',
+                description: 'Runtime data and workspace data are independent of each other; you can enter paths directly or choose the directories separately.',
               ),
               const SizedBox(height: 22),
               _StoragePathField(
                 controller: runtimeRootController,
-                label: '运行时目录',
+                label: 'Runtime Directory',
                 icon: Icons.memory_rounded,
                 enabled: !loading && !saving,
                 onChanged: onPathChanged,
@@ -2287,7 +2287,7 @@ class _AiSetupStoragePage extends StatelessWidget {
               const SizedBox(height: 14),
               _StoragePathField(
                 controller: workspaceRootController,
-                label: '工作区目录',
+                label: 'Workspace Directory',
                 icon: Icons.workspaces_outline,
                 enabled: !loading && !saving,
                 onChanged: onPathChanged,
@@ -2303,7 +2303,7 @@ class _AiSetupStoragePage extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      '正在读取存储路径',
+                      'Reading storage paths',
                       style: textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
@@ -2314,7 +2314,7 @@ class _AiSetupStoragePage extends StatelessWidget {
               if (!loading) ...<Widget>[
                 const SizedBox(height: 18),
                 Text(
-                  '这两个目录会分别保存运行时状态和用户工作区，确认后由本机 Host 直接挂载。',
+                  'These two directories store the runtime state and the user workspace respectively, and are mounted directly by the local host after confirmation.',
                   style: textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     height: 1.4,
@@ -2362,7 +2362,7 @@ class _StoragePathField extends StatelessWidget {
         prefixIcon: Icon(icon),
         suffixIcon: IconButton(
           onPressed: enabled ? onBrowse : null,
-          tooltip: '选择$label',
+          tooltip: 'Select $label',
           icon: const Icon(Icons.folder_open_rounded),
         ),
         border: const OutlineInputBorder(),
@@ -2416,9 +2416,9 @@ class _AiSetupImportPage extends StatelessWidget {
             children: <Widget>[
               const _SetupSectionHeader(
                 icon: Icons.move_to_inbox_rounded,
-                eyebrow: '导入配置',
-                title: '从 Operit1 导入',
-                description: '选择旧版快照，将配置、聊天、角色卡、资源等数据迁移到 Operit2。',
+                eyebrow: 'Import Configuration',
+                title: 'Import from Operit1',
+                description: 'Select a legacy snapshot to migrate configuration, chats, character cards, resources, and other data to Operit2.',
               ),
               const SizedBox(height: 22),
               Align(
@@ -2431,7 +2431,7 @@ class _AiSetupImportPage extends StatelessWidget {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.folder_open_rounded, size: 18),
-                  label: Text(reading ? '正在读取快照' : '选择快照文件'),
+                  label: Text(reading ? 'Reading snapshot' : 'Select snapshot file'),
                 ),
               ),
               if (fileName != null) ...<Widget>[
@@ -2448,7 +2448,7 @@ class _AiSetupImportPage extends StatelessWidget {
               if (preview != null) ...<Widget>[
                 const SizedBox(height: 18),
                 Text(
-                  '检测到可迁移内容',
+                  'Migratable Content Detected',
                   style: textTheme.titleSmall?.copyWith(
                     color: colorScheme.onSurface,
                     fontWeight: FontWeight.w800,
@@ -2461,27 +2461,27 @@ class _AiSetupImportPage extends StatelessWidget {
                   runSpacing: 10,
                   children: <Widget>[
                     _SnapshotMetricChip(
-                      label: '模型配置',
+                      label: 'Model Configuration',
                       value: '${preview.modelConfig.configs.length}',
                     ),
                     _SnapshotMetricChip(
-                      label: '聊天',
+                      label: 'Chats',
                       value: '${preview.chatCount}',
                     ),
                     _SnapshotMetricChip(
-                      label: '消息',
+                      label: 'Messages',
                       value: '${preview.messageCount}',
                     ),
                     _SnapshotMetricChip(
-                      label: '偏好文件',
+                      label: 'Preference Files',
                       value: '${preview.datastoreFiles.length}',
                     ),
                     _SnapshotMetricChip(
-                      label: '资源文件',
+                      label: 'Resource Files',
                       value: '${preview.importedFileCount}',
                     ),
                     _SnapshotMetricChip(
-                      label: '外部资源',
+                      label: 'External Resources',
                       value: '${preview.importedExternalFileCount}',
                     ),
                   ],
@@ -2501,7 +2501,7 @@ class _AiSetupImportPage extends StatelessWidget {
                 if (preview.modelConfig.chatModelId != null) ...<Widget>[
                   const SizedBox(height: 12),
                   Text(
-                    '默认聊天模型：${preview.modelConfig.chatModelId}',
+                    'Default chat model: ${preview.modelConfig.chatModelId}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: textTheme.bodySmall?.copyWith(
@@ -2511,7 +2511,7 @@ class _AiSetupImportPage extends StatelessWidget {
                 ],
                 const SizedBox(height: 14),
                 Text(
-                  importing ? '正在导入快照内容，请稍候。' : '点击继续后会开始迁移整份快照。',
+                  importing ? 'Importing snapshot content, please wait.' : 'Tapping Continue will start migrating the entire snapshot.',
                   style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     height: 1.36,
@@ -2785,7 +2785,7 @@ class _AiSetupModelPage extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('服务地址'),
+          title: const Text('Service Address'),
           content: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 520),
             child: ListView.separated(
@@ -2815,7 +2815,7 @@ class _AiSetupModelPage extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -2839,16 +2839,16 @@ class _AiSetupModelPage extends StatelessWidget {
               children: <Widget>[
                 _SetupSectionHeader(
                   icon: Icons.auto_awesome_rounded,
-                  eyebrow: '模型配置',
-                  title: '完成模型配置',
-                  description: '选择模型供应商，填写 API Key，拉取并设置默认模型。',
+                  eyebrow: 'Model Configuration',
+                  title: 'Complete Model Configuration',
+                  description: 'Select a model provider, fill in the API key, then fetch and set the default model.',
                 ),
                 const SizedBox(height: 22),
                 OperitFormStyles.dropdownButtonFormField<String>(
                   context,
                   initialValue: selectedProviderTypeId,
                   isExpanded: true,
-                  decoration: const InputDecoration(labelText: '模型供应商'),
+                  decoration: const InputDecoration(labelText: 'Model Provider'),
                   items: catalogEntries
                       .map(
                         (entry) => DropdownMenuItem<String>(
@@ -2860,7 +2860,7 @@ class _AiSetupModelPage extends StatelessWidget {
                   onChanged: onProviderChanged,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请选择模型供应商';
+                      return 'Please select a model provider';
                     }
                     return null;
                   },
@@ -2883,7 +2883,7 @@ class _AiSetupModelPage extends StatelessWidget {
                               Icons.arrow_forward_rounded,
                               size: 18,
                             ),
-                            label: const Text('继续配置'),
+                            label: const Text('Continue Setup'),
                           ),
                         ),
                 ),
@@ -2900,11 +2900,11 @@ class _AiSetupModelPage extends StatelessWidget {
                             TextFormField(
                               controller: endpointController,
                               decoration: InputDecoration(
-                                labelText: '服务地址',
+                                labelText: 'Service Address',
                                 suffixIcon: endpointOptions.isEmpty
                                     ? null
                                     : IconButton(
-                                        tooltip: '服务地址',
+                                        tooltip: 'Service Address',
                                         icon: const Icon(
                                           Icons.arrow_drop_down_rounded,
                                         ),
@@ -2943,7 +2943,7 @@ class _AiSetupModelPage extends StatelessWidget {
                                       )
                                     : const Icon(Icons.sync_rounded, size: 18),
                                 label: Text(
-                                  loadingModels ? '正在拉取模型' : '拉取可用模型',
+                                  loadingModels ? 'Fetching models' : 'Fetch available models',
                                 ),
                               ),
                             ),
@@ -3048,7 +3048,7 @@ class _OnboardingAvailableModelPickerState
               context,
               initialValue: selectedIsVisible ? widget.selectedModelId : null,
               isExpanded: true,
-              decoration: const InputDecoration(labelText: '默认模型'),
+              decoration: const InputDecoration(labelText: 'Default Model'),
               items: visibleModels
                   .map(
                     (model) => DropdownMenuItem<String>(
@@ -3104,9 +3104,9 @@ class _AiSetupPermissionPage extends StatelessWidget {
             children: <Widget>[
               _SetupSectionHeader(
                 icon: Icons.admin_panel_settings_rounded,
-                eyebrow: '系统授权',
-                title: '按需授予系统权限',
-                description: '权限可按您要使用的功能选择授予。您可以不授予任何一项并继续；未授予权限对应的功能将无法使用。',
+                eyebrow: 'System Authorization',
+                title: 'Grant System Permissions as Needed',
+                description: 'Permissions can be granted selectively for the features you want to use. You may continue without granting any of them; features that rely on ungranted permissions will be unavailable.',
               ),
               const SizedBox(height: 22),
               if (requirements.isEmpty)
@@ -3115,8 +3115,8 @@ class _AiSetupPermissionPage extends StatelessWidget {
                   color: colorScheme.surfaceContainerHighest,
                   child: const ListTile(
                     leading: Icon(Icons.check_circle_rounded),
-                    title: Text('当前设备没有需要处理的授权项'),
-                    subtitle: Text('当前运行环境没有需要在欢迎页处理的系统授权。'),
+                    title: Text('No authorization items to handle on this device'),
+                    subtitle: Text('The current runtime environment has no system authorizations that need handling on the welcome page.'),
                   ),
                 ),
               for (final requirement in requirements)
@@ -3128,7 +3128,7 @@ class _AiSetupPermissionPage extends StatelessWidget {
               TextButton.icon(
                 onPressed: requesting ? null : onRefresh,
                 icon: const Icon(Icons.refresh_rounded),
-                label: const Text('刷新授权状态'),
+                label: const Text('Refresh Authorization Status'),
               ),
               if (errorText != null)
                 Text(
@@ -3182,7 +3182,7 @@ class _PermissionTile extends StatelessWidget {
             if (!requirement.isRequired) ...<Widget>[
               const SizedBox(width: 8),
               Text(
-                '可选',
+                'Optional',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -3202,7 +3202,7 @@ class _PermissionTile extends StatelessWidget {
 
 String? _requiredField(String? value) {
   if (value == null || value.trim().isEmpty) {
-    return '必填';
+    return 'Required';
   }
   return null;
 }
@@ -3302,13 +3302,13 @@ class _OnboardingPermissionBridge {
 
 String _requirementButtonLabel(_OnboardingRequirement requirement) {
   if (requirement.status == 'Satisfied') {
-    return '已授权';
+    return 'Authorized';
   }
   if (requirement.action == 'HostManaged') {
-    return '去授权';
+    return 'Authorize';
   }
   if (requirement.action == 'None') {
-    return '无需操作';
+    return 'No action needed';
   }
-  return '去授权';
+  return 'Authorize';
 }

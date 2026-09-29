@@ -14,10 +14,10 @@ class FreshPluginCreationIntent extends PluginCreationIntent {
   @override
   String toPrompt() {
     return _buildCreationPrompt(
-      taskLine: '请你使用 PackageBuilder skill 和 operit_editor 包，开发新的沙盒包。',
-      packageRuleLine: '先确定新的沙盒包 id，后续不要改名。',
+      taskLine: 'Use the PackageBuilder skill and the operit_editor package to develop a new sandbox package.',
+      packageRuleLine: 'Decide the new sandbox package id first and do not rename it afterwards.',
       devDirectoryLine:
-          '开发目录固定为 手机下载/Operit/dev_package/你确定的id。开发、安装和测试都只在这里完成。',
+          'The development directory is fixed at Download/Operit/dev_package/the id you decided. Development, installation, and testing are all done only here.',
       requirement: requirement,
     );
   }
@@ -35,11 +35,11 @@ class ContinuePluginCreationIntent extends PluginCreationIntent {
   String toPrompt() {
     return _buildCreationPrompt(
       taskLine:
-          '请你使用 PackageBuilder skill 和 operit_editor 包，查找沙盒包 $runtimePackageId 的位置，在此版本基础上继续开发并测试。',
+          'Use the PackageBuilder skill and the operit_editor package to locate sandbox package $runtimePackageId, then continue developing and testing on top of this version.',
       packageRuleLine:
-          '当前沙盒包 id 是 $runtimePackageId。包 id 和插件名字都必须沿用，不要改名，也不要新起包。',
+          'The current sandbox package id is $runtimePackageId. Keep both the package id and the plugin name unchanged; do not rename them or start a new package.',
       devDirectoryLine:
-          '开发目录固定为 手机下载/Operit/dev_package/$runtimePackageId。开发、安装和测试都只在这里完成。',
+          'The development directory is fixed at Download/Operit/dev_package/$runtimePackageId. Development, installation, and testing are all done only here.',
       requirement: requirement,
     );
   }
@@ -57,11 +57,11 @@ class MergePluginCreationIntent extends PluginCreationIntent {
   String toPrompt() {
     return _buildCreationPrompt(
       taskLine:
-          '请你使用 PackageBuilder skill 和 operit_editor 包，查找沙盒包 $runtimePackageId 的位置，在此版本基础上做合并开发并测试。',
+          'Use the PackageBuilder skill and the operit_editor package to locate sandbox package $runtimePackageId, then continue merged development and testing on top of this version.',
       packageRuleLine:
-          '当前沙盒包 id 是 $runtimePackageId。包 id 和插件名字都必须沿用，不要改名，也不要新起包。',
+          'The current sandbox package id is $runtimePackageId. Keep both the package id and the plugin name unchanged; do not rename them or start a new package.',
       devDirectoryLine:
-          '开发目录固定为 手机下载/Operit/dev_package/$runtimePackageId。开发、安装和测试都只在这里完成。',
+          'The development directory is fixed at Download/Operit/dev_package/$runtimePackageId. Development, installation, and testing are all done only here.',
       requirement: requirement,
     );
   }
@@ -75,14 +75,14 @@ String _buildCreationPrompt({
 }) {
   return <String>[
     taskLine,
-    '使用 PackageBuilder/types 中的当前版本类型定义。',
-    '需要操作包、Skill、MCP、日志或模型时，读取 operit_editor 包说明后调用 execute_cli_command。',
+    'Use the current version type definitions in PackageBuilder/types.',
+    'When you need to work with packages, Skills, MCP, logs, or models, read the operit_editor package instructions and then call execute_cli_command.',
     devDirectoryLine,
     packageRuleLine,
-    '把 PackageBuilder/types 复制到 手机下载/Operit/dev_package/types，具体包目录通过 ../types 引用。',
-    '用终端完成开发，编写 ts 和 js，编译出最终 js。tsconfig 参考 examples。',
-    '为了方便二次开发，打包需要把 ts 部分和 tsconfig 打包进去。',
-    '需求:',
+    'Copy PackageBuilder/types to Download/Operit/dev_package/types, and reference the package directory via ../types.',
+    'Complete development in the terminal: write ts and js, then compile the final js. Refer to examples for tsconfig.',
+    'To make secondary development easier, packaging must include the ts sources and tsconfig.',
+    'Requirements:',
     requirement.trim(),
   ].join('\n');
 }

@@ -112,17 +112,17 @@ impl StructuredToolCallBridge {
         let toolLabel = {
             let trimmed = toolName.trim();
             if trimmed.is_empty() {
-                "未知工具"
+                "Unknown tool"
             } else {
                 trimmed
             }
         };
         let detail = match reason {
             "tool_result_partial_batch" | "tool_result_without_structured_match" => {
-                "没有匹配到执行结果"
+                "No matching execution result"
             }
-            "typed_tool_call_without_payload" => "调用没有可执行参数",
-            "tool_call_api_disabled" => "工具调用协议已关闭",
+            "typed_tool_call_without_payload" => "The call has no executable arguments",
+            "tool_call_api_disabled" => "The tool call protocol is disabled",
             "user_boundary"
             | "system_boundary"
             | "assistant_boundary"
@@ -132,10 +132,10 @@ impl StructuredToolCallBridge {
             | "typed_tool_use_before_result"
             | "assistant_function_call_before_result"
             | "assistant_tool_use_before_result"
-            | "history_end" => "后续对话历史已到达，但未返回执行结果",
-            _ => "调用在未返回执行结果时结束",
+            | "history_end" => "Subsequent conversation history arrived, but no execution result was returned",
+            _ => "The call ended without returning an execution result",
         };
-        format!("工具结果缺失：{toolLabel} {detail}。这不是用户取消。")
+        format!("Missing tool result: {toolLabel} {detail}. This is not a user cancellation.")
     }
 
     pub fn buildToolsJson(toolPrompts: Option<&[ToolPrompt]>) -> Option<String> {
@@ -1345,6 +1345,6 @@ mod tests {
             .get("content")
             .and_then(Value::as_str)
             .unwrap_or("")
-            .contains("工具结果缺失"));
+            .contains("Missing tool result"));
     }
 }

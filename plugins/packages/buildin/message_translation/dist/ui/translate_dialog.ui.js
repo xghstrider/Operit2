@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Screen;
 const TEXT_ZH = {
-    title: "翻译消息",
-    original: "原文",
-    translated: "译文",
-    hint: "点击“翻译”后生成译文。",
-    translate: "翻译",
-    translating: "翻译中…",
-    close: "关闭",
-    empty: "这条消息没有可翻译内容。",
+    title: "Translate Message",
+    original: "Original",
+    translated: "Translation",
+    hint: "Tap \"Translate\" to generate the translation.",
+    translate: "Translate",
+    translating: "Translating...",
+    close: "Close",
+    empty: "This message has no translatable content.",
 };
 const TEXT_EN = {
     title: "Translate Message",

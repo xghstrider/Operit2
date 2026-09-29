@@ -66,12 +66,12 @@ test("every workflow template is an executable acyclic graph", () => {
   assert.deepEqual(
     catalog.map((item) => item.name),
     [
-      "手动通知",
-      "随机数条件分支",
-      "网页关键字分支",
-      "数据提取流水线",
-      "逻辑与分支",
-      "AI 主动发消息（定时）",
+      "Manual Notification",
+      "Random Number Condition Branch",
+      "Web Keyword Branch",
+      "Data Extraction Pipeline",
+      "Logic AND Branch",
+      "AI Proactive Message (Scheduled)",
     ],
   );
   for (const workflow of catalog) validateGraph(workflow, true);
@@ -136,7 +136,7 @@ test("background starts publish a running record without blocking the caller", a
   });
   await assert.rejects(
     dispatch({ action: "save", workflow: stored }),
-    /正在执行/,
+    /executing/,
   );
   finishTool("completed");
   const finished = await waitFor(async () => {
@@ -150,24 +150,24 @@ test("background starts publish a running record without blocking the caller", a
 
 /** Verifies the notification template sends its documented title and message. */
 test("manual notification template calls the notification tool", async () => {
-  const workflow = template("手动通知");
+  const workflow = template("Manual Notification");
   const executionHost = host();
   const run = await execute(workflow, null, {}, executionHost);
   assert.equal(run.status, "SUCCESS");
   assert.deepEqual(executionHost.calls, [
     {
       name: "send_notification",
-      params: { title: "工作流", message: "工作流已执行" },
+      params: { title: "Workflow", message: "Workflow executed" },
     },
   ]);
 });
 
 /** Verifies the random branch always executes exactly one terminal branch. */
 test("random condition template selects one branch", async () => {
-  const workflow = template("随机数条件分支");
+  const workflow = template("Random Number Condition Branch");
   const run = await execute(workflow, null, {}, host());
-  const greater = run.nodes[node(workflow, "较大的数").id];
-  const smaller = run.nodes[node(workflow, "较小的数").id];
+  const greater = run.nodes[node(workflow, "Larger Number").id];
+  const smaller = run.nodes[node(workflow, "Smaller Number").id];
   assert.equal(run.status, "SUCCESS");
   assert.equal([greater.status, smaller.status].filter((status) => status === "success").length, 1);
   assert.equal([greater.status, smaller.status].filter((status) => status === "skipped").length, 1);
@@ -175,7 +175,7 @@ test("random condition template selects one branch", async () => {
 
 /** Verifies the web template extracts and reuses the previous visit key. */
 test("web keyword template passes the extracted visit key to the follow-up visit", async () => {
-  const workflow = template("网页关键字分支");
+  const workflow = template("Web Keyword Branch");
   const executionHost = host({
     visit_web(params, index) {
       if (index === 1) {
@@ -189,12 +189,12 @@ test("web keyword template passes the extracted visit key to the follow-up visit
   const run = await execute(workflow, null, {}, executionHost);
   assert.equal(run.status, "SUCCESS");
   assert.deepEqual(executionHost.calls.map((call) => call.name), ["visit_web", "visit_web"]);
-  assert.equal(run.nodes[node(workflow, "访问备用页面").id].status, "skipped");
+  assert.equal(run.nodes[node(workflow, "Visit Fallback Page").id].status, "skipped");
 });
 
 /** Verifies the extraction template forwards its processed output to the toast tool. */
 test("extraction pipeline template forwards its output reference", async () => {
-  const workflow = template("数据提取流水线");
+  const workflow = template("Data Extraction Pipeline");
   const executionHost = host();
   const run = await execute(workflow, null, {}, executionHost);
   assert.equal(run.status, "SUCCESS");
@@ -205,20 +205,20 @@ test("extraction pipeline template forwards its output reference", async () => {
 
 /** Verifies the AND template invokes only its all-conditions-satisfied branch. */
 test("logic AND template invokes the successful branch", async () => {
-  const workflow = template("逻辑与分支");
+  const workflow = template("Logic AND Branch");
   const executionHost = host();
   const run = await execute(workflow, null, {}, executionHost);
   assert.equal(run.status, "SUCCESS");
   assert.deepEqual(executionHost.calls, [
-    { name: "toast", params: { message: "两个条件均满足" } },
+    { name: "toast", params: { message: "Both conditions are satisfied" } },
   ]);
-  assert.equal(run.nodes[node(workflow, "发送失败通知").id].status, "skipped");
+  assert.equal(run.nodes[node(workflow, "Send Failure Notification").id].status, "skipped");
 });
 
 /** Verifies the scheduled proactive template starts a chat and sends its prompt. */
 test("proactive AI template uses its scheduled trigger and chat tool sequence", async () => {
-  const workflow = template("AI 主动发消息（定时）");
-  const trigger = node(workflow, "每天 09:00");
+  const workflow = template("AI Proactive Message (Scheduled)");
+  const trigger = node(workflow, "Daily 09:00");
   const executionHost = host();
   const run = await execute(workflow, trigger.id, {}, executionHost);
   assert.equal(run.status, "SUCCESS");
@@ -234,7 +234,7 @@ test("proactive AI template uses its scheduled trigger and chat tool sequence", 
     {
       name: "send_message_to_ai",
       params: {
-        message: "早上好，请主动告诉我今天最值得关注的一件事。",
+        message: "Good morning. Please proactively tell me the one thing most worth paying attention to today.",
         runtime: "floating",
         persist_turn: "true",
       },

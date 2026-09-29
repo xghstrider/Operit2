@@ -141,24 +141,24 @@ mod tests {
         );
         assert_eq!(ChatUtils::remove_thinking_content("<think>abc"), "");
         assert_eq!(
-            ChatUtils::remove_thinking_content("<think>abc</think>\n正文"),
-            "正文"
+            ChatUtils::remove_thinking_content("<think>abc</think>\nBody"),
+            "Body"
         );
         assert_eq!(
-            ChatUtils::remove_thinking_content("<search>source</search>\n正文"),
-            "正文"
+            ChatUtils::remove_thinking_content("<search>source</search>\nBody"),
+            "Body"
         );
     }
 
     #[test]
     fn extract_thinking_content_mirrors_kt_closed_think_extraction() {
         assert_eq!(
-            ChatUtils::extract_thinking_content("<think>a</think>\n正文<search>x"),
-            ("正文".to_string(), "a".to_string())
+            ChatUtils::extract_thinking_content("<think>a</think>\nBody<search>x"),
+            ("Body".to_string(), "a".to_string())
         );
         assert_eq!(
-            ChatUtils::extract_thinking_content("<think>a</think><thinking>b</thinking>正文"),
-            ("正文".to_string(), "a\nb".to_string())
+            ChatUtils::extract_thinking_content("<think>a</think><thinking>b</thinking>Body"),
+            ("Body".to_string(), "a\nb".to_string())
         );
     }
 }

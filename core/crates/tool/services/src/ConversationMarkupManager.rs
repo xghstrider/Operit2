@@ -2,10 +2,10 @@ use operit_plugin_sdk::js_sdk::results::ToolResultData;
 use operit_util::ChatMarkupRegex::ChatMarkupRegex;
 use serde::{Deserialize, Serialize};
 
-const TOOL_RESULT_TRUNCATION_SUFFIX: &str = "\n[工具结果过长，已截断]";
+const TOOL_RESULT_TRUNCATION_SUFFIX: &str = "\n[Tool result too long, truncated]";
 const MAX_FINAL_TOOL_RESULT_MESSAGE_CHARS: usize = 64 * 1024;
-pub const ENHANCED_PURE_THINKING_ONLY_WARNING: &str = "警告：请输出正文内容，禁止仅输出思考内容。";
-pub const ENHANCED_TRUNCATED_TOOL_CALL_WARNING: &str = "警告：检测到工具调用输出被截断。本轮所有工具调用均已作废且不会执行。请尝试减少单次输出、拆分任务，或更换更合适的模型/供应商后重试。";
+pub const ENHANCED_PURE_THINKING_ONLY_WARNING: &str = "Warning: Please output the main body content; outputting only thinking content is not allowed.";
+pub const ENHANCED_TRUNCATED_TOOL_CALL_WARNING: &str = "Warning: Truncated tool call output detected. All tool calls in this round have been voided and will not be executed. Try reducing the per-round output, splitting the task, or switching to a more suitable model/provider, then retry.";
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct ToolResult {

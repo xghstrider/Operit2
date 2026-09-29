@@ -862,15 +862,15 @@ fn ensure_entry_app_version_supported(
     client_app_version: &str,
     version_id: Option<&str>,
 ) -> Result<(), String> {
-    let client_version = parse_market_app_version(client_app_version, "客户端版本")?;
+    let client_version = parse_market_app_version(client_app_version, "Client version")?;
     let target_version = resolve_market_install_version(entry, version_id)?;
 
     let minimum_value = target_version.min_app_ver.trim();
     if !minimum_value.is_empty() {
-        let minimum_version = parse_market_app_version(minimum_value, "最低支持版本")?;
+        let minimum_version = parse_market_app_version(minimum_value, "Minimum supported version")?;
         if client_version < minimum_version {
             return Err(format!(
-                "无法下载：客户端版本 {client_app_version} 低于该资源要求的最低版本 {minimum_value}。请更新客户端后再下载。"
+                "Cannot download: client version {client_app_version} is lower than the minimum version {minimum_value} required by this resource. Please update the client before downloading."
             ));
         }
     }
@@ -881,10 +881,10 @@ fn ensure_entry_app_version_supported(
         .map(str::trim)
         .filter(|value| !value.is_empty())
     {
-        let maximum_version = parse_market_app_version(maximum_value, "最高支持版本")?;
+        let maximum_version = parse_market_app_version(maximum_value, "Maximum supported version")?;
         if client_version > maximum_version {
             return Err(format!(
-                "无法下载：客户端版本 {client_app_version} 高于该资源最高支持的版本 {maximum_value}。请使用受支持的客户端版本。"
+                "Cannot download: client version {client_app_version} is higher than the maximum version {maximum_value} supported by this resource. Please use a supported client version."
             ));
         }
     }

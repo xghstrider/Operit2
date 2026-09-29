@@ -25,8 +25,8 @@ pub struct LocaleUtils;
 impl LocaleUtils {
     pub fn get_supported_languages() -> Vec<Language> {
         vec![
-            language(LanguageCodes::AUTO, "Follow system", "跟随系统"),
-            language(LanguageCodes::CHINESE, "Chinese", "中文"),
+            language(LanguageCodes::AUTO, "Follow system", "Follow system"),
+            language(LanguageCodes::CHINESE, "Chinese", "Chinese"),
             language(LanguageCodes::ENGLISH, "English", "English"),
             language(LanguageCodes::KOREAN, "Korean", "한국어"),
             language(LanguageCodes::SPANISH, "Spanish", "Español"),

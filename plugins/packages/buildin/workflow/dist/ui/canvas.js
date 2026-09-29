@@ -130,7 +130,7 @@ function graphCanvas(ctx, workflow, actions) {
         centered(style.label, x + 66 * v.zoom, y + 7 * v.zoom, 10 * v.zoom, 44 * v.zoom, style.color);
         centered(node.name, x + width / 2, y + 28 * v.zoom, 13 * v.zoom, width - 16 * v.zoom, "#212121", 2);
         if (result)
-            centered({ pending: "等待", running: "执行中", success: "成功", failed: "失败", skipped: "跳过" }[result.status], x + width / 2, y + 63 * v.zoom, 9 * v.zoom, width - 16 * v.zoom, border);
+            centered({ pending: "Waiting", running: "Executing", success: "Success", failed: "Failed", skipped: "Skipped" }[result.status], x + width / 2, y + 63 * v.zoom, 9 * v.zoom, width - 16 * v.zoom, border);
         else if (node.description)
             centered(node.description, x + width / 2, y + 63 * v.zoom, 9 * v.zoom, width - 16 * v.zoom, "#757575");
     }

@@ -3,11 +3,11 @@
   "name": "ai_chat",
 
   "display_name": {
-      "zh": "AI 相互对话",
+      "zh": "AI-to-AI Conversation",
       "en": "AI-to-AI Chat"
   },
   "description": {
-    "zh": "调用AI模型API实现AI之间智能对话互动。",
+    "zh": "Calls AI model APIs to enable intelligent conversation between AIs.",
     "en": "Call an AI model API to enable interactive conversations between AIs."
   },
   "env": ["AI_API_BASE_URL", "AI_API_KEY", "AI_MODEL_NAME"],
@@ -15,15 +15,15 @@
   "tools": [{
     "name": "chat_completion",
     "description": {
-      "zh": "发送消息给AI模型并获取回复。支持超时保护（默认30秒）。从根源上禁止分点列表输出。",
+      "zh": "Sends a message to an AI model and gets the reply. Supports timeout protection (default 30 seconds). Prohibits bulleted list output at the source.",
       "en": "Send messages to an AI model and get responses. Includes timeout protection (default: 30s). Enforces non-bulleted output from the source."
     },
     "parameters": [
-      {"name": "messages", "description": {"zh": "消息数组或字符串", "en": "Message array or a string"}, "type": "any", "required": true},
-      {"name": "system_prompt", "description": {"zh": "系统提示词（会自动追加禁止分点指令）", "en": "System prompt (the system will automatically append non-bulleted instructions)"}, "type": "string", "required": false},
-      {"name": "temperature", "description": {"zh": "温度参数(0.0-2.0)", "en": "Temperature (0.0-2.0)"}, "type": "number", "required": false, "default": 0.7},
-      {"name": "max_tokens", "description": {"zh": "最大生成长度", "en": "Maximum generation length"}, "type": "number", "required": false},
-      {"name": "timeout", "description": {"zh": "超时时间（毫秒）", "en": "Timeout (milliseconds)"}, "type": "number", "required": false, "default": 30000}
+      {"name": "messages", "description": {"zh": "Message array or a string", "en": "Message array or a string"}, "type": "any", "required": true},
+      {"name": "system_prompt", "description": {"zh": "System prompt (the system will automatically append non-bulleted instructions)", "en": "System prompt (the system will automatically append non-bulleted instructions)"}, "type": "string", "required": false},
+      {"name": "temperature", "description": {"zh": "Temperature (0.0-2.0)", "en": "Temperature (0.0-2.0)"}, "type": "number", "required": false, "default": 0.7},
+      {"name": "max_tokens", "description": {"zh": "Maximum generation length", "en": "Maximum generation length"}, "type": "number", "required": false},
+      {"name": "timeout", "description": {"zh": "Timeout (milliseconds)", "en": "Timeout (milliseconds)"}, "type": "number", "required": false, "default": 30000}
     ]
   }]
  } */
@@ -68,12 +68,12 @@ const aiModelInteraction = (function () {
         timeout: number = 30000
     ): Promise<UniversalHttpResponse> {
         const timeoutPromise: Promise<never> = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error(`请求超时：${timeout}ms`)), timeout)
+            setTimeout(() => reject(new Error(`Request timed out: ${timeout}ms`)), timeout)
         );
 
         const requestPromise: Promise<UniversalHttpResponse> = (async () => {
             if (typeof OkHttp === 'undefined') {
-                throw new Error('OkHttp 不可用');
+                throw new Error('OkHttp is not available');
             }
 
             const client = OkHttp.newBuilder()
@@ -117,19 +117,19 @@ const aiModelInteraction = (function () {
 
         let cleaned: string = text;
 
-        // 处理转义与实体
+        // Handle escapes and entities
         cleaned = cleaned.replace(/\|["\\]?n/g, '\n');
         cleaned = cleaned.replace(/\\\\([\\nrt"'&])/g, (m, c) => ({ n: '\n', r: '\r', t: '\t', '"': '"', "'": "'", "&": "&" }[c] || m));
         cleaned = cleaned.replace(/\\u([0-9A-Fa-f]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
 
-        // 一次性替换HTML实体
+        // Replace HTML entities in one pass
         const entities = { quot: '"', amp: '&', lt: '<', gt: '>', nbsp: ' ', '#39': "'", apos: "'" };
         cleaned = cleaned.replace(/&(\w+|#\d+);/g, (m, e) => entities[e] || m);
 
-        // 清理代码块
+        // Clean up code blocks
         cleaned = cleaned.replace(/```[\w-]*\s*\n([\s\S]*?)```/g, '$1').replace(/```/g, '').replace(/`([^`]+)`/g, '$1');
 
-        // 格式化空白与分点
+        // Normalize whitespace and bullet points
         cleaned = cleaned.replace(/[ \t]{2,}/g, ' ');
         cleaned = cleaned.split('\n').map(l => l.replace(/^[\s\uFEFF\xA0\u3000\u200B-\u200D]+/g, '')).join('\n');
         cleaned = cleaned.replace(/\n{3,}/g, '\n\n').trim();
@@ -143,12 +143,12 @@ const aiModelInteraction = (function () {
             const value = getEnv(varName);
             if (!value || value === `YOUR_${varName}`) {
                 if (defaultValue !== null) return defaultValue;
-                throw new Error(`${varName} 未配置`);
+                throw new Error(`${varName} is not configured`);
             }
             return value.trim();
         } catch (e) {
             if (defaultValue !== null) return defaultValue;
-            throw new Error(`${varName} 未配置`);
+            throw new Error(`${varName} is not configured`);
         }
     }
 
@@ -204,18 +204,18 @@ const aiModelInteraction = (function () {
                     timeout
                 );
                 if (response.status === 200) return response;
-                lastError = new Error(`端点 ${endpoint} 返回 ${response.status}`);
+                lastError = new Error(`Endpoint ${endpoint} returned ${response.status}`);
             } catch (error) {
                 lastError = error;
             }
         }
 
-        throw lastError || new Error('所有端点尝试失败');
+        throw lastError || new Error('All endpoint attempts failed');
     }
 
     async function chat_completion_logic(rawInput: ChatCompletionToolParams | string, timeout: number) {
         if (rawInput === null || rawInput === undefined) {
-            throw new Error('参数错误: 输入参数不能为空');
+            throw new Error('Invalid argument: input parameters cannot be empty');
         }
 
         const internalParams: {
@@ -232,7 +232,7 @@ const aiModelInteraction = (function () {
             functions: undefined,
         };
 
-        // 处理输入参数
+        // Process input arguments
         if (typeof rawInput === 'string') {
             internalParams.messages = [{ role: 'user', content: rawInput }];
         } else if (typeof rawInput === 'object') {
@@ -246,16 +246,16 @@ const aiModelInteraction = (function () {
                 } else if (typeof messagesValue === 'string') {
                     internalParams.messages = [{ role: 'user', content: messagesValue }];
                 } else {
-                    throw new Error(`'messages' 必须是数组或字符串`);
+                    throw new Error(`'messages' must be an array or a string`);
                 }
             } else if (hasMessageField) {
                 const messageValue = (rawInput as ChatCompletionToolParams).message;
                 if (typeof messageValue !== 'string') {
-                    throw new Error(`'message' 必须是字符串`);
+                    throw new Error(`'message' must be a string`);
                 }
                 internalParams.messages = [{ role: 'user', content: messageValue }];
             } else {
-                throw new Error(`对象必须包含 'message' 或 'messages' 字段`);
+                throw new Error(`Object must contain a 'message' or 'messages' field`);
             }
 
             internalParams.system_prompt = (rawInput as ChatCompletionToolParams).system_prompt ? String((rawInput as ChatCompletionToolParams).system_prompt) : undefined;
@@ -269,28 +269,28 @@ const aiModelInteraction = (function () {
 
             internalParams.functions = Array.isArray((rawInput as ChatCompletionToolParams).functions) ? (rawInput as ChatCompletionToolParams).functions : undefined;
         } else {
-            throw new Error(`不支持的参数类型 '${typeof rawInput}'`);
+            throw new Error(`Unsupported argument type '${typeof rawInput}'`);
         }
 
-        // 验证messages
+        // Validate messages
         if (!Array.isArray(internalParams.messages) || internalParams.messages.length === 0) {
-            throw new Error('messages必须是有效数组且不为空');
+            throw new Error('messages must be a valid non-empty array');
         }
 
         internalParams.messages.forEach((msg, idx) => {
             if (!msg || typeof msg !== 'object' || !msg.role || typeof msg.content !== 'string') {
-                throw new Error(`消息 #${idx} 格式无效`);
+                throw new Error(`Message #${idx} has an invalid format`);
             }
         });
 
-        // 获取配置
+        // Get configuration
         const config = getFullConfig();
         if (!config.apiBaseUrl || !config.apiKey) {
-            throw new Error('AI_API_BASE_URL 和 AI_API_KEY 必须配置');
+            throw new Error('AI_API_BASE_URL and AI_API_KEY must be configured');
         }
 
-        // 构建消息数组
-        const antiListInstruction = "【重要指令】你必须以连续段落的方式回答，严禁使用任何分点、列表、编号或项目符号格式。";
+        // Build the message array
+        const antiListInstruction = "[IMPORTANT INSTRUCTION] You must answer in continuous paragraphs; any bullet points, lists, numbering, or bullet formatting are strictly forbidden.";
         const finalMessages = [
             {
                 role: 'system',
@@ -301,7 +301,7 @@ const aiModelInteraction = (function () {
             ...internalParams.messages
         ];
 
-        // 构建请求
+        // Build the request
         const payload: Record<string, any> = {
             model: String(config.modelName || 'gpt-3.5-turbo'),
             messages: finalMessages,
@@ -315,7 +315,7 @@ const aiModelInteraction = (function () {
 
         Object.keys(payload).forEach(key => payload[key] === undefined && delete payload[key]);
 
-        // 发送请求
+        // Send the request
         let response;
         try {
             response = await tryEndpoints(config.apiBaseUrl, payload, config, timeout);
@@ -334,7 +334,7 @@ const aiModelInteraction = (function () {
         }
 
         if (response.status !== 200) {
-            let errorMsg = `API请求失败: ${response.status}`;
+            let errorMsg = `API request failed: ${response.status}`;
             try {
                 const errorData = typeof response.body === 'string' ? JSON.parse(response.body) : response.body;
                 errorMsg += ` - ${errorData.error?.message || JSON.stringify(errorData)}`;
@@ -346,7 +346,7 @@ const aiModelInteraction = (function () {
 
         const result = typeof response.body === 'string' ? JSON.parse(response.body) : response.body;
         if (!result.choices?.[0]) {
-            throw new Error('API返回格式异常');
+            throw new Error('Unexpected API response format');
         }
 
         const choice = result.choices[0];
@@ -378,7 +378,7 @@ const aiModelInteraction = (function () {
         const result = await Promise.race([
             chat_completion_logic(normalizedParams, timeout),
             new Promise<never>((_, reject) =>
-                setTimeout(() => reject(new Error(`操作超时：${timeout}ms`)), timeout)
+                setTimeout(() => reject(new Error(`Operation timed out: ${timeout}ms`)), timeout)
             )
         ]);
 
@@ -387,7 +387,7 @@ const aiModelInteraction = (function () {
 
         return {
             success: true,
-            message: "AI回复获取成功！",
+            message: "AI reply retrieved successfully!",
             data: result,
             reply: cleanedReply,
             raw_reply: rawReply,
@@ -404,7 +404,7 @@ const aiModelInteraction = (function () {
             console.error(`Tool ${func.name} failed unexpectedly`, error);
             complete({
                 success: false,
-                message: `AI对话失败: ${String(error && error.message ? error.message : error)}`,
+                message: `AI conversation failed: ${String(error && error.message ? error.message : error)}`,
                 error_stack: error && error.stack
             });
         }
@@ -419,7 +419,7 @@ const aiModelInteraction = (function () {
         if (!config.apiBaseUrl || !config.apiKey) {
             return {
                 success: false,
-                message: 'AI_API_BASE_URL 和 AI_API_KEY 必须配置',
+                message: 'AI_API_BASE_URL and AI_API_KEY must be configured',
                 config
             };
         }
@@ -449,7 +449,7 @@ const aiModelInteraction = (function () {
     };
 })();
 
-// 导出工具函数（CommonJS）
+// Export tool functions (CommonJS)
 exports.chat_completion = aiModelInteraction.chat_completion;
 exports.single_message = aiModelInteraction.single_message;
 exports.test_connection = aiModelInteraction.test_connection;

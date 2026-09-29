@@ -692,7 +692,7 @@ class _DeviceSpaceOverviewCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       PopupMenuButton<_DeviceSpaceMenuAction>(
-                        tooltip: '空间操作',
+                        tooltip: 'Space actions',
                         onSelected: (action) {
                           switch (action) {
                             case _DeviceSpaceMenuAction.rename:
@@ -825,7 +825,7 @@ class _DeviceSpaceIdentityChipState extends State<_DeviceSpaceIdentityChip> {
       context,
     ).themePreferenceSnapshot.customUserAvatarUri;
     final suffix = Localizations.localeOf(context).languageCode == 'zh'
-        ? '的设备空间'
+        ? '\'s device space'
         : l10n.settingsRuntimeCurrentSpace;
     return LayoutBuilder(
       builder: (context, constraints) {

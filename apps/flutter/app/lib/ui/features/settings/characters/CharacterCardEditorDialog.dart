@@ -193,7 +193,7 @@ class _CharacterCardEditorDialogState
         (_sharedMemoryId == null || _sharedMemoryId!.trim().isEmpty)) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('请选择共享记忆库')));
+      ).showSnackBar(const SnackBar(content: Text('Please select a shared memory library')));
       return;
     }
     if (_memoryBindingMode == _memoryBindingShared &&
@@ -202,7 +202,7 @@ class _CharacterCardEditorDialogState
         )) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('共享记忆库不存在，请重新选择')));
+      ).showSnackBar(const SnackBar(content: Text('The shared memory library does not exist, please select again')));
       return;
     }
     if (_ttsBindingEnabled &&
@@ -210,7 +210,7 @@ class _CharacterCardEditorDialogState
             !widget.ttsConfigs.any((config) => config.id == _ttsConfigId))) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('请选择 TTS 配置')));
+      ).showSnackBar(const SnackBar(content: Text('Please select a TTS configuration')));
       return;
     }
     final card = widget.card;
@@ -562,9 +562,9 @@ class _CharacterCardEditorDialogState
             children: <Widget>[
               const TabBar(
                 tabs: <Widget>[
-                  Tab(text: '基础'),
-                  Tab(text: '内容'),
-                  Tab(text: '绑定'),
+                  Tab(text: 'Basic'),
+                  Tab(text: 'Content'),
+                  Tab(text: 'Bindings'),
                 ],
               ),
               Expanded(
@@ -637,7 +637,7 @@ class _CharacterCardEditorDialogState
                     _CharacterCardEditorTabBody(
                       children: <Widget>[
                         _BindingSwitchSection(
-                          title: '聊天模型',
+                          title: 'Chat Model',
                           subtitleOff:
                               l10n.settingsCharactersChatModelFollowGlobal,
                           subtitleOn:
@@ -665,9 +665,9 @@ class _CharacterCardEditorDialogState
                           ],
                         ),
                         _BindingSwitchSection(
-                          title: 'TTS 配置',
-                          subtitleOff: '跟随全局 TTS 配置',
-                          subtitleOn: '使用角色卡 TTS 配置',
+                          title: 'TTS Configuration',
+                          subtitleOff: 'Follow the global TTS configuration',
+                          subtitleOn: 'Use the character card TTS configuration',
                           value: _ttsBindingEnabled,
                           onChanged: widget.ttsConfigs.isEmpty
                               ? null
@@ -683,11 +683,11 @@ class _CharacterCardEditorDialogState
                             if (widget.ttsConfigs.isEmpty)
                               const Padding(
                                 padding: EdgeInsets.only(bottom: 6),
-                                child: Text('还没有 TTS 配置'),
+                                child: Text('No TTS configuration yet'),
                               )
                             else
                               _DialogToolAccessConfigureField(
-                                label: 'TTS 配置',
+                                label: 'TTS Configuration',
                                 valueText: _ttsConfigBindingText(
                                   selectedTtsConfig,
                                   _ttsConfigId,
@@ -697,9 +697,9 @@ class _CharacterCardEditorDialogState
                           ],
                         ),
                         _BindingSwitchSection(
-                          title: '记忆绑定',
-                          subtitleOff: '使用角色记忆',
-                          subtitleOn: '使用共享记忆',
+                          title: 'Memory Binding',
+                          subtitleOff: 'Use character memory',
+                          subtitleOn: 'Use shared memory',
                           value: _memoryBindingMode == _memoryBindingShared,
                           onChanged: widget.sharedMemoryStores.isEmpty
                               ? null
@@ -717,7 +717,7 @@ class _CharacterCardEditorDialogState
                             if (widget.sharedMemoryStores.isEmpty)
                               const Padding(
                                 padding: EdgeInsets.only(bottom: 12),
-                                child: Text('还没有共享记忆库'),
+                                child: Text('No shared memory library yet'),
                               )
                             else
                               OperitFormStyles.dropdownButtonFormField<String>(
@@ -741,7 +741,7 @@ class _CharacterCardEditorDialogState
                                   });
                                 },
                                 decoration: const InputDecoration(
-                                  labelText: '共享记忆库',
+                                  labelText: 'Shared Memory Library',
                                 ),
                               ),
                           ],
@@ -830,7 +830,7 @@ class _CharacterAvatarEditorField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: InputDecorator(
-        decoration: const InputDecoration(labelText: '角色头像'),
+        decoration: const InputDecoration(labelText: 'Character Avatar'),
         child: Row(
           children: <Widget>[
             SizedBox(
@@ -852,16 +852,16 @@ class _CharacterAvatarEditorField extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                path ?? '未设置',
+                path ?? 'Not set',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             const SizedBox(width: 8),
-            TextButton(onPressed: onChoose, child: const Text('选择')),
+            TextButton(onPressed: onChoose, child: const Text('Choose')),
             if (path != null)
-              TextButton(onPressed: onClear, child: const Text('清除')),
+              TextButton(onPressed: onClear, child: const Text('Clear')),
           ],
         ),
       ),
@@ -1223,7 +1223,7 @@ class _CharacterTtsConfigSelectorDialogState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return OperitDialogScaffold(
-      title: '选择 TTS 配置',
+      title: 'Select TTS Configuration',
       maxWidth: 580,
       maxHeight: 560,
       showCloseButton: true,

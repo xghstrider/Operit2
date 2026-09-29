@@ -9,7 +9,7 @@ import 'OperitLogoMark.dart';
 class RuntimeBootstrapScreen extends StatefulWidget {
   const RuntimeBootstrapScreen({
     super.key,
-    this.message = '正在准备本地运行时',
+    this.message = 'Preparing local runtime',
     this.errorText,
   });
 

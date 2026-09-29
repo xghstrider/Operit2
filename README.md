@@ -205,6 +205,10 @@ node tools/dev_web_access_proxy.mjs --upstream-port 4835 --listen-port 4836
 
 Then open `http://127.0.0.1:4836`. If a port is already in use, you can change the Flutter upstream port and the proxy's `--upstream-port` at the same time, but keep the two values identical.
 
+### Web Hosting
+
+The Web Access frontend is a static bundle that can be hosted on Vercel, Netlify, Cloudflare Pages, GitHub Pages, or any Docker/Node platform. The `Deploy Web Experience` GitHub Actions workflow builds the bundle and publishes it to the `gh-pages` branch plus a downloadable artifact; the required cross-origin isolation headers are preconfigured for each hoster. See [`HOSTING.md`](HOSTING.md) for the step-by-step guide.
+
 ## Repository Structure
 
 ```text

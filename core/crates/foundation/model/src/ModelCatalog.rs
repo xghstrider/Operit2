@@ -217,7 +217,7 @@ fn parseCatalogBuiltinTools(
     };
     Ok(vec![ModelBuiltinTool::disabled(
         BuiltinToolType::WebSearch,
-        "内置联网搜索".to_string(),
+        "Built-in web search".to_string(),
         requestFormat,
         exclusivity,
     )])

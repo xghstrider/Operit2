@@ -17,7 +17,7 @@ const css = result.outputFiles.find((file) => file.path.endsWith(".css")).text;
 await mkdir("resources", { recursive: true });
 await writeFile(
   "resources/workflow.html",
-  `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>工作流</title><style>${css}</style></head><body><div id="root"></div><script>${js.replaceAll("</script", "<\\/script")}</script></body></html>`,
+  `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Workflow</title><style>${css}</style></head><body><div id="root"></div><script>${js.replaceAll("</script", "<\\/script")}</script></body></html>`,
 );
 // Resolve package directories from esbuild metafile inputs. With pnpm, bundled
 // inputs live below node_modules/.pnpm/<pkg>/node_modules/<name>; treating
