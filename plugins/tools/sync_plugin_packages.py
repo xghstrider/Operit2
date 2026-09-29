@@ -528,6 +528,47 @@ def _maybe_hot_reload_output(
     print(f"HOT-RELOAD-DONE: {label} application acknowledged reload")
 
 
+# Installs ToolPkg npm dependencies when they are missing or older than the
+# package manifest/lockfile so `pnpm run pack:toolpkg` can resolve imports.
+def _ensure_toolpkg_dependencies(repo_root: Path, child_dir: Path, *, dry_run: bool) -> None:
+    lockfile = child_dir / "pnpm-lock.yaml"
+    package_manifest = child_dir / "package.json"
+    modules_marker = child_dir / "node_modules" / ".modules.yaml"
+    if modules_marker.is_file():
+        installed_at = modules_marker.stat().st_mtime
+        inputs = [path for path in (package_manifest, lockfile) if path.is_file()]
+        if all(path.stat().st_mtime <= installed_at for path in inputs):
+            print(f"SKIP-DEPS: {child_dir}")
+            return
+    corepack_command = shutil.which("corepack")
+    if corepack_command is None:
+        raise FileNotFoundError("Corepack is required to build script-packed ToolPkgs")
+    install_command = [corepack_command, "pnpm", "install"]
+    if lockfile.is_file():
+        install_command.append("--frozen-lockfile")
+    _run_checked_command(
+        install_command,
+        child_dir,
+        dry_run=dry_run,
+        env=_toolpkg_command_environment(repo_root),
+    )
+
+
+# Returns the environment used for ToolPkg pnpm commands. A `pnpm` shim is
+# placed on PATH so package scripts can invoke nested `pnpm run ...` commands
+# even when pnpm itself is not installed globally (corepack-only setups).
+def _toolpkg_command_environment(repo_root: Path) -> dict[str, str]:
+    shim_dir = repo_root / ".ci-tools" / "pnpm-shim"
+    shim_dir.mkdir(parents=True, exist_ok=True)
+    shim = shim_dir / "pnpm"
+    shim.write_text("#!/bin/sh\nexec corepack pnpm \"$@\"\n", encoding="utf-8")
+    shim.chmod(0o755)
+    environment = os.environ.copy()
+    environment["COREPACK_ENABLE_DOWNLOAD_PROMPT"] = "0"
+    environment["PATH"] = f"{shim_dir}{os.pathsep}{environment.get('PATH', '')}"
+    return environment
+
+
 # Builds ToolPkg sources before their synchronization operations run.
 def _prebuild_plans(repo_root: Path, source_dir: Path, plans: list[SyncPlanItem], *, dry_run: bool) -> None:
     state_file = source_dir / ".sync_state.json"
@@ -570,6 +611,7 @@ def _prebuild_plans(repo_root: Path, source_dir: Path, plans: list[SyncPlanItem]
     )
     for child_dir in child_dirs:
         if _is_script_packed_toolpkg(child_dir):
+            _ensure_toolpkg_dependencies(repo_root, child_dir, dry_run=dry_run)
             corepack_command = shutil.which("corepack")
             if corepack_command is None:
                 raise FileNotFoundError("Corepack is required to build script-packed ToolPkgs")
@@ -577,6 +619,7 @@ def _prebuild_plans(repo_root: Path, source_dir: Path, plans: list[SyncPlanItem]
                 [corepack_command, "pnpm", "run", "pack:toolpkg"],
                 child_dir,
                 dry_run=dry_run,
+                env=_toolpkg_command_environment(repo_root),
             )
             continue
 
