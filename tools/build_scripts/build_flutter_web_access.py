@@ -51,6 +51,27 @@ SQL_DIST_DIR = (
     / "sql.js"
     / "dist"
 )
+# Resolves the effective deployment base path.
+#
+# Precedence:
+#   1. WEB_ACCESS_BASE_HREF environment variable (explicit override).
+#   2. GitHub Actions project Pages convention: when running inside GitHub
+#      Actions (GITHUB_REPOSITORY set) without a custom domain the site is
+#      served from https://<owner>.github.io/<repo>/, so the repository name
+#      is used as the deployment subpath.
+#   3. The --base-href command line value (defaults to /).
+def resolve_base_href(cli_value: str) -> str:
+    override = os.environ.get("WEB_ACCESS_BASE_HREF")
+    if override:
+        return override
+    github_repository = os.environ.get("GITHUB_REPOSITORY")
+    if github_repository and "/" in github_repository:
+        repo_name = github_repository.split("/", 1)[1].strip()
+        if repo_name:
+            return f"/{repo_name}/"
+    return cli_value
+
+
 # Parses the required deployment base path for the Flutter Web bundle.
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -60,6 +81,7 @@ def parse_arguments() -> argparse.Namespace:
         help="Absolute deployment path ending with a slash, such as /Operit2/. Defaults to /.",
     )
     arguments = parser.parse_args()
+    arguments.base_href = resolve_base_href(arguments.base_href)
     if not arguments.base_href.startswith("/") or not arguments.base_href.endswith("/"):
         parser.error("--base-href must start and end with '/'")
     return arguments
