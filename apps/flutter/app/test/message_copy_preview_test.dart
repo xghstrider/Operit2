@@ -47,7 +47,7 @@ void main() {
         type: 'markdownInlineChunk',
         blockId: 1,
         inlineId: 1,
-        value: '标题',
+        value: 'Title',
         nodeType: 'Bold',
       ),
       event(type: 'markdownInlineStart', blockId: 1, inlineId: 2),
@@ -62,7 +62,7 @@ void main() {
         type: 'markdownInlineChunk',
         blockId: 1,
         inlineId: 3,
-        value: '[链接](https://example.com)',
+        value: '[Link](https://example.com)',
         nodeType: 'Link',
       ),
       event(type: 'markdownBlockStart', blockId: 2, nodeType: 'CodeBlock'),
@@ -82,7 +82,7 @@ void main() {
 
     expect(
       result,
-      '标题链接 (https://example.com)\n\n----dart-----\nfinal value = 1;',
+      'TitleLink (https://example.com)\n\n----dart-----\nfinal value = 1;',
     );
   });
 
@@ -93,7 +93,7 @@ void main() {
         type: 'markdownBlockChunk',
         blockId: 1,
         nodeType: 'Table',
-        value: '| 名称 | 数量 |\n| --- | ---: |\n| 苹果 | **2** |',
+        value: '| Name | Count |\n| --- | ---: |\n| Apple | **2** |',
       ),
       event(type: 'completed'),
     ];
@@ -103,6 +103,6 @@ void main() {
       splitMarkdownContent: (_) => split(events),
     );
 
-    expect(result, '名称\t数量\n苹果\t2');
+    expect(result, 'Name\tCount\nApple\t2');
   });
 }

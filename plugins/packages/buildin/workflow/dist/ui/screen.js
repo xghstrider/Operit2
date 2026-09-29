@@ -28,9 +28,9 @@ function relative(value) {
 /** Maps persisted run state to the original Material status presentation. */
 function status(run) {
     return {
-        SUCCESS: { text: "Execution Succeeded", color: "tertiary", icon: "CheckCircle" },
-        FAILED: { text: "Execution Failed", color: "error", icon: "Error" },
-        RUNNING: { text: "Executing", color: "primary", icon: "PlayCircle" },
+        SUCCESS: { text: "Success", color: "tertiary", icon: "CheckCircle" },
+        FAILED: { text: "Failed", color: "error", icon: "Error" },
+        RUNNING: { text: "Running", color: "primary", icon: "PlayCircle" },
         CANCELLED: { text: "Cancelled", color: "onSurfaceVariant", icon: "Close" },
     }[run];
 }
@@ -104,7 +104,7 @@ function screen(ctx) {
     function openCreated(snapshot) {
         const workflow = snapshot.workflows[snapshot.workflows.length - 1];
         if (workflow === undefined)
-            throw new Error("The create result is missing a workflow");
+            throw new Error("The creation result is missing a workflow");
         open(workflow);
     }
     /** Creates a compact dialog action with consistent failure handling. */
@@ -140,7 +140,7 @@ function screen(ctx) {
     async function saveNode() {
         const node = live.current.nodeDraft;
         if (node === null)
-            throw new Error("The node draft does not exist");
+            throw new Error("Node draft does not exist");
         const workflow = current();
         await commit({ ...workflow, nodes: live.current.adding ? [...workflow.nodes, node] : workflow.nodes.map(item => item.id === node.id ? node : item) });
         fit();
@@ -166,7 +166,7 @@ function screen(ctx) {
         const workflow = current(), nodeId = live.current.selected;
         const dependents = workflow.nodes.filter(node => node.id !== nodeId && (0, model_1.values)(node).some(value => "nodeId" in value && value.nodeId === nodeId));
         if (dependents.length)
-            throw new Error("Modify the parameter references of these nodes first: " + dependents.map(node => node.name).join(", "));
+            throw new Error("First update the parameter references of these nodes: " + dependents.map(node => node.name).join(", "));
         await commit({ ...workflow, nodes: workflow.nodes.filter(node => node.id !== nodeId),
             connections: workflow.connections.filter(edge => edge.sourceNodeId !== nodeId && edge.targetNodeId !== nodeId) });
         update({ selected: null, fitted: false });
@@ -267,8 +267,8 @@ function screen(ctx) {
                 UI.Box({ width: 72, height: 72, contentAlignment: "center",
                     modifier: ctx.Modifier.background(ctx.MaterialTheme.colorScheme.primaryContainer.copy({ alpha: 0.3 }), { cornerRadius: 36 }) }, UI.Text({ text: "⚡", fontSize: 45 })),
                 UI.Spacer({ height: 16 }),
-                UI.Text({ text: "Start Building Workflows", style: "headlineSmall", fontWeight: "semibold" }),
-                UI.Text({ text: "Automate your task flows", style: "bodyMedium", color: "onSurfaceVariant" }),
+                UI.Text({ text: "Start Creating a Workflow", style: "headlineSmall", fontWeight: "semibold" }),
+                UI.Text({ text: "Automate your task workflows", style: "bodyMedium", color: "onSurfaceVariant" }),
                 UI.Spacer({ height: 24 }),
                 UI.FilledTonalButton({ text: "+  New Workflow", height: 48, onClick: () => update({ modal: "create", name: "", description: "" }) }),
             ]));
@@ -295,7 +295,7 @@ function screen(ctx) {
                 ? UI.Box({ fillMaxSize: true, background: "surfaceVariant", contentAlignment: "center" }, UI.Column({ padding: 24, spacing: 8, horizontalAlignment: "center" }, [
                     UI.Text({ text: "📋", fontSize: 45 }),
                     UI.Text({ text: "No nodes yet", style: "bodyLarge", color: "onSurfaceVariant" }),
-                    UI.Text({ text: "Tap the + button in the bottom right corner to add nodes", style: "bodyMedium", color: "onSurfaceVariant" }),
+                    UI.Text({ text: "Tap the + button in the bottom-right corner to add a node", style: "bodyMedium", color: "onSurfaceVariant" }),
                     button("Back to Workflow List", () => update({ workflow: null, menu: false, modal: "" }), !state.busy),
                 ]))
                 : (0, canvas_1.graphCanvas)(ctx, workflow, {
@@ -386,14 +386,14 @@ function screen(ctx) {
                 const target = workflow.nodes.find(node => node.id === edge.targetNodeId);
                 return UI.Card({ fillMaxWidth: true, elevation: 0, containerColor: "errorContainer", containerAlpha: 0.3 }, UI.Row({ padding: 12, verticalAlignment: "center" }, [
                     UI.Column({ weight: 1, spacing: 4 }, [UI.Text({ text: target.name }), UI.Text({ text: "→ " + (edge.condition === null
-                                ? source.type === "condition" || source.type === "logic" ? "Default true branch" : "Unconditional" : edge.condition), style: "bodySmall", color: "onSurfaceVariant" })]),
+                                ? source.type === "condition" || source.type === "logic" ? "Default (true branch)" : "Unconditional" : edge.condition), style: "bodySmall", color: "onSurfaceVariant" })]),
                     iconButton("Edit", "Edit Connection Condition", () => update({ modal: "condition", edgeId: edge.id, text: edge.condition === null ? "" : edge.condition,
                         conditionMode: edge.condition === null || edge.condition === "" ? "default" : edge.condition === "false" ? "false" : "custom" })),
                     iconButton("Delete", "Delete Connection", async () => { await commit({ ...current(), connections: current().connections.filter(item => item.id !== edge.id) }); }, !state.busy),
                 ]));
             }),
             ...(outgoing.length ? [UI.HorizontalDivider()] : []),
-            UI.Text({ text: targets.length ? "Select target node" : "No nodes available to connect", style: "titleSmall", color: "primary" }),
+            UI.Text({ text: targets.length ? "Select Target Node" : "No Connectable Nodes", style: "titleSmall", color: "primary" }),
             ...targets.map(target => UI.Card({ fillMaxWidth: true, elevation: 0, containerColor: "surfaceVariant" }, UI.Row({ padding: 12, spacing: 8, verticalAlignment: "center" }, [
                 UI.Text({ text: target.type === "trigger" ? "🎯" : "⚙️" }),
                 UI.Column({ weight: 1, spacing: 4 }, [UI.Text({ text: target.name }), ...(target.description ? [UI.Text({ text: target.description, style: "bodySmall", maxLines: 1 })] : [])]),
@@ -419,7 +419,7 @@ function screen(ctx) {
         if (selected === undefined)
             return [UI.Text({ text: "No execution logs yet" })];
         return [
-            ...(runs.length > 1 ? [(0, forms_1.choose)(ctx, "run-history", "Execution Records", selected.id, runs.map(run => ({ value: run.id, label: date(run.startedAt) + " · " + status(run.status).text })), logId => update({ logId }))] : []),
+            ...(runs.length > 1 ? [(0, forms_1.choose)(ctx, "run-history", "Run History", selected.id, runs.map(run => ({ value: run.id, label: date(run.startedAt) + " · " + status(run.status).text })), logId => update({ logId }))] : []),
             UI.Text({ text: status(selected.status).text, style: "titleMedium", color: status(selected.status).color }),
             UI.Text({ text: "Start time: " + date(selected.startedAt), style: "bodySmall" }),
             ...(selected.finishedAt === null ? [] : [UI.Text({ text: "Duration: " + (selected.finishedAt - selected.startedAt) + " ms", style: "bodySmall" })]),
@@ -474,9 +474,9 @@ function screen(ctx) {
             case "node": {
                 const draft = state.nodeDraft;
                 if (draft === null || workflow === null)
-                    throw new Error("The node editing context does not exist");
+                    throw new Error("Node editing context does not exist");
                 const dialogs = [dialog("node:" + draft.id, state.adding ? "Add Node" : "Edit Node", [
-                        ...(state.adding ? [(0, forms_1.choose)(ctx, "node-type", "Node Type", draft.type, Object.keys(model_1.STYLES).map(value => ({ value, label: model_1.STYLES[value].label + " Node" })), value => {
+                        ...(state.adding ? [(0, forms_1.choose)(ctx, "node-type", "Node Type", draft.type, Object.keys(model_1.STYLES).map(value => ({ value, label: model_1.STYLES[value].label + " node" })), value => {
                                 const next = (0, model_1.newNode)(value);
                                 update({ nodeDraft: { ...next, id: draft.id, position: draft.position } });
                             })] : []),
@@ -502,17 +502,17 @@ function screen(ctx) {
             }
             case "connections":
                 if (workflow === null || node === undefined)
-                    throw new Error("The edge editing context does not exist");
+                    throw new Error("Connection editing context does not exist");
                 return [dialog("connections", "Manage Connections", connections(workflow, node), [close], 400)];
             case "condition": {
                 const edge = current().connections.find(item => item.id === state.edgeId);
                 if (edge === undefined)
-                    throw new Error("The edge does not exist");
+                    throw new Error("Connection does not exist");
                 const source = current().nodes.find(item => item.id === edge.sourceNodeId);
                 const target = current().nodes.find(item => item.id === edge.targetNodeId);
                 const choices = [
                     { value: "default", label: source.type === "condition" || source.type === "logic" ? "Default (true branch)" : "Default (unconditional)" },
-                    { value: "false", label: "false branch" }, { value: "custom", label: "Custom (regular expression / success or failure branch)" },
+                    { value: "false", label: "false branch" }, { value: "custom", label: "Custom (regex / success or failure branch)" },
                 ];
                 return [dialog("condition", "Edit Connection Condition", [
                         UI.Text({ text: source.name + " → " + target.name, style: "bodyMedium" }),
@@ -520,7 +520,7 @@ function screen(ctx) {
                             UI.RadioButton({ selected: state.conditionMode === choice.value, onClick: () => update({ conditionMode: choice.value }) }),
                             UI.Text({ text: choice.label, weight: 1 }),
                         ])),
-                        ...(state.conditionMode === "custom" ? [(0, forms_1.field)(ctx, "edge-condition", "Regular expression / on_success / on_error", state.text, text => update({ text }))] : []),
+                        ...(state.conditionMode === "custom" ? [(0, forms_1.field)(ctx, "edge-condition", "Regex / on_success / on_error", state.text, text => update({ text }))] : []),
                     ], [button("Cancel", () => update({ modal: "connections" })), button("Confirm", async () => {
                             const condition = live.current.conditionMode === "default" ? null : live.current.conditionMode === "false" ? "false" : live.current.text.trim();
                             await commit({ ...current(), connections: current().connections.map(item => item.id === edge.id ? { ...item, condition } : item) });
@@ -532,20 +532,20 @@ function screen(ctx) {
                     throw new Error("Workflow does not exist");
                 return [dialog("logs", state.logNode === null ? "Execution Logs" : "Node Execution Logs", logs(workflow), [close], 420)];
             case "result": return [dialog("result", "Execution Result", [
-                    UI.Text({ text: state.latest === null ? "Execution finished" : status(state.latest.status).text }),
+                    UI.Text({ text: state.latest === null ? "Execution has finished" : status(state.latest.status).text }),
                 ], [button("View Logs", () => update({ modal: "logs", logNode: null, logId: null })), button("OK", dismiss)], 64)];
             case "deleteNode": return [dialog("delete-node", "Confirm Deletion", [
-                    UI.Text({ text: "Are you sure you want to delete node '" + (node === undefined ? "" : node.name) + "' and its related connections?" }),
+                    UI.Text({ text: "Are you sure you want to delete node \"" + (node === undefined ? "" : node.name) + "\" and its related connections?" }),
                 ], [cancel, button("Delete", removeNode, !state.busy, true)], 72)];
             case "delete": return [dialog("delete-workflow", "Confirm Deletion", [
-                    UI.Text({ text: workflow === null ? "Are you sure you want to delete the selected " + state.marked.length + " workflows?" : "Are you sure you want to delete workflow '" + workflow.name + "'?" }),
+                    UI.Text({ text: workflow === null ? "Are you sure you want to delete the selected " + state.marked.length + " workflows?" : "Are you sure you want to delete workflow \"" + workflow.name + "\"?" }),
                 ], [cancel, button("Delete", async () => {
                         await request({ action: "delete", ids: workflow === null ? live.current.marked : [workflow.id] });
                         update({ workflow: null, marked: [], selectionMode: false });
                         dismiss();
                     }, !state.busy, true)], 72)];
             case "import": return [dialog("import", "Import Workflow", [
-                    UI.Text({ text: "Import Workflow JSON. The workflow is disabled after import; review the node configuration before enabling.", style: "bodySmall" }),
+                    UI.Text({ text: "Import workflow JSON. Imported workflows are disabled by default; review the node configuration before enabling.", style: "bodySmall" }),
                     (0, forms_1.field)(ctx, "import-json", "Workflow JSON", state.text, text => update({ text }), true),
                     button("Select JSON File", async () => {
                         const picked = await ctx.openFilePicker({ picker: "document", mimeTypes: ["application/json"] });

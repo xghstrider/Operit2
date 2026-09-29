@@ -47,10 +47,10 @@ static uint16_t touch_x, touch_y;
 static bool touch_pressed, wifi_ready, edge_ready;
 static char expression[24] = "neutral";
 static char pairing_code[20] = "";
-static char space_state[40] = "等待连接 Operit";
-static char chat_preview[96] = "尚未连接对话";
-static char chat_screen[8192] = "尚未连接对话";
-static char chat_task[192] = "离线";
+static char space_state[40] = "Waiting for Operit";
+static char chat_preview[96] = "Not connected to a conversation";
+static char chat_screen[8192] = "Not connected to a conversation";
+static char chat_task[192] = "Offline";
 static bool sidebar_open;
 static int sidebar_width = 213; /* 66.6% default, as requested. */
 static bool last_touch_pressed;
@@ -447,17 +447,17 @@ static void draw_sidebar(void) {
     lv_obj_add_flag(sidebar_panel, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_scrollbar_mode(sidebar_panel, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_scroll_dir(sidebar_panel, LV_DIR_VER);
-    label(sidebar_panel, "聊天", 16, 6, sidebar_width - 32, theme()->accent);
-    sidebar_button(sidebar_panel, "清空草稿", "edge_new", 28, false);
-    label(sidebar_panel, "对话记录", 16, 64, sidebar_width - 32, theme()->muted);
-    sidebar_button(sidebar_panel, "当前对话", "sidebar_close", 78, true);
+    label(sidebar_panel, "Chat", 16, 6, sidebar_width - 32, theme()->accent);
+    sidebar_button(sidebar_panel, "Clear draft", "edge_new", 28, false);
+    label(sidebar_panel, "Conversations", 16, 64, sidebar_width - 32, theme()->muted);
+    sidebar_button(sidebar_panel, "Current conversation", "sidebar_close", 78, true);
     sidebar_preview_label = label(sidebar_panel, chat_preview, 20, 112, sidebar_width - 36, theme()->muted);
     debug_set_id(sidebar_preview_label, "chat_preview");
     lv_label_set_long_mode(sidebar_preview_label, LV_LABEL_LONG_WRAP);
     lv_obj_set_height(sidebar_preview_label, 30);
-    sidebar_button(sidebar_panel, "配对设备", "builtin:Pairing", 144, false);
-    sidebar_button(sidebar_panel, "任务", "builtin:Tasks", 176, false);
-    sidebar_button(sidebar_panel, "设置", "builtin:Settings", 208, false);
+    sidebar_button(sidebar_panel, "Paired devices", "builtin:Pairing", 144, false);
+    sidebar_button(sidebar_panel, "Tasks", "builtin:Tasks", 176, false);
+    sidebar_button(sidebar_panel, "Settings", "builtin:Settings", 208, false);
 
     if (sidebar_open) {
         lv_obj_set_x(chat_content, sidebar_width);
@@ -533,8 +533,8 @@ static void draw_chat(void) {
     debug_register(chat_content, "screen", "chat", NULL);
     box(chat_content, 0, 0, 320, 42, theme()->surface, 0);
     button(chat_content, LV_SYMBOL_LIST, "sidebar_toggle", 8, 7, 32, 28);
-    label(chat_content, "聊天", 50, 10, 130, 0xf4f8ff);
-    connection_label = label(chat_content, edge_ready ? "已连接" : "离线", 224, 12, 82, edge_ready ? theme()->accent : theme()->muted);
+    label(chat_content, "Chat", 50, 10, 130, 0xf4f8ff);
+    connection_label = label(chat_content, edge_ready ? "Connected" : "Offline", 224, 12, 82, edge_ready ? theme()->accent : theme()->muted);
     debug_set_id(connection_label, "connection_status");
     lv_obj_set_style_text_align(connection_label, LV_TEXT_ALIGN_RIGHT, 0);
 
@@ -556,13 +556,13 @@ static void draw_chat(void) {
     lv_obj_set_pos(chat_input, 10, 181); lv_obj_set_size(chat_input, 252, 38);
     lv_textarea_set_one_line(chat_input, true);
     lv_textarea_set_max_length(chat_input, 120);
-    lv_textarea_set_placeholder_text(chat_input, "输入消息…");
+    lv_textarea_set_placeholder_text(chat_input, "Type a message…");
     lv_textarea_set_text(chat_input, chat_draft);
     lv_obj_set_style_bg_color(chat_input, lv_color_hex(theme()->surface), 0);
     lv_obj_set_style_text_color(chat_input, lv_color_hex(0xf4f8ff), 0);
     lv_obj_set_style_text_font(chat_input, &operit_font_zh_14, 0);
     lv_obj_add_event_cb(chat_input, chat_input_event, LV_EVENT_ALL, NULL);
-    chat_send_button = button(chat_content, "发送", "edge_send", 270, 181, 40, 38);
+    chat_send_button = button(chat_content, "Send", "edge_send", 270, 181, 40, 38);
 
     chat_keyboard = lv_keyboard_create(chat_content);
     debug_register(chat_keyboard, "keyboard", "chat_keyboard", NULL);
@@ -589,62 +589,62 @@ static void page(const char *name) {
         draw_chat();
     } else if (!strcmp(name, "Settings")) {
         button(root, LV_SYMBOL_LEFT, "edge_chat", 10, 8, 32, 30);
-        label(root, "设置", 52, 14, 190, 0xf4f8ff);
-        label(root, "连接状态", 18, 55, 280, theme()->muted);
-        wifi_label = label(root, wifi_ready ? "Wi-Fi 已连接" : "需要设置 Wi-Fi", 18, 76, 280, 0xf4f8ff);
-        space_label = label(root, edge_ready ? space_state : "等待 Core 连接", 18, 98, 280, theme()->muted);
-        label(root, "侧栏宽度", 18, 132, 280, theme()->muted);
-        char width_text[48]; snprintf(width_text, sizeof(width_text), "侧栏宽度：%s", sidebar_width_name());
+        label(root, "Settings", 52, 14, 190, 0xf4f8ff);
+        label(root, "Connection status", 18, 55, 280, theme()->muted);
+        wifi_label = label(root, wifi_ready ? "Wi-Fi connected" : "Wi-Fi setup required", 18, 76, 280, 0xf4f8ff);
+        space_label = label(root, edge_ready ? space_state : "Waiting for Core connection", 18, 98, 280, theme()->muted);
+        label(root, "Sidebar width", 18, 132, 280, theme()->muted);
+        char width_text[48]; snprintf(width_text, sizeof(width_text), "Sidebar width: %s", sidebar_width_name());
         button(root, width_text, "sidebar_width_cycle", 18, 153, 284, 38);
-        label(root, "从左侧边缘向右滑动打开", 18, 204, 284, theme()->muted);
+        label(root, "Swipe right from the left edge to open", 18, 204, 284, theme()->muted);
     } else if (!strcmp(name, "Pairing")) {
         button(root, LV_SYMBOL_LEFT, "edge_chat", 10, 8, 32, 30);
-        label(root, "配对设备", 52, 14, 190, 0xf4f8ff);
-        wifi_label = label(root, wifi_ready ? "Wi-Fi 已连接" : "Wi-Fi 不可用", 18, 55, 284, theme()->muted);
+        label(root, "Paired devices", 52, 14, 190, 0xf4f8ff);
+        wifi_label = label(root, wifi_ready ? "Wi-Fi connected" : "Wi-Fi unavailable", 18, 55, 284, theme()->muted);
         debug_set_id(wifi_label, "wifi_status");
-        space_label = label(root, edge_ready ? "已连接 Operit" : "等待 Core 连接", 18, 82, 284, edge_ready ? theme()->accent : theme()->muted);
+        space_label = label(root, edge_ready ? "Connected to Operit" : "Waiting for Core connection", 18, 82, 284, edge_ready ? theme()->accent : theme()->muted);
         debug_set_id(space_label, "space_state");
         pairing_label = label(root, pairing_code[0] ? pairing_code : "------", 18, 112, 284, theme()->accent);
         debug_set_id(pairing_label, "pairing_code");
-        pairing_hint = label(root, pairing_code[0] ? "请在 Operit 中输入此配对码" : "打开 Operit > 设备 > 添加边缘设备", 18, 142, 284, theme()->muted);
+        pairing_hint = label(root, pairing_code[0] ? "Enter this pairing code in Operit" : "Open Operit > Devices > Add edge device", 18, 142, 284, theme()->muted);
         debug_set_id(pairing_hint, "pairing_hint");
-        button(root, "刷新", "edge_pair", 18, 187, 92, 36);
-        button(root, "解除配对", "edge_unpair", 116, 187, 92, 36);
-        button(root, "返回", "edge_chat", 212, 187, 90, 36);
+        button(root, "Refresh", "edge_pair", 18, 187, 92, 36);
+        button(root, "Unpair", "edge_unpair", 116, 187, 92, 36);
+        button(root, "Back", "edge_chat", 212, 187, 90, 36);
     } else if (!strcmp(name, "Tasks")) {
         button(root, LV_SYMBOL_LEFT, "edge_chat", 10, 8, 32, 30);
-        label(root, "任务", 52, 14, 190, 0xf4f8ff);
-        label(root, "当前任务", 18, 58, 284, theme()->muted);
+        label(root, "Tasks", 52, 14, 190, 0xf4f8ff);
+        label(root, "Current task", 18, 58, 284, theme()->muted);
         chat_task_label = label(root, chat_task, 18, 82, 284, theme()->accent);
-        label(root, "任务状态也会显示在聊天页面。", 18, 119, 284, theme()->muted);
-        button(root, "返回聊天", "edge_chat", 18, 181, 284, 36);
+        label(root, "Task status also appears on the chat screen.", 18, 119, 284, theme()->muted);
+        button(root, "Back to chat", "edge_chat", 18, 181, 284, 36);
     } else {
         button(root, LV_SYMBOL_LEFT, "edge_chat", 12, 10, 32, 32);
         label(root, name, 56, 17, 246, theme()->accent);
         if (!strcmp(name, "Theme")) {
-            label(root, "颜色主题", 20, 58, 250, theme()->muted);
+            label(root, "Color theme", 20, 58, 250, theme()->muted);
             button(root, theme()->name, "Palette", 20, 84, 280, 44);
-            label(root, "图标形状", 20, 144, 250, theme()->muted);
-            button(root, round_icons ? "圆形" : "圆角方形", "Shape", 20, 170, 280, 44);
+            label(root, "Icon shape", 20, 144, 250, theme()->muted);
+            button(root, round_icons ? "Circle" : "Rounded square", "Shape", 20, 170, 280, 44);
         } else if (!strcmp(name, "Face")) {
             lv_obj_t *eyes = label(root, "o   o", 20, 65, 280, theme()->accent);
             lv_obj_set_style_text_font(eyes, &lv_font_montserrat_48, 0);
             lv_obj_set_style_text_align(eyes, LV_TEXT_ALIGN_CENTER, 0);
             face_label = label(root, expression, 20, 136, 280, theme()->muted);
             lv_obj_set_style_text_align(face_label, LV_TEXT_ALIGN_CENTER, 0);
-            button(root, "在线", "Online", 90, 180, 140, 40);
+            button(root, "Online", "Online", 90, 180, 140, 40);
         } else if (!strcmp(name, "Network")) {
-            wifi_label = label(root, wifi_ready ? "Wi-Fi 已连接" : "需要设置 Wi-Fi", 20, 66, 280, 0xf4f8ff);
-            space_label = label(root, edge_ready ? space_state : "等待 Core 连接", 20, 98, 280, theme()->muted);
-            pairing_label = label(root, pairing_code[0] ? pairing_code : "等待配对码", 20, 126, 280, theme()->accent);
-            button(root, "搜索 Space", "edge_search", 20, 180, 88, 40);
-            button(root, "配对", "edge_pair", 116, 180, 88, 40);
-            button(root, "聊天", "edge_chat", 212, 180, 88, 40);
+            wifi_label = label(root, wifi_ready ? "Wi-Fi connected" : "Wi-Fi setup required", 20, 66, 280, 0xf4f8ff);
+            space_label = label(root, edge_ready ? space_state : "Waiting for Core connection", 20, 98, 280, theme()->muted);
+            pairing_label = label(root, pairing_code[0] ? pairing_code : "Waiting for pairing code", 20, 126, 280, theme()->accent);
+            button(root, "Search Space", "edge_search", 20, 180, 88, 40);
+            button(root, "Pair", "edge_pair", 116, 180, 88, 40);
+            button(root, "Chat", "edge_chat", 212, 180, 88, 40);
         } else if (!strcmp(name, "Terminal")) {
-            label(root, "> Operit Edge 已就绪", 20, 70, 280, theme()->accent);
-            label(root, "本地屏幕 · Wi-Fi", 20, 106, 280, theme()->muted);
-            button(root, "运行节点", "Run", 20, 180, 280, 40);
-        } else { label(root, "暂无已安装插件", 20, 92, 280, theme()->muted); }
+            label(root, "Operit Edge is ready", 20, 70, 280, theme()->accent);
+            label(root, "Local screen · Wi-Fi", 20, 106, 280, theme()->muted);
+            button(root, "Run node", "Run", 20, 180, 280, 40);
+        } else { label(root, "No plugins installed", 20, 92, 280, theme()->muted); }
     }
 }
 
@@ -697,27 +697,27 @@ void operit_lvgl_set_connection(bool wifi,bool edge) {
     if(wifi==wifi_ready && edge==edge_ready) return;
     wifi_ready=wifi; edge_ready=edge;
     if(connection_label) {
-        lv_label_set_text(connection_label, edge ? "已连接" : "离线");
+        lv_label_set_text(connection_label, edge ? "Connected" : "Offline");
         lv_obj_set_style_text_color(connection_label, lv_color_hex(edge ? theme()->accent : theme()->muted), 0);
     }
-    if(wifi_label) lv_label_set_text(wifi_label, wifi ? "Wi-Fi 已连接" : "Wi-Fi 不可用");
-    if(space_label) lv_label_set_text(space_label, edge ? space_state : "等待 Core 连接");
+    if(wifi_label) lv_label_set_text(wifi_label, wifi ? "Wi-Fi connected" : "Wi-Fi unavailable");
+    if(space_label) lv_label_set_text(space_label, edge ? space_state : "Waiting for Core connection");
 }
 void operit_lvgl_set_pairing_code(const char *code) {
     const char *value = code ? code : "";
     if (!strcmp(pairing_code, value)) return;
     copy_utf8(pairing_code, sizeof(pairing_code), value);
-    if (pairing_label) lv_label_set_text(pairing_label, pairing_code[0] ? pairing_code : "等待配对码");
-    if (pairing_hint) lv_label_set_text(pairing_hint, pairing_code[0] ? "请在 Operit 中输入此配对码" : "打开 Operit > 设备 > 添加边缘设备");
+    if (pairing_label) lv_label_set_text(pairing_label, pairing_code[0] ? pairing_code : "Waiting for pairing code");
+    if (pairing_hint) lv_label_set_text(pairing_hint, pairing_code[0] ? "Enter this pairing code in Operit" : "Open Operit > Devices > Add edge device");
 }
 void operit_lvgl_set_space_state(const char *state) {
-    const char *value = state ? state : "等待连接 Operit";
+    const char *value = state ? state : "Waiting for Operit";
     if (!strcmp(space_state, value)) return;
     copy_utf8(space_state, sizeof(space_state), value);
     if (space_label) lv_label_set_text(space_label, space_state);
 }
 void operit_lvgl_set_chat_preview(const char *preview) {
-    const char *value = preview ? preview : "尚未连接对话";
+    const char *value = preview ? preview : "Not connected to a conversation";
     if (!strcmp(chat_preview, value)) return;
     copy_utf8(chat_preview, sizeof(chat_preview), value);
     if (sidebar_preview_label) lv_label_set_text(sidebar_preview_label, chat_preview);
@@ -755,7 +755,7 @@ void operit_lvgl_chat_send_result(bool ok, const char *error) {
     chat_send_pending = false;
     remember_chat_draft();
     if (ok && !strcmp(chat_draft, submitted_draft)) operit_lvgl_set_chat_draft("");
-    if (!ok) operit_lvgl_set_chat_task(error && *error ? error : "发送失败，请重试");
+    if (!ok) operit_lvgl_set_chat_task(error && *error ? error : "Send failed, please retry");
 }
 
 void operit_lvgl_set_theme(unsigned index, bool circular) {
@@ -932,7 +932,7 @@ void operit_lvgl_layout_style(int index,const char *binding,int font_size) {
     if(!strcmp(binding,"clock")){clock_label=obj;tick_clock(NULL);}
     else if(!strcmp(binding,"connection")){connection_label=obj;lv_label_set_text(obj,wifi_ready?"WIFI CONNECTED":"WIFI STARTING");}
     else if(!strcmp(binding,"expression")){face_label=obj;lv_label_set_text(obj,expression);}
-    else if(!strcmp(binding,"pairing")){pairing_label=obj;lv_label_set_text(obj,pairing_code[0]?pairing_code:"等待配对码");}
+    else if(!strcmp(binding,"pairing")){pairing_label=obj;lv_label_set_text(obj,pairing_code[0]?pairing_code:"Waiting for pairing code");}
     else if(!strcmp(binding,"space")){space_label=obj;lv_label_set_text(obj,space_state);}
     else if(!strcmp(binding,"chat")){chat_label=obj;lv_label_set_text(obj,chat_preview);}
 }
@@ -997,13 +997,13 @@ static void execute_route(const char *action) {
     else if(!strcmp(action,"edge_send")) {
         if (chat_send_pending) return;
         remember_chat_draft();
-        if (!chat_draft[0]) { operit_lvgl_set_chat_task("消息不能为空"); return; }
+        if (!chat_draft[0]) { operit_lvgl_set_chat_task("Message cannot be empty"); return; }
         copy_utf8(submitted_draft, sizeof(submitted_draft), chat_draft);
         chat_send_pending = true;
         hide_chat_keyboard();
-        operit_lvgl_set_chat_task("发送中");
+        operit_lvgl_set_chat_task("Sending");
         if(action_cb) action_cb(action,context);
-        else operit_lvgl_chat_send_result(false, "设备尚未连接");
+        else operit_lvgl_chat_send_result(false, "Device is not connected yet");
     }
     else if((!strcmp(action,"face_online") || !strcmp(action,"run_node")) && action_cb) action_cb(action,context);
 }

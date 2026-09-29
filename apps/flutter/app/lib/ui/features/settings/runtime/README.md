@@ -1,48 +1,65 @@
-# 设备空间可视化
+# Device Space Visualization
 
-`RuntimeSettingsPanel.dart` 负责设备空间数据与操作，`DeviceSpaceGraph.dart`
-呈现交互。布局和画布绘制分别位于 `DeviceSpaceGraphLayout.dart` 与
-`DeviceSpaceGraphPainter.dart`，复用现有 Core topology 投影和断开接口。
-`DeviceSpaceGraphSphere.dart` 负责圆形节点的立体材质和浮雕设备符号。
+`RuntimeSettingsPanel.dart` owns the device space data and actions, while
+`DeviceSpaceGraph.dart` presents the interaction. Layout and canvas painting live in
+`DeviceSpaceGraphLayout.dart` and `DeviceSpaceGraphPainter.dart`, reusing the existing Core
+topology projection and disconnect interfaces. `DeviceSpaceGraphSphere.dart` renders the
+spherical material and embossed device symbols of the circular nodes.
 
-默认显示设备关系：当前设备位于中心，其余空间成员沿倾斜的椭圆轨道缓慢
-环绕，约 28 秒一周。透视投影、远小近大的缩放、远淡近亮和按深度排序的
-遮挡构成伪 3D 效果。设备较多时分到多条轨道。
-关系引导线跟随节点，仅表示空间成员关系，不表示已建立直连。设备总数与
-在线数直接显示在图头，节点只保留圆形图标、状态点和中心切换角标。
+By default the graph shows device relationships: the current device sits at the center and the
+remaining space members slowly orbit along a tilted ellipse, roughly 28 seconds per revolution.
+Perspective projection, larger-nearer scaling, dimmer-farther fading, and depth-sorted occlusion
+produce a pseudo-3D effect. With many devices they spread across several orbits.
+Relationship guide lines follow the nodes and express space membership only, not an established
+direct connection. The total device count and the online count are shown directly in the graph
+header; nodes keep only a circular icon, a status dot, and the center-switch badge.
 
-节点下方不常驻名称、状态或操作文字。桌面悬停与键盘聚焦显示名称、在线
-状态和平台；点击任意节点在图下展开设备信息，移动端也通过点击查看。
-鼠标悬停、键盘聚焦或查看远端详情期间暂停环绕，结束查看后从原角度继续。
+Names, status, or action text do not permanently sit below the nodes. Desktop hover and keyboard
+focus reveal the name, online status, and platform; tapping any node expands the device details
+below the graph, and touch devices view them by tapping as well. Hovering, keyboard focus, or
+viewing remote details pauses the orbit, which resumes from the same angle afterwards.
 
-中心与外围节点共用球面材质：定向高光、暗部、边缘反光与接触阴影塑造
-体积；球体降低主题色浓度并使用半透明材质，让轨道与背景隐约透出。深色保持夜空层次，浅色压低白光，避免洗成一片。设备符号通过厚度、斜面、表面渐变和独立投影表现为球面上的浮雕。
-外围符号保留可识别的正面，仅随环绕角度轻微倾斜；光照与反光位置也使用
-同一环绕相位。悬停或选中时浮起，按下时压回；减少动画时直接应用静态状态。
+Center and outer nodes share the spherical material: directional highlight, shadow, rim light, and
+contact shadow build volume; spheres desaturate the theme color and use a semi-transparent
+material so orbits and background show through faintly. Dark mode keeps the night-sky layering,
+while light mode lowers the white highlight so the surface is not washed out. Device symbols read
+as embossed relief on the sphere through thickness, bevel, surface gradient, and a separate
+shadow. Outer symbols keep a recognizable front face and tilt only slightly with the orbit angle;
+the light and specular positions share the same orbit phase. They lift on hover or selection and
+press back down on press; with reduced motion the static state is applied directly.
 
-点击当前设备，同时显示当前设备信息并在同一画布中展开连接拓扑；再次
-点击返回。视角切换期间冻结环绕角度，拓扑中节点保持静止。拓扑以记录中的
-连接距离分层，横向空间充足时从左向右展开，窄屏从上向下展开。无连接路径
-的成员独立排列，不补造连线。在线连接为实线，离线、未知与版本不匹配为
-不同颜色的虚线；流光表示链路在线，不代表实时流量。
+Tapping the current device shows its details and expands the connection topology in the same
+canvas; tapping again returns. The orbit angle is frozen during the view switch and topology nodes
+stay still. The topology layers by the recorded connection distance, expanding left to right when
+horizontal space is plentiful and top to bottom on narrow screens. Members without a connection
+path are arranged separately, and no lines are fabricated. Online connections are solid, while
+offline, unknown, and version-mismatched connections use differently colored dashed lines; the
+flowing highlight means the link is online, not that traffic is real time.
 
-点击节点，在图下展开设备名称、在线状态、平台、Core 版本、相邻设备及连接原因。仅当
-所选设备与当前设备存在连接记录时显示断开操作，并保留二次确认、执行期间
-禁用操作及错误提示。点击空白区域或关闭按钮收起详情。
+Tapping a node expands the device name, online status, platform, Core version, neighboring
+devices, and connection reason below the graph. The disconnect action appears only when the
+selected device and the current device have a connection record, and it keeps the confirmation
+step, the disabled state during execution, and error messages. Tapping empty space or the close
+button collapses the details.
 
-设备节点统一使用圆形，支持悬停、按压和键盘焦点。画布位置固定，没有拖动、
-捏合缩放、滚轮缩放或复位操作；中心球、外围球、轨道半径与描边都按当前画布
-短边连续缩放，两个视角使用同一画布尺寸。图上滑动交给外层页面滚动。
+Device nodes are uniformly circular and support hover, press, and keyboard focus. The canvas
+position is fixed: no dragging, pinch zoom, wheel zoom, or reset. The center sphere, outer
+spheres, orbit radii, and strokes all scale continuously with the current canvas short side, and
+both views use the same canvas size. Dragging on the graph is left to the outer page scroll.
 
-窄屏收紧卡片留白与文案，图高跟随窗口比例变化；节点直径、图标、状态点和
-轨道线宽不按宽窄屏两档写死。画布边界覆盖完整的环绕周期，设备转动不会引起
-整体尺寸变化。节点复用同一组件，仅更新位置、
-缩放、透明度与遮挡顺序，节点材质单独重绘，设备符号复用图层，不逐帧重建
-设置页。呼吸光、轨道和在线链路由独立
-画布重绘。开启系统减少动画后停止环绕与持续动效，保留静态图与全部操作。
+Narrow screens tighten card padding and copy, and the graph height follows the window ratio; node
+diameter, icon, status dot, and orbit stroke width are not hardcoded to a wide/narrow pair. The
+canvas bounds cover a complete orbit cycle, so device rotation never changes the overall size.
+Nodes reuse one component and only update position, scale, opacity, and occlusion order; node
+materials are repainted separately, device symbols reuse layers, and the settings page is not
+rebuilt every frame. Glow, orbits, and online links are repainted by a separate canvas. Enabling
+the system reduce-motion setting stops the orbit and continuous effects while keeping the static
+graph and every action.
 
-人工验收关注：单设备、一个离线成员、多个成员与间接连接；两种视角快速
-往返；完整环绕周期的边界与前后遮挡；悬停、点击和关闭详情后的暂停恢复；
-窗口调整、窄屏及深浅主题；拖动与捏合不改变画布、图上滑动正常滚动页面；
-设备详情与断开失败提示；键盘焦点顺序和系统减少动画；深浅主题中球面
-高光与设备符号的对比度，以及紧凑节点上的浮雕清晰度。
+Manual verification focus: a single device, one offline member, multiple members with indirect
+connections; rapid round trips between both views; bounds and front/back occlusion across a full
+orbit cycle; pausing and resuming around hover, tap, and collapsing details; window resizing,
+narrow screens, and light/dark themes; dragging and pinching not moving the canvas while graph
+swipes scroll the page; device details and disconnect failure messages; keyboard focus order and
+the system reduce-motion setting; sphere highlight and device symbol contrast in both themes, plus
+relief legibility on compact nodes.

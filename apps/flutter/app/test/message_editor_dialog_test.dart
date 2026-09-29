@@ -39,7 +39,7 @@ void main() {
         .toList(growable: false);
     expect(editableTexts, <String>['First paragraph.', 'Second paragraph.']);
 
-    await tester.tap(find.text('更新记忆'));
+    await tester.tap(find.text('Update Memory'));
     await tester.pumpAndSettle();
     expect(saved, original);
   });

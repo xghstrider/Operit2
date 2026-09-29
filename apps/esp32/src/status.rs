@@ -105,7 +105,7 @@ pub fn renderHomePage(snapshot: &FirmwareStatusSnapshot) -> String {
     };
     format!(
         "<!DOCTYPE html>\
-<html lang=\"zh-CN\">\
+<html lang=\"en\">\
 <head><meta charset=\"utf-8\"><title>Operit2 ESP32</title></head>\
 <body>\
 <h1>Operit2 Edge</h1>\
@@ -114,7 +114,7 @@ pub fn renderHomePage(snapshot: &FirmwareStatusSnapshot) -> String {
 <p>Wi-Fi: {ssid}</p>\
 <p>IP: {ip}</p>\
 <p>Pairing code: {pairing}</p>\
-<p><a href=\"/screen\">打开屏幕实时预览</a></p>\
+<p><a href=\"/screen\">Open live screen preview</a></p>\
 <p>This node is an Edge capability device, not a full CoreNode.</p>\
 </body>\
 </html>",

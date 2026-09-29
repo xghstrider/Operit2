@@ -20,8 +20,11 @@ void main() {
       null,
     );
 
-    expect(summary.title, '模型已存在');
-    expect(summary.message, '模型“gpt-5.6-sol”已添加到供应商“OpenAI”。');
+    expect(summary.title, 'Model Already Exists');
+    expect(
+      summary.message,
+      'Model "gpt-5.6-sol" has already been added to provider "OpenAI".',
+    );
     expect(summary.detail, isNull);
   });
 }

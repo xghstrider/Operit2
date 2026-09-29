@@ -29,7 +29,7 @@ function parameterField(ctx, key, label, value, workflow, self, change) {
                     if (checked) {
                         const source = workflow.nodes.find(node => node.id !== self);
                         if (source === undefined) {
-                            void ctx.showToast("Please create upstream nodes first");
+                            void ctx.showToast("Please create the upstream node first");
                             return;
                         }
                         change({ nodeId: source.id });
@@ -46,12 +46,12 @@ function toolParameterField(ctx, key, schema, value, workflow, self, change) {
     const type = schema.type.trim().toLowerCase();
     const referenced = "nodeId" in value;
     const referenceToggle = ctx.UI.Row({ verticalAlignment: "center", spacing: 8 }, [
-        ctx.UI.Text({ text: schema.name + (schema.required ? " · required" : " · optional"), weight: 1 }),
+        ctx.UI.Text({ text: schema.name + (schema.required ? " · Required" : " · Optional"), weight: 1 }),
         ctx.UI.Switch({ checked: referenced, onCheckedChange: checked => {
                 if (checked) {
                     const source = workflow.nodes.find(node => node.id !== self);
                     if (source === undefined) {
-                        void ctx.showToast("Please create upstream nodes first");
+                        void ctx.showToast("Please create the upstream node first");
                         return;
                     }
                     change({ nodeId: source.id });
@@ -79,7 +79,7 @@ function toolParameterField(ctx, key, schema, value, workflow, self, change) {
 function integer(ctx, key, label, value, change) {
     return field(ctx, key, label, String(value), text => {
         if (!/^-?\d+$/.test(text) || !Number.isSafeInteger(Number(text))) {
-            void ctx.showToast("Please enter a whole number");
+            void ctx.showToast("Please enter a whole integer");
             return;
         }
         change(Number(text));
@@ -100,13 +100,13 @@ function scheduleForm(ctx, node, change) {
             if (value === "cron")
                 change({ ...node, triggerConfig: { ...config, cron_expression: "0 9 * * *" } });
         }),
-        ...(c.schedule_type === "interval" ? [field(ctx, `${node.id}:interval`, "Interval (milliseconds, minimum 60000)", c.interval_ms, value => set("interval_ms", value))] : []),
+        ...(c.schedule_type === "interval" ? [field(ctx, `${node.id}:interval`, "Interval (ms, minimum 60000)", c.interval_ms, value => set("interval_ms", value))] : []),
         ...(c.schedule_type === "specific_time" ? [field(ctx, `${node.id}:time`, "Local time YYYY-MM-DD HH:mm:ss", c.specific_time, value => set("specific_time", value))] : []),
         ...(c.schedule_type === "cron" ? [field(ctx, `${node.id}:cron`, "Cron: minute hour day month weekday", c.cron_expression, value => set("cron_expression", value)),
-            choose(ctx, `${node.id}:presets`, "Common Schedules", c.cron_expression, [{ value: "0 9 * * *", label: "Daily 09:00" }, { value: "0 9 * * 1-5", label: "Weekdays 09:00" }, { value: "*/15 * * * *", label: "Every 15 minutes" }], value => set("cron_expression", value))] : []),
+            choose(ctx, `${node.id}:presets`, "Common Schedules", c.cron_expression, [{ value: "0 9 * * *", label: "Daily at 09:00" }, { value: "0 9 * * 1-5", label: "Weekdays at 09:00" }, { value: "*/15 * * * *", label: "Every 15 minutes" }], value => set("cron_expression", value))] : []),
         ctx.UI.Row({ spacing: 8, verticalAlignment: "center" }, [ctx.UI.Text({ text: "Repeat", weight: 1 }), ctx.UI.Switch({ checked: c.repeat === "true", onCheckedChange: value => set("repeat", String(value)) })]),
         ctx.UI.Row({ spacing: 8, verticalAlignment: "center" }, [ctx.UI.Text({ text: "Enable Schedule", weight: 1 }), ctx.UI.Switch({ checked: c.enabled === "true", onCheckedChange: value => set("enabled", String(value)) })]),
-        ctx.UI.Text({ text: "Checked using the host's local time with one-minute precision. Background running depends on the host lifecycle.", style: "bodySmall", color: "onSurfaceVariant" }),
+        ctx.UI.Text({ text: "Checked against the host's local time with one-minute precision. Background running depends on the host lifecycle.", style: "bodySmall", color: "onSurfaceVariant" }),
     ];
 }
 /** Renders all node-specific settings with typed parameter references. */
@@ -133,10 +133,10 @@ function nodeForm(ctx, workflow, node, tools, change, configureSchedule) {
     if (node.type === "execute") {
         const orderedTools = [...tools].sort((left, right) => left.name.localeCompare(right.name));
         const selectedTool = orderedTools.find(tool => tool.name === node.actionType);
-        content.push(choose(ctx, `${node.id}:tools`, "Execute Tool", node.actionType, orderedTools.map(tool => ({ value: tool.name, label: tool.name })), actionType => {
+        content.push(choose(ctx, `${node.id}:tools`, "Tool to Execute", node.actionType, orderedTools.map(tool => ({ value: tool.name, label: tool.name })), actionType => {
             const tool = orderedTools.find(item => item.name === actionType);
             if (tool === undefined)
-                throw new Error(`Tool metadata does not exist: ${actionType}`);
+                throw new Error(`Tool metadata not found: ${actionType}`);
             const actionConfig = Object.fromEntries(tool.parameters.map(parameter => [parameter.name, node.actionConfig[parameter.name] ?? { value: parameter.default ?? "" }]));
             change({ ...node, actionType, actionConfig });
         }));
@@ -151,16 +151,16 @@ function nodeForm(ctx, workflow, node, tools, change, configureSchedule) {
         }
         content.push(UI.Row({ spacing: 8, verticalAlignment: "center" }, [UI.Text({ text: "JavaScript Execution Mode", weight: 1 }), UI.Switch({ checked: node.jsCode !== null, onCheckedChange: value => change({ ...node, jsCode: value ? "return inputs;" : null }) })]));
         if (node.jsCode !== null)
-            content.push(field(ctx, `${node.id}:js`, "Script (use return to produce the result; await is supported)", node.jsCode, jsCode => change({ ...node, jsCode }), true), UI.Text({ text: "inputs, trigger, Tools, and toolCall are available. The script runs directly in the plugin environment.", style: "bodySmall" }));
+            content.push(field(ctx, `${node.id}:js`, "Script (use return for the result; await is supported)", node.jsCode, jsCode => change({ ...node, jsCode }), true), UI.Text({ text: "Available variables: inputs, trigger, Tools, and toolCall. The script runs directly in the plugin environment.", style: "bodySmall" }));
     }
     if (node.type === "condition")
         content.push(parameterField(ctx, `${node.id}:left`, "Left Value", node.left, workflow, node.id, left => change({ ...node, left })), choose(ctx, `${node.id}:operator`, "Comparison", node.operator, [
             { value: "EQ", label: "=" }, { value: "NE", label: "≠" }, { value: "GT", label: ">" },
             { value: "GTE", label: "≥" }, { value: "LT", label: "<" }, { value: "LTE", label: "≤" },
             { value: "CONTAINS", label: "Contains" }, { value: "NOT_CONTAINS", label: "Does Not Contain" }, { value: "IN", label: "In" }, { value: "NOT_IN", label: "Not In" },
-        ], operator => change((0, validation_1.parseNode)({ ...node, operator }))), parameterField(ctx, `${node.id}:right`, "Right Value (IN uses a JSON array)", node.right, workflow, node.id, right => change({ ...node, right })));
+        ], operator => change((0, validation_1.parseNode)({ ...node, operator }))), parameterField(ctx, `${node.id}:right`, "Right Value (JSON array for IN)", node.right, workflow, node.id, right => change({ ...node, right })));
     if (node.type === "logic")
-        content.push(choose(ctx, `${node.id}:logic`, "Logic Operation", node.operator, [{ value: "AND", label: "AND" }, { value: "OR", label: "OR" }], operator => change((0, validation_1.parseNode)({ ...node, operator }))), UI.Text({ text: "Performs a logic operation on boolean results that completed successfully from incoming edges.", style: "bodySmall" }));
+        content.push(choose(ctx, `${node.id}:logic`, "Logic Operation", node.operator, [{ value: "AND", label: "AND" }, { value: "OR", label: "OR" }], operator => change((0, validation_1.parseNode)({ ...node, operator }))), UI.Text({ text: "Operates on boolean results from input connections that completed successfully.", style: "bodySmall" }));
     if (node.type === "extract") {
         content.push(choose(ctx, `${node.id}:mode`, "Operation Mode", node.mode, [
             { value: "REGEX", label: "Regex Extract" }, { value: "JSON", label: "JSON Extract" }, { value: "SUB", label: "Substring" },
@@ -169,14 +169,14 @@ function nodeForm(ctx, workflow, node, tools, change, configureSchedule) {
         if (node.mode !== "RANDOM_INT" && node.mode !== "RANDOM_STRING")
             content.push(parameterField(ctx, `${node.id}:source`, "Source Data", node.source, workflow, node.id, source => change({ ...node, source })));
         if (node.mode === "REGEX" || node.mode === "JSON")
-            content.push(field(ctx, `${node.id}:expression`, node.mode === "JSON" ? "JSON path, e.g. $.data[0].name" : "Regular expression", node.expression, expression => change({ ...node, expression })));
+            content.push(field(ctx, `${node.id}:expression`, node.mode === "JSON" ? "JSON path, e.g. $.data[0].name" : "Regular Expression", node.expression, expression => change({ ...node, expression })));
         if (node.mode === "REGEX")
             content.push(integer(ctx, `${node.id}:group`, "Capture group (0 means the entire match)", node.group, group => change({ ...node, group })));
         if (node.mode === "SUB")
             content.push(integer(ctx, `${node.id}:start`, "Start", node.startIndex, startIndex => change({ ...node, startIndex })), integer(ctx, `${node.id}:length`, "Length (-1 means to the end)", node.length, length => change({ ...node, length })));
         if (node.mode === "CONCAT") {
             node.others.forEach((value, index) => content.push(parameterField(ctx, `${node.id}:other:${index}`, `Concatenated value ${index + 1}`, value, workflow, node.id, next => change({ ...node, others: node.others.map((item, i) => i === index ? next : item) }))));
-            content.push(UI.Button({ text: "Add Concatenated Value", onClick: () => change({ ...node, others: [...node.others, { value: "" }] }) }), UI.Button({ text: "Remove Last Item", enabled: node.others.length > 0, onClick: () => change({ ...node, others: node.others.slice(0, -1) }) }));
+            content.push(UI.Button({ text: "Add Value", onClick: () => change({ ...node, others: [...node.others, { value: "" }] }) }), UI.Button({ text: "Remove Last Item", enabled: node.others.length > 0, onClick: () => change({ ...node, others: node.others.slice(0, -1) }) }));
         }
         if (node.mode === "RANDOM_INT" || node.mode === "RANDOM_STRING") {
             content.push(UI.Row({ spacing: 8, verticalAlignment: "center" }, [UI.Text({ text: "Use Fixed Value", weight: 1 }), UI.Switch({ checked: node.useFixed, onCheckedChange: useFixed => change({ ...node, useFixed }) })]));

@@ -218,7 +218,7 @@ pub fn install(client: EdgeSpaceRouteClient, chatId: String) {
                     }
                     openMessageStreams(&session, &messages);
                 }
-                *session.error.lock().unwrap() = Some("聊天连接已断开，请等待重新连接".into());
+                *session.error.lock().unwrap() = Some("Chat connection lost, waiting to reconnect".into());
                 for (_, task) in std::mem::take(&mut *session.streamTasks.lock().unwrap()) {
                     task.abort();
                 }
@@ -267,7 +267,7 @@ pub fn snapshot() -> serde_json::Value {
             "messages": displayMessages(&session.messages.lock().unwrap(), &session.streams.lock().unwrap()), "error": *session.error.lock().unwrap(),
         }),
         None => {
-            serde_json::json!({"connected": false, "messages": [], "error": "请先在 Space 中配对此设备"})
+            serde_json::json!({"connected": false, "messages": [], "error": "Configure this device in Space first"})
         }
     }
 }
@@ -279,7 +279,7 @@ pub fn preview() -> String {
         return error.chars().take(72).collect();
     }
     if snapshot.get("connected").and_then(|v| v.as_bool()) != Some(true) {
-        return "尚未连接对话".into();
+        return "Not connected to a conversation".into();
     }
     snapshot
         .get("messages")
@@ -287,7 +287,7 @@ pub fn preview() -> String {
         .and_then(|items| items.last())
         .and_then(|message| message.get("text").and_then(|v| v.as_str()))
         .map(|text| text.chars().take(20).collect())
-        .unwrap_or_else(|| "已连接 Operit".into())
+        .unwrap_or_else(|| "Connected to Operit".into())
 }
 
 /// Returns a compact state label for the 320x240 task rail.
@@ -298,16 +298,16 @@ pub fn taskStatus() -> String {
         .unwrap()
         .clone();
     let Some(session) = session else {
-        return "离线".into();
+        return "Offline".into();
     };
     if session.error.lock().unwrap().is_some() {
-        return "错误".into();
+        return "Error".into();
     }
     if !session.client.isConnected() {
-        return "离线".into();
+        return "Offline".into();
     }
     if session.sending.load(Ordering::Acquire) {
-        return "发送中".into();
+        return "Sending".into();
     }
     if session
         .streams
@@ -316,9 +316,9 @@ pub fn taskStatus() -> String {
         .values()
         .any(|stream| !stream.completed)
     {
-        return "生成中".into();
+        return "Generating".into();
     }
-    "就绪".into()
+    "Ready".into()
 }
 
 /// Returns one plain text value for the small ESP32 display.
@@ -333,7 +333,7 @@ pub fn screenText() -> String {
         .unwrap()
         .clone();
     let Some(session) = session else {
-        return "未连接 Operit".into();
+        return "Not connected to Operit".into();
     };
     if let Some(error) = session.error.lock().unwrap().as_deref() {
         return compactText(error, 640);
@@ -353,9 +353,9 @@ pub fn screenText() -> String {
         return compactText(text, 640);
     }
     if session.client.isConnected() {
-        "已连接，输入消息后发送".into()
+        "Connected. Type a message and send.".into()
     } else {
-        "设备已离线".into()
+        "Device is offline".into()
     }
 }
 
@@ -405,19 +405,19 @@ fn displayMessages(value: &CoreValue, streams: &BTreeMap<String, StreamText>) ->
 /// Bridges a synchronous firmware HTTP callback to its existing Link runtime.
 pub fn send(text: String) -> Result<(), String> {
     if text.trim().is_empty() {
-        return Err("消息不能为空".into());
+        return Err("Message cannot be empty".into());
     }
     let session = SESSION
         .get_or_init(|| Mutex::new(None))
         .lock()
         .unwrap()
         .clone()
-        .ok_or_else(|| "设备尚未连接 Space".to_string())?;
+        .ok_or_else(|| "Device is not connected to Space yet".to_string())?;
     if !session.client.isConnected() {
-        return Err("设备已离线".into());
+        return Err("Device is offline".into());
     }
     if session.sending.swap(true, Ordering::AcqRel) {
-        return Err("上一条消息仍在发送".into());
+        return Err("The previous message is still being sent".into());
     }
     *session.error.lock().unwrap() = None;
     let runtime = session.runtime.clone();
@@ -462,23 +462,23 @@ mod tests {
         let mut text = StreamText::default();
         for event in [
             serde_json::json!({"type":"reset"}),
-            serde_json::json!({"type":"chunk","value":"你好"}),
+            serde_json::json!({"type":"chunk","value":"Hello"}),
             serde_json::json!({"type":"savepoint","id":"a"}),
-            serde_json::json!({"type":"chunk","value":"错误分支"}),
+            serde_json::json!({"type":"chunk","value":"discarded branch"}),
             serde_json::json!({"type":"rollback","id":"a"}),
-            serde_json::json!({"type":"markdownBlockChunk","value":"重复渲染数据"}),
-            serde_json::json!({"type":"chunk","parentBlockId":1,"value":"嵌套块"}),
-            serde_json::json!({"type":"chunk","value":"，世界"}),
+            serde_json::json!({"type":"markdownBlockChunk","value":"duplicated render data"}),
+            serde_json::json!({"type":"chunk","parentBlockId":1,"value":"nested block"}),
+            serde_json::json!({"type":"chunk","value":", world"}),
         ] {
             text.apply(&event);
         }
-        assert_eq!(text.text, "你好，世界");
+        assert_eq!(text.text, "Hello, world");
         let messages = operit_link::toCoreValue(serde_json::json!([{
             "sender":"ai", "parts":[], "contentStream":{"$coreStream":{"streamId":"s"}}
         }]))
         .unwrap();
         let displayed = displayMessages(&messages, &BTreeMap::from([("s".into(), text)]));
-        assert_eq!(displayed[0]["text"], "你好，世界");
+        assert_eq!(displayed[0]["text"], "Hello, world");
     }
 }
 

@@ -973,7 +973,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
-    expect(find.text('开始/暂停'), findsOneWidget);
+    expect(find.text('Start/Pause'), findsOneWidget);
   });
 
   testWidgets('wraps direct long text in a bounded row', (tester) async {
@@ -986,7 +986,9 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(
       find.text(
-        '这里的开关和输入菜单里的“额外信息注入”是同一个状态；你可以分别控制注入项目、是否落盘保存，以及记忆检索是否允许重复命中。',
+        'Extra context injection shares one state with the switch here and in the input menu; '
+        'you can control the injected items, whether they are saved to disk, and whether '
+        'memory retrieval may match them more than once.',
       ),
       findsOneWidget,
     );
@@ -1002,9 +1004,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
-    expect(tester.getSize(find.text('已禁用')).height, lessThan(30));
-    expect(tester.getSize(find.text('节点')).height, lessThan(30));
-    expect(tester.getSize(find.text('工作流标题')).width, greaterThan(100));
+    expect(tester.getSize(find.text('Off')).height, lessThan(30));
+    expect(tester.getSize(find.text('Node')).height, lessThan(30));
+    expect(tester.getSize(find.text('Workflow title')).width, greaterThan(100));
   });
 
   testWidgets('renders text field slots and preserves focused input state', (
@@ -2232,7 +2234,7 @@ String _rowSurfaceRenderResult(int count) {
           children: <Map<String, Object?>>[
             _node(
               'Text',
-              props: <String, Object?>{'text': '开始/暂停', 'style': 'labelLarge'},
+              props: <String, Object?>{'text': 'Start/Pause', 'style': 'labelLarge'},
             ),
           ],
         ),
@@ -2257,13 +2259,13 @@ String _weightedWorkflowRowRenderResult(int count) {
             _node(
               'Text',
               props: <String, Object?>{
-                'text': '工作流标题',
+                'text': 'Workflow title',
                 'weight': 1,
                 'maxLines': 1,
               },
             ),
-            _node('Text', props: <String, Object?>{'text': '已禁用'}),
-            _node('Text', props: <String, Object?>{'text': '节点'}),
+            _node('Text', props: <String, Object?>{'text': 'Off'}),
+            _node('Text', props: <String, Object?>{'text': 'Node'}),
             _node('Switch', props: <String, Object?>{'checked': false}),
           ],
         ),
@@ -2294,7 +2296,9 @@ String _rowLongTextRenderResult(int count) {
               'Text',
               props: <String, Object?>{
                 'text':
-                    '这里的开关和输入菜单里的“额外信息注入”是同一个状态；你可以分别控制注入项目、是否落盘保存，以及记忆检索是否允许重复命中。',
+                    'Extra context injection shares one state with the switch here and in '
+                    'the input menu; you can control the injected items, whether they are '
+                    'saved to disk, and whether memory retrieval may match them more than once.',
                 'softWrap': true,
               },
             ),

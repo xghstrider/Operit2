@@ -237,24 +237,24 @@ fn setString(nvs: &Mutex<EspDefaultNvs>, key: &str, value: &str) -> HostResult<(
 
 fn renderSetupPage(_snapshot: &crate::status::FirmwareStatusSnapshot) -> String {
     "<!DOCTYPE html>\
-<html lang=\"zh-CN\">\
-<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Operit2 设置</title></head>\
-<body><h1>Operit2 设置</h1><p>连接家庭 Wi-Fi 后，ESP32 会启动 Edge 服务。</p>\
+<html lang=\"en\">\
+<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Operit2 Settings</title></head>\
+<body><h1>Operit2 Settings</h1><p>After connecting to your home Wi-Fi, the ESP32 starts the Edge service.</p>\
 <form method=\"post\" action=\"/settings\">\
 <label>Wi-Fi SSID<br><input name=\"ssid\" required></label><br>\
-<label>Wi-Fi 密码<br><input name=\"password\" type=\"password\"></label><br>\
+<label>Wi-Fi password<br><input name=\"password\" type=\"password\"></label><br>\
 <label>Edge token<br><input name=\"token\"></label><br>\
-<button type=\"submit\">保存并重启</button>\
+<button type=\"submit\">Save and restart</button>\
 </form>\
-<p><a href=\"/status.json\">状态</a></p>\
+<p><a href=\"/status.json\">Status</a></p>\
 </body></html>"
         .to_string()
 }
 
 fn renderSavedPage(ssid: &str) -> String {
     format!(
-        "<!DOCTYPE html><html lang=\"zh-CN\"><head><meta charset=\"utf-8\"><title>已保存</title></head>\
-<body><h1>已保存</h1><p>Wi-Fi：{ssid}</p><p>设备正在重启。</p></body></html>"
+        "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Saved</title></head>\
+<body><h1>Saved</h1><p>Wi-Fi: {ssid}</p><p>The device is restarting.</p></body></html>"
     )
 }
 

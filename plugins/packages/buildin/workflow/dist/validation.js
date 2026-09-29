@@ -150,18 +150,18 @@ function validateGraph(workflow, executable) {
             if ("nodeId" in value && !nodes.has(value.nodeId))
                 throw new Error(`The node referenced by ${node.name} does not exist`);
             if (executable && "nodeId" in value && !ancestors.has(value.nodeId))
-                throw new Error(`The node referenced by ${node.name} must be upstream through an edge`);
+                throw new Error(`The node referenced by ${node.name} must be upstream via a connection`);
         }
         if (executable && node.type === "trigger")
             (0, schedule_1.validateTrigger)(node);
         if (executable && node.type === "execute" && !node.actionType.trim() && (node.jsCode === null || !node.jsCode.trim()))
-            throw new Error(`${node.name} has no tool or script configured yet`);
+            throw new Error(`${node.name} has not been configured with a tool or script`);
         if (executable && node.type === "extract") {
             if (node.mode === "REGEX")
                 new RegExp(node.expression);
             for (const value of [node.group, node.startIndex, node.length, node.randomMin, node.randomMax, node.randomStringLength])
                 if (!Number.isSafeInteger(value))
-                    throw new Error("Extract index, length, and range must be integers");
+                    throw new Error("Extraction indexes, lengths, and ranges must be integers");
             if (node.group < 0 || node.startIndex < 0 || node.length < -1 || node.randomMax < node.randomMin || node.randomStringLength < 0 || node.randomStringLength > 10000 || node.randomStringCharset.length === 0)
                 throw new Error("Extract node parameters are out of range");
         }

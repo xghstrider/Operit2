@@ -7,7 +7,8 @@ void main() {
   testWidgets('wrapped toast messages are not constrained to one line', (
     tester,
   ) async {
-    const message = '请先在设置中添加并选中一个语音识别配置，然后再开始语音输入。';
+    const message =
+        'Add and select a speech recognition configuration in Settings before starting voice input.';
 
     await tester.pumpWidget(
       MaterialApp(

@@ -32,7 +32,7 @@ class AndroidRuntimeHost(context: Context) {
     @Volatile
     private var runtimeStartupState = "preparing"
     @Volatile
-    private var runtimeStartupMessage = "正在准备本地运行时"
+    private var runtimeStartupMessage = "Preparing the local runtime"
 
     /** Installs storage roots and accepts repeated identical configuration. */
     fun setStorageRoots(runtimePath: String?, workspacePath: String?) {
@@ -65,11 +65,11 @@ class AndroidRuntimeHost(context: Context) {
                 return runtimeHandle
             }
             val startedAtMillis = System.currentTimeMillis()
-            updateRuntimeStartupStatus("preparingAssets", "正在准备本地运行时资源")
+            updateRuntimeStartupStatus("preparingAssets", "Preparing local runtime assets")
             Log.i(TAG, "native runtime create start")
             try {
                 val paths = prepareAndroidRuntimePaths()
-                updateRuntimeStartupStatus("initializingCore", "正在初始化本地核心服务")
+                updateRuntimeStartupStatus("initializingCore", "Initializing the local core service")
                 Log.i(
                     TAG,
                     "native runtime assets ready elapsedMs=" +
@@ -81,15 +81,15 @@ class AndroidRuntimeHost(context: Context) {
                     this,
                 )
                 if (runtimeHandle == 0L) {
-                    updateRuntimeStartupStatus("failed", "本地运行时启动失败")
+                    updateRuntimeStartupStatus("failed", "Failed to start the local runtime")
                     throw IllegalStateException(OperitRuntimeNative.createError())
                 }
                 flushPendingRuntimeEventsLocked()
             } catch (error: Throwable) {
-                updateRuntimeStartupStatus("failed", "本地运行时启动失败")
+                updateRuntimeStartupStatus("failed", "Failed to start the local runtime")
                 throw error
             }
-            updateRuntimeStartupStatus("ready", "本地运行时已就绪")
+            updateRuntimeStartupStatus("ready", "The local runtime is ready")
             Log.i(
                 TAG,
                 "native runtime create done elapsedMs=" +

@@ -119,7 +119,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(tester.state(find.byType(DrawerContent)), same(drawerState));
 
-        await tester.tap(find.byTooltip('搜索对话'));
+        await tester.tap(find.byTooltip('Search conversations'));
         await tester.pumpAndSettle();
         await tester.enterText(find.byType(TextField), 'retained query');
         await tester.pumpAndSettle();

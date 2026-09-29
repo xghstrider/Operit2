@@ -49,7 +49,7 @@ function screen(ctx) {
         }
     }
     return ctx.UI.Box({ fillMaxSize: true, onLoad: initialize }, path === ""
-        ? ctx.UI.Text({ text: error || "Loading workflow…" })
+        ? ctx.UI.Text({ text: error || "Loading workflow..." })
         : ctx.UI.WebView({
             key: "workflow-web",
             controller,

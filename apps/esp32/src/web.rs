@@ -137,11 +137,11 @@ impl Esp32WebHome {
 /// Renders the browser page that refreshes the display preview after each image loads.
 fn renderScreenPage() -> &'static str {
     "<!DOCTYPE html>\
-<html lang=\"zh-CN\">\
-<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>ESP32 屏幕预览</title>\
+<html lang=\"en\">\
+<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>ESP32 Screen Preview</title>\
 <style>body{margin:0;padding:20px;background:#10131a;color:#e8edf5;font-family:system-ui,sans-serif;text-align:center}img{display:block;width:min(480px,90vw);height:auto;margin:16px auto;border:1px solid #394354;image-rendering:pixelated;background:#080c18}p{color:#aeb9ca}</style></head>\
-<body><h1>ESP32 屏幕预览</h1><p id=\"state\">正在连接...</p><img id=\"screen\" alt=\"ESP32 屏幕\">\
-<script>const image=document.getElementById('screen'),state=document.getElementById('state');function refresh(){image.src='/screen.bmp?t='+Date.now();}image.onload=()=>{state.textContent='已连接 · '+new Date().toLocaleTimeString();setTimeout(refresh,250)};image.onerror=()=>{state.textContent='读取屏幕失败，正在重试...';setTimeout(refresh,1000)};refresh();</script>\
+<body><h1>ESP32 Screen Preview</h1><p id=\"state\">Connecting...</p><img id=\"screen\" alt=\"ESP32 screen\">\
+<script>const image=document.getElementById('screen'),state=document.getElementById('state');function refresh(){image.src='/screen.bmp?t='+Date.now();}image.onload=()=>{state.textContent='Connected · '+new Date().toLocaleTimeString();setTimeout(refresh,250)};image.onerror=()=>{state.textContent='Failed to read the screen, retrying...';setTimeout(refresh,1000)};refresh();</script>\
 </body></html>"
 }
 
