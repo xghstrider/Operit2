@@ -295,6 +295,12 @@
 <body>
   <script src="msgpack.min.js"></script>
   <script>
+    // Optional default CoreNode address used to prefill the runtime pairing
+    // dialog. Replace the empty string with your node's URL, for example:
+    // window.CORENODE_URL = "https://core.example.com";
+    window.CORENODE_URL = window.CORENODE_URL || "";
+  </script>
+  <script>
     globalThis.__operitRuntimeReady = import("./operit_runtime_bridge.js");
   </script>
   <script src="flutter_bootstrap.js" async></script>

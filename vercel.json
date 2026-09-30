@@ -10,6 +10,34 @@
       ]
     }
   ],
-  "cleanUrls": false,
-  "trailingSlash": false
+  "services": {
+    "cli": {
+      "root": "apps/cli",
+      "runtime": "rust"
+    },
+    "esp32": {
+      "root": "apps/esp32",
+      "runtime": "rust"
+    },
+    "pb_sbc01_h3": {
+      "root": "apps/pb_sbc01_h3",
+      "runtime": "rust"
+    },
+    "esp32-editor": {
+      "root": "tools/esp32-editor",
+      "runtime": "node"
+    },
+    "simulator": {
+      "root": "tools/esp32-editor/simulator",
+      "runtime": "rust"
+    },
+    "web-access": {
+      "root": "apps/web_access",
+      "framework": null,
+      "outputDirectory": "build/bundle"
+    }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": { "service": "web-access" } }
+  ]
 }

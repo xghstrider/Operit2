@@ -51,6 +51,55 @@ Drag & drop alternative: download the `web-access-bundle` artifact and drop the
 folder onto <https://vercel.com/new> — then add the three headers above in
 **Settings → Headers**.
 
+### Vercel services mode (repo-root project)
+
+The repository root also carries a `vercel.json` that defines one Vercel
+**project with multiple services**:
+
+| Service | Root | Runtime | Visibility |
+|---|---|---|---|
+| `web-access` | `apps/web_access` | static (`build/bundle`) | **public** at the domain root |
+| `cli` | `apps/cli` | rust | internal (desktop TUI/server — cannot serve from Vercel) |
+| `esp32` | `apps/esp32` | rust | internal (ESP-IDF firmware target) |
+| `pb_sbc01_h3` | `apps/pb_sbc01_h3` | rust | internal (Linux board Core runtime) |
+| `esp32-editor` | `tools/esp32-editor` | node | internal (local dev server: USB serial, child processes) |
+| `simulator` | `tools/esp32-editor/simulator` | rust | internal (raw-TCP device emulator) |
+
+Only `web-access` receives public traffic (the single catch-all rewrite
+targets it). The other five exist because the Vercel import flow auto-detected
+them; they stay **internal** — Vercel serverless cannot run firmware builds, a
+TUI process, USB serial access, or raw-TCP listeners, so expect their builds
+to fail and remove them from `vercel.json` when they are not needed.
+
+Because the Flutter bundle is not committed by default, the services-mode
+project needs it committed. Refresh the committed bundle with:
+
+```bash
+git fetch origin gh-pages
+tools/prepare_vercel_bundle.sh origin/gh-pages   # stages + rewrites base href to "/"
+git add -f apps/web_access/build/bundle
+git commit -m "chore: refresh committed web-access bundle"
+git push
+```
+
+The committed bundle is cross-origin isolated through the top-level `headers`
+in the root `vercel.json`, so local STT/TTS keeps working.
+
+#### Default CoreNode address (`CORENODE_URL`)
+
+The manual pairing dialog (Settings → Runtime → "enter another device's
+address") can be prefilled with a deployment default. Two mechanisms exist:
+
+1. **Build time:** build the app with
+   `--dart-define=CORENODE_URL=https://your-node.example.com` (works for any
+   platform).
+2. **Runtime (web only):** set `window.CORENODE_URL` in
+   `apps/web_access/web/index.html` (the tracked web shell) or directly inside
+   the served bundle's `index.html` — no rebuild required.
+
+The web value is read by `lib/core/config/CoreNodeUrl.dart`; the runtime global
+wins over the dart-define when both are set.
+
 ### Netlify
 
 1. Run the workflow, then in Netlify: **Add new site → Import an existing

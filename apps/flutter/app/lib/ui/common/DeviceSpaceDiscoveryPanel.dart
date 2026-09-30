@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../core/config/CoreNodeUrl.dart';
 import '../../core/link_access/LinkAccessHost.dart';
 import '../../core/link_access/LinkAccessHostConfig.dart';
 import '../../core/proxy/generated/CoreProxyClients.g.dart';
@@ -638,7 +639,9 @@ class _RemotePairDialog extends StatefulWidget {
 }
 
 class _RemotePairDialogState extends State<_RemotePairDialog> {
-  final TextEditingController _baseUrlController = TextEditingController();
+  final TextEditingController _baseUrlController = TextEditingController(
+    text: resolveDefaultCoreNodeUrl(),
+  );
   final TextEditingController _tokenController = TextEditingController();
   final TextEditingController _codeController = TextEditingController();
   generated.LinkTransportPreference _transport =
